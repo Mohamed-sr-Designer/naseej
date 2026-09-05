@@ -1,0 +1,32 @@
+{
+  "name": "NASIJ — Egyptian Streetwear",
+  "short_name": "NASIJ",
+  "description": "Minimal Egyptian streetwear — hoodies, sweatshirts, jackets and shirts. Crafted to stand out. Made in Egypt.",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0E0E0D",
+  "theme_color": "#0E0E0D",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "images/logo-en.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/hero.jpeg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
