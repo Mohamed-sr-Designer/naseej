@@ -637,7 +637,7 @@
       margin-bottom:1.4rem;
       animation:fadeUp 1s ease both .4s;max-width:720px;
     }
-    .hero-h1 em { font-style:italic;color:var(--rose); }
+    .hero-h1 em { font-style:italic;color:#F4F1EA !important; }
     .hero-sub {
       font-size:.86rem;color:rgba(250,247,242,.78);max-width:420px;line-height:1.9;
       margin-bottom:2.4rem;font-weight:300;
@@ -2359,7 +2359,7 @@
     .hero-slide-img{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;}
     .hero-slide-img.active{opacity:1;}
     .hero-slide-img img{width:100%;height:100%;object-fit:cover;display:block;}
-    .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(20,16,10,.62) 0%,rgba(20,16,10,.45) 50%,rgba(20,16,10,.62) 100%),linear-gradient(to bottom,rgba(20,16,10,.25) 0%,rgba(20,16,10,.55) 100%);z-index:1;}
+    .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(14,12,9,.66) 0%,rgba(14,12,9,.55) 50%,rgba(14,12,9,.72) 100%),linear-gradient(to bottom,rgba(14,12,9,.42) 0%,rgba(14,12,9,.35) 45%,rgba(14,12,9,.7) 100%);z-index:1;}
     .hero-content{
       position:relative;z-index:2;
       padding:0 2rem;max-width:680px;
@@ -6203,27 +6203,6 @@
       <span data-en="Browse the Full Collection" data-ar="تصفحي المجموعة الكاملة">Browse the Full Collection</span>
       <span>→</span>
     </button>
-  </section>
-
-  <!-- NEWSLETTER -->
-  <!-- ── Bundle & Save — homepage curated bundles ── -->
-  <section class="newsletter-sec">
-    <div class="nl-inner">
-      <span class="sec-label" data-en="Stay in touch" data-ar="ابقي على تواصل">Stay in touch</span>
-      <h2 class="nl-title" data-en="Be the first to know." data-ar="كوني أول من تعرف.">Be the first to know.</h2>
-      <p class="nl-text" data-en="Get 10% off your first order, early access to new collections, and quiet stories from our atelier." data-ar="احصلي على خصم ١٠٪ على أول طلب، وصول مبكر للمجموعات الجديدة، وقصص هادئة من ورشتنا.">Get 10% off your first order, early access to new collections, and quiet stories from our atelier.</p>
-      <form class="nl-form" onsubmit="submitNewsletter(event)">
-        <input type="email" id="nlEmail" class="nl-input" required
-          placeholder="your@email.com"
-          data-en-ph="your@email.com" data-ar-ph="بريدك@الإلكتروني.com"
-          oninput="this.value=this.value.replace(/[^\x00-\x7F]/g,'')"
-          aria-label="Email address">
-        <button type="submit" class="btn-dark nl-submit">
-          <span data-en="Get 10% Off" data-ar="احصلي على ١٠٪ خصم">Get 10% Off</span><span>→</span>
-        </button>
-      </form>
-      <p class="nl-fineprint" data-en="By subscribing you agree to receive marketing emails. Unsubscribe anytime." data-ar="بالاشتراك أنتِ موافقة على استقبال رسائل تسويقية. يمكنك إلغاء الاشتراك في أي وقت.">By subscribing you agree to receive marketing emails. Unsubscribe anytime.</p>
-    </div>
   </section>
 
   <!-- FOOTER HOME -->
@@ -14850,8 +14829,8 @@ function submitNewsletter(e) {
         data-en="Your First Order,<br>Your Exclusive 10% Off."
         data-ar="أول طلبك،<br>خصمك الحصري ١٠٪.">Your First Order,<br>Your Exclusive 10% Off.</h2>
       <p class="nl-popup-sub"
-        data-en="Use the promo code at checkout — valid on any handmade piece from our collection."
-        data-ar="استخدمي كود الخصم عند الدفع — صالح على أي قطعة مصنوعة يدوياً من مجموعتنا.">Use the promo code at checkout — valid on any handmade piece from our collection.</p>
+        data-en="Use the promo code at checkout — valid on any piece from the collection."
+        data-ar="استخدم كود الخصم عند الدفع — صالح على أي قطعة من الكولكشن.">Use the promo code at checkout — valid on any piece from the collection.</p>
 
       <!-- Promo code box -->
       <div class="nl-popup-code-box">
