@@ -8350,7 +8350,7 @@ function updateNav() {
   const gearSvg    = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`;
   const logoutSvg  = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`;
   if (u) {
-    const isAdmin = u.role === 'admin' || u.role === 'super_admin';
+    const isAdmin = u.role === 'admin' || u.role === 'super_admin' || u.role === 'staff';
     nav.innerHTML =
       (isAdmin ? `<button class="nav-icon" onclick="go('admin')" title="Admin Panel">${gearSvg}<span class="nav-admin-dot"></span></button>` : '') +
       `<button class="nav-icon" onclick="go('account')" title="${esc(u.fname||'')}">${personSvg}</button>` +
@@ -8409,7 +8409,7 @@ function go(pg) {
   if (pg === 'account' && !Auth.current()) { go('login'); return; }
   if (pg === 'admin') {
     const u = Auth.current();
-    if (!u || (u.role !== 'admin' && u.role !== 'super_admin')) {
+    if (!u || (u.role !== 'admin' && u.role !== 'super_admin' && u.role !== 'staff')) {
       toast(lang === 'ar' ? 'مش متاح' : 'Access denied', 'error'); return;
     }
   }
@@ -13737,6 +13737,20 @@ loadProductOverrides().then(() => {
 setupObs();
 a11yPatchLinks();
 
+/* ── Expose core globals to the cloud layer (cloud.js) ──
+   Top-level const/let/function bindings are NOT attached to window by default,
+   so the additive Firebase/admin module reaches them through these handles. */
+(function exposeForCloud(){
+  try {
+    const names = { PRODUCTS, Auth, Cart, Orders, SIZES, PROMO_CODES, S,
+      HOT_IDS, NEW_IDS, _soldOutIds, _featuredIds, applyOverride,
+      CONTENT_SELECTORS, HERO_SLIDES, EXTRA_BANNERS };
+    Object.keys(names).forEach(k => { try { window[k] = names[k]; } catch(e){} });
+    try { Object.defineProperty(window, 'lang', { get(){ return lang; }, set(v){ lang = v; }, configurable:true }); } catch(e){}
+    try { Object.defineProperty(window, '_productOrder', { get(){ return _productOrder; }, set(v){ _productOrder = v; }, configurable:true }); } catch(e){}
+  } catch(e){ console.warn('exposeForCloud', e); }
+})();
+
 /* ══════════════════════════════════════════════════════════════════════
    FEATURE IMPLEMENTATIONS
    Exit Intent · Abandoned Cart · Recently Viewed · FBT · Bundles ·
@@ -14920,5 +14934,12 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 
+<!-- ══ NASIJ CLOUD (Firebase) + Admin Dashboard ══ -->
+<script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+<script defer src="firebase-config.js"></script>
+<script defer src="cloud.js"></script>
 </body>
 </html>
