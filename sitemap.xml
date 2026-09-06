@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mohamed-sr-designer.github.io/naseej/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://mohamed-sr-designer.github.io/naseej/?lang=ar</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?lang=ar</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/#products</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/#about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/#contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/#blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=1</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=2</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=3</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=4</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=5</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=6</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=7</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=8</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=9</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=10</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=11</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=12</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=13</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mohamed-sr-designer.github.io/naseej/?article=14</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

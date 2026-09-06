@@ -1289,4 +1289,63 @@
   window.addEventListener('load', () => setTimeout(injectLiveEditNav, 400));
 })();
 
+/* ═══════════ PART 6 — SEO: article deep-links, Article JSON-LD, canonical ═══════════ */
+(function () {
+  'use strict';
+  const SITE = 'https://mohamed-sr-designer.github.io/naseej/';
+  function setCanonical(url) {
+    let l = document.getElementById('nz-canonical');
+    if (!l) { l = document.createElement('link'); l.id = 'nz-canonical'; l.rel = 'canonical'; document.head.appendChild(l); }
+    l.href = url;
+  }
+  function articleLd(a) {
+    const ar = window.lang === 'ar';
+    const ld = {
+      "@context": "https://schema.org", "@type": "BlogPosting",
+      "headline": ar ? a.title.ar : a.title.en,
+      "description": ar ? a.excerpt.ar : a.excerpt.en,
+      "image": SITE + (a.img || 'images/hero-1.png'),
+      "datePublished": a.date, "author": { "@type": "Organization", "name": "NASIJ" },
+      "publisher": { "@type": "Organization", "name": "NASIJ", "logo": { "@type": "ImageObject", "url": SITE + "images/logo-en.png" } },
+      "mainEntityOfPage": SITE + "?article=" + a.id
+    };
+    let s = document.getElementById('nz-article-ld');
+    if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'nz-article-ld'; document.head.appendChild(s); }
+    s.textContent = JSON.stringify(ld);
+  }
+
+  function wrapArticle() {
+    if (!window.openArticle || window.__nzArtWrapped) return;
+    const _oa = window.openArticle;
+    window.openArticle = function (id) {
+      const r = _oa.apply(this, arguments);
+      try {
+        const a = (typeof ARTICLES !== 'undefined' ? ARTICLES : window.ARTICLES || []).find(x => x.id === id);
+        if (a) {
+          const ar = window.lang === 'ar';
+          if (window.updateSEO) updateSEO('article', (ar ? a.title.ar : a.title.en) + ' — NASIJ', ar ? a.excerpt.ar : a.excerpt.en);
+          history.replaceState({ pg: 'article' }, '', '?article=' + id + '#article');
+          setCanonical(SITE + '?article=' + id);
+          articleLd(a);
+        }
+      } catch (e) {}
+      return r;
+    };
+    window.__nzArtWrapped = true;
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      wrapArticle();
+      setCanonical(SITE);
+      // deep-link: ?article=N opens the post directly (shareable + crawlable-ish)
+      try {
+        const q = new URLSearchParams(location.search);
+        const aid = q.get('article');
+        if (aid && window.openArticle) window.openArticle(+aid);
+      } catch (e) {}
+    }, 300);
+  });
+})();
+
   // __NASIJ_PARTS__
