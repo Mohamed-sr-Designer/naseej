@@ -619,22 +619,39 @@
   window.NASIJ_setOrderStatus = async function (id, status) {
     try { await DB.setDoc('orders', id, { status }); toast(tA('تم تحديث الحالة', 'Status updated')); } catch (e) { toast('Error', 'error'); }
   };
-  window.NASIJ_invoice = function (o) {
+  function buildInvoiceHTML(o) {
     const s = conf().settings || {};
+    const ig = s.instagram ? ('@' + String(s.instagram).replace(/^@/, '')) : '@nasij_brand';
     const rows = (o.items || []).map(i => `<tr><td>${esc((i.en || i.ar) || '')}${i.size ? ' (' + i.size + ')' : ''}</td><td style="text-align:center">${i.qty}</td><td style="text-align:right">${EGP(i.price)}</td><td style="text-align:right">${EGP((i.price || 0) * (i.qty || 1))}</td></tr>`).join('');
-    const w = window.open('', '_blank'); if (!w) return;
-    w.document.write(`<html dir="ltr"><head><title>Invoice ${esc(String(o.id))}</title><meta charset="utf-8">
-      <style>body{font-family:Arial,sans-serif;color:#111;max-width:720px;margin:24px auto;padding:0 16px;}h1{letter-spacing:.3em;margin:0}table{width:100%;border-collapse:collapse;margin-top:16px}th,td{border-bottom:1px solid #ddd;padding:8px;font-size:13px;text-align:left}.tot{font-weight:bold;font-size:15px}.muted{color:#666;font-size:12px}</style></head><body>
+    return `<!doctype html><html dir="ltr"><head><title>Invoice ${esc(String(o.id))}</title><meta charset="utf-8">
+      <style>body{font-family:Arial,Helvetica,sans-serif;color:#111;max-width:720px;margin:24px auto;padding:0 16px;}h1{letter-spacing:.3em;margin:0;font-size:26px}table{width:100%;border-collapse:collapse;margin-top:16px}th,td{border-bottom:1px solid #ddd;padding:8px;font-size:13px;text-align:left}.tot td{font-weight:bold;font-size:15px;border-top:2px solid #111}.muted{color:#666;font-size:12px}@media print{.noprint{display:none}}</style></head><body>
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div><h1>NASIJ</h1><div class="muted">${esc(s.instagram || '@naseej.eg')} · ${esc(s.whatsapp || '201228748098')}</div></div>
+        <div><h1>NASIJ</h1><div class="muted">${esc(ig)} · ${esc(s.whatsapp || '201228748098')}</div></div>
         <div style="text-align:right"><h2 style="margin:0">INVOICE</h2><div class="muted">${esc(String(o.id))}<br>${esc((o.created_at || '').slice(0, 10))}</div></div>
       </div>
       <div style="margin-top:14px" class="muted"><b>Bill to:</b> ${esc(o.name || '')} · ${esc(o.phone || '')}<br>${esc(o.address || '')} ${esc(o.area || '')}</div>
       <table><thead><tr><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
       <tbody>${rows}</tbody><tfoot><tr class="tot"><td colspan="3" style="text-align:right">TOTAL</td><td style="text-align:right">${EGP(o.total)}</td></tr></tfoot></table>
       <p class="muted" style="margin-top:20px">Payment: ${esc(o.payment || '—')} · Thank you for shopping with NASIJ 🇪🇬</p>
-      <script>window.onload=function(){window.print();}<\/script></body></html>`);
-    w.document.close();
+      <button class="noprint" onclick="window.print()" style="margin-top:18px;padding:10px 18px;background:#111;color:#fff;border:none;border-radius:5px;cursor:pointer">Print / Save PDF</button>
+      </body></html>`;
+  }
+  window.NASIJ_invoice = function (o) {
+    const html = buildInvoiceHTML(o);
+    // Print via a hidden iframe (popup-blocker proof)
+    let f = document.getElementById('nzInvoiceFrame'); if (f) f.remove();
+    f = document.createElement('iframe'); f.id = 'nzInvoiceFrame';
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+    document.body.appendChild(f);
+    const doc = f.contentWindow.document; doc.open(); doc.write(html); doc.close();
+    setTimeout(() => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { const w = window.open('', '_blank'); if (w) { w.document.write(html); w.document.close(); } } }, 350);
+  };
+  // Also let the customer view/print their own order invoice from account (exposed helper)
+  window.NASIJ_invoiceById = async function (id) {
+    let o = null;
+    try { const all = await window.NASIJ_DB.list('orders'); o = all.find(x => String(x.id) === String(id)); } catch (e) {}
+    if (!o) { try { o = (window.S.get('axia_local_orders', []) || []).find(x => String(x.id) === String(id)); } catch (e) {} }
+    if (o) window.NASIJ_invoice(o); else toast(tA('الفاتورة غير متاحة', 'Invoice unavailable'), 'error');
   };
 
   /* ─────────── PRODUCTS: full CRUD ─────────── */
@@ -808,6 +825,7 @@
 (function () {
   'use strict';
   const DB = window.NASIJ_DB;
+  const S = window.S || { get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set: (k, v) => localStorage.setItem(k, JSON.stringify(v)) };
   const conf = () => window.NASIJ_CONF;
   const saveNow = () => window.NASIJ_saveConf(true);
   const ar = () => (window.lang === 'ar');
@@ -925,8 +943,66 @@
           ${['customer', 'staff', 'super_admin'].map(r => `<option value="${r}"${role === r ? ' selected' : ''}>${r}</option>`).join('')}</select></td>
       </tr>`;
     }).join('') : `<tr><td colspan="2" style="color:var(--ink-s);padding:1rem">${tA('لا مستخدمين بعد — الموظف يسجّل دخول مرة ثم ترقّيه من هنا.', 'No users yet — a staff member signs in once, then you promote them here.')}</td></tr>`;
-    b.innerHTML = sub(tA('تحكّم في أدوار الموظفين. الموظف يسجّل حساب مرة، ثم ترقّيه لموظف/مالك.', 'Manage roles. A staff member registers once, then you promote them to staff/owner.')) +
-      `<div class="admin-table-wrap"><table class="atbl"><thead><tr><th>${tA('المستخدم', 'User')}</th><th>${tA('الدور', 'Role')}</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    b.innerHTML = sub(tA('أضف موظفين وحدّد صلاحياتهم، أو غيّر دور أي مستخدم.', 'Add staff, set their permissions, or change any user\'s role.')) +
+      `<div class="admin-table-wrap"><table class="atbl"><thead><tr><th>${tA('المستخدم', 'User')}</th><th>${tA('الدور', 'Role')}</th></tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-top:1.2rem;max-width:640px">
+        <h3 style="font-family:var(--fh);font-size:1.15rem;margin:0 0 .9rem">${tA('إضافة مستخدم جديد', 'Add new user')}</h3>
+        <div class="nz-grid2">
+          <div class="nz-field"><label>${tA('الاسم', 'Name')}</label><input id="nz-nu-name" placeholder="${tA('اسم الموظف', 'Staff name')}"></div>
+          <div class="nz-field"><label>${tA('الإيميل', 'Email')}</label><input id="nz-nu-email" type="email" placeholder="name@nasij.store"></div>
+        </div>
+        <div class="nz-grid2">
+          <div class="nz-field"><label>${tA('كلمة السر', 'Password')}</label><input id="nz-nu-pass" type="text" placeholder="••••••"></div>
+          <div class="nz-field"><label>${tA('الدور', 'Role')}</label><select id="nz-nu-role" onchange="NASIJ_nuRoleChange()">
+            <option value="staff">${tA('موظف', 'Staff')}</option>
+            <option value="super_admin">${tA('مالك (كل الصلاحيات)', 'Owner (full access)')}</option>
+            <option value="customer">${tA('عميل', 'Customer')}</option>
+          </select></div>
+        </div>
+        <div class="nz-field" id="nz-nu-perms"><label>${tA('صلاحيات الموظف', 'Staff permissions')}</label>
+          <div class="nz-row">
+            <span class="nz-chip on" data-perm="products">${tA('المنتجات', 'Products')}</span>
+            <span class="nz-chip on" data-perm="orders">${tA('الطلبات', 'Orders')}</span>
+            <span class="nz-chip on" data-perm="content">${tA('المحتوى', 'Content')}</span>
+            <span class="nz-chip" data-perm="promos">${tA('الخصومات', 'Promos')}</span>
+            <span class="nz-chip" data-perm="staff">${tA('الموظفين', 'Staff')}</span>
+          </div>
+        </div>
+        <div class="nz-actions"><button class="nz-btn" onclick="NASIJ_addUser()">＋ ${tA('إضافة المستخدم', 'Add user')}</button></div>
+        <p style="font-size:.66rem;color:var(--ink-s);margin:.4rem 0 0">${window.NASIJ_CLOUD_ON ? tA('هيتعمله حساب دخول حقيقي على Firebase فوراً.', 'A real Firebase login is created instantly.') : tA('وضع تجريبي: الحساب يتحفظ على هذا المتصفح.', 'Demo mode: saved on this browser.')}</p>
+      </div>`;
+    document.querySelectorAll('#nz-nu-perms .nz-chip').forEach(c => c.onclick = function () { this.classList.toggle('on'); });
+  };
+  window.NASIJ_nuRoleChange = function () {
+    const r = (document.getElementById('nz-nu-role') || {}).value;
+    const pe = document.getElementById('nz-nu-perms'); if (pe) pe.style.display = (r === 'staff') ? '' : 'none';
+  };
+  window.NASIJ_addUser = async function () {
+    const name = ((document.getElementById('nz-nu-name') || {}).value || '').trim();
+    const email = ((document.getElementById('nz-nu-email') || {}).value || '').trim().toLowerCase();
+    const pass = ((document.getElementById('nz-nu-pass') || {}).value || '').trim();
+    const role = (document.getElementById('nz-nu-role') || {}).value || 'staff';
+    if (!email || !pass) { toast(tA('اكتب الإيميل وكلمة السر', 'Enter email and password'), 'error'); return; }
+    if (pass.length < 6) { toast(tA('كلمة السر ٦ حروف على الأقل', 'Password ≥ 6 chars'), 'error'); return; }
+    const perms = {}; document.querySelectorAll('#nz-nu-perms .nz-chip.on').forEach(c => perms[c.dataset.perm] = true);
+    try {
+      if (window.NASIJ_CLOUD_ON) {
+        const CFG = window.NASIJ_FIREBASE, fb = window.NASIJ_FB;
+        let sec; try { sec = firebase.app('nzsec'); } catch (e) { sec = firebase.initializeApp(CFG, 'nzsec'); }
+        const cr = await sec.auth().createUserWithEmailAndPassword(email, pass);
+        const uid = cr.user.uid;
+        await fb.db.collection('users').doc(uid).set({ fname: name, lname: '', email, role });
+        if (role !== 'customer') await fb.db.collection('admins').doc(uid).set({ role, perms: role === 'super_admin' ? { all: true } : perms });
+        await sec.auth().signOut();
+      } else {
+        const users = S.get('axia_local_users', []);
+        if (users.find(u => u.email === email)) { toast(tA('الإيميل موجود بالفعل', 'Email already exists'), 'error'); return; }
+        users.push({ id: Date.now(), fname: name, lname: '', email, role, perms, _pass: pass });
+        S.set('axia_local_users', users);
+      }
+      toast(tA('تم إضافة المستخدم ✓', 'User added ✓'));
+      window.__nzStaff();
+    } catch (e) { toast((e && e.message) || 'Error', 'error'); }
   };
   window.NASIJ_setRole = async function (id, role) {
     try {
@@ -948,7 +1024,7 @@
     b.innerHTML = sub(tA('بيانات المتجر — تظهر في الموقع كله.', 'Store details — reflected across the whole site.')) +
       `<div class="nz-grid2">
         ${f('whatsapp', tA('واتساب (رقم دولي)', 'WhatsApp (intl number)'), s.whatsapp || '201228748098')}
-        ${f('instagram', tA('إنستجرام', 'Instagram handle'), s.instagram || 'naseej.eg')}
+        ${f('instagram', tA('إنستجرام', 'Instagram handle'), s.instagram || 'nasij_brand')}
         ${f('email', tA('الإيميل', 'Email'), s.email || 'hello@naseej.eg')}
         ${f('deliveryFee', tA('رسوم التوصيل (ج.م)', 'Delivery fee (EGP)'), s.deliveryFee != null ? s.deliveryFee : 60, 'number')}
         ${f('freeOver', tA('توصيل مجاني فوق (ج.م)', 'Free delivery over (EGP)'), s.freeOver != null ? s.freeOver : 3000, 'number')}
