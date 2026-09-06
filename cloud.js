@@ -954,7 +954,29 @@
         ${f('freeOver', tA('توصيل مجاني فوق (ج.م)', 'Free delivery over (EGP)'), s.freeOver != null ? s.freeOver : 3000, 'number')}
         ${f('profitMargin', tA('هامش الربح الافتراضي %', 'Default profit margin %'), s.profitMargin != null ? s.profitMargin : 45, 'number')}
       </div>
-      <div class="nz-actions"><button class="nz-btn" onclick="NASIJ_saveSettings()">${tA('حفظ الإعدادات', 'Save settings')}</button></div>`;
+      <div class="nz-actions"><button class="nz-btn" onclick="NASIJ_saveSettings()">${tA('حفظ الإعدادات', 'Save settings')}</button></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0">
+      <h3 style="font-family:var(--fh);font-size:1.1rem;margin:0 0 .3rem">${tA('حساب المالك (الدخول)', 'Owner account (login)')}</h3>
+      <p class="admin-page-sub">${window.NASIJ_CLOUD_ON ? tA('في وضع Firebase: غيّر الإيميل/الباسورد من Firebase Console → Authentication.', 'Firebase mode: change email/password in Firebase Console → Authentication.') : tA('اختر إيميل وباسورد الأدمن للدخول (وضع تجريبي، على هذا المتصفح).', 'Set your admin login email & password (demo mode, this browser).')}</p>
+      <div class="nz-grid2">
+        ${f('ownerEmail', tA('إيميل الأدمن', 'Admin email'), (function(){ try { const us = (window.S ? S.get('axia_local_users', []) : []).find(u => u.role === 'super_admin'); return us ? us.email : 'owner@naseej.eg'; } catch (e) { return 'owner@naseej.eg'; } })())}
+        ${f('ownerPass', tA('باسورد جديد', 'New password'), '')}
+      </div>
+      <div class="nz-actions"><button class="nz-btn" onclick="NASIJ_saveOwnerLogin()" ${window.NASIJ_CLOUD_ON ? 'disabled style="opacity:.5"' : ''}>${tA('حفظ بيانات الدخول', 'Save login')}</button></div>`;
+  };
+  window.NASIJ_saveOwnerLogin = function () {
+    if (window.NASIJ_CLOUD_ON) { toast(tA('استخدم Firebase Console لتغيير الدخول', 'Use Firebase Console to change login'), 'error'); return; }
+    const email = ((document.getElementById('nz-set-ownerEmail') || {}).value || '').trim().toLowerCase();
+    const pass = ((document.getElementById('nz-set-ownerPass') || {}).value || '').trim();
+    if (!email) { toast(tA('اكتب الإيميل', 'Enter email'), 'error'); return; }
+    try {
+      let users = S.get('axia_local_users', []);
+      let owner = users.find(u => u.role === 'super_admin');
+      if (!owner) { owner = { id: 9001, fname: 'Store', lname: 'Owner', role: 'super_admin' }; users.push(owner); }
+      owner.email = email; if (pass) owner._pass = pass;
+      S.set('axia_local_users', users);
+      toast(tA('اتحفظ ✓ استخدم الإيميل/الباسورد الجديد', 'Saved ✓ use the new email/password'));
+    } catch (e) { toast('Error', 'error'); }
   };
   window.NASIJ_saveSettings = function () {
     const g = id => (document.getElementById('nz-set-' + id) || {}).value;
@@ -973,6 +995,222 @@
 
   // keep promos + settings in sync on load
   window.addEventListener('load', () => { setTimeout(() => { try { syncPromos(); } catch (e) {} }, 300); });
+})();
+
+/* ═══════════ PART 4 — Serve admin data endpoints from the cloud (fixes Overview) ═══════════ */
+(function () {
+  'use strict';
+  const DB = window.NASIJ_DB;
+  const S = window.S;
+  const conf = () => window.NASIJ_CONF;
+  const ym = (dt) => dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0');
+
+  async function usersList() {
+    let users = [];
+    try { users = await DB.list('users'); } catch (e) {}
+    if (!window.NASIJ_CLOUD_ON) { try { users = (S ? S.get('axia_local_users', []) : []); } catch (e) {} }
+    return users;
+  }
+  function productCost(p) {
+    const ov = (conf().prodOverrides || {})[p.id] || {};
+    if (ov.cost != null && ov.cost !== '') return +ov.cost;
+    if (p.cost != null) return +p.cost;
+    const m = ((conf().settings || {}).profitMargin != null ? +conf().settings.profitMargin : 45) / 100;
+    return Math.round((p.price || 0) * (1 - m));
+  }
+  async function computeOverview() {
+    const orders = await DB.list('orders');
+    const now = new Date();
+    const paid = orders.filter(o => (o.status || 'pending') !== 'cancelled');
+    const totalRevenue = paid.reduce((s, o) => s + (+o.total || 0), 0);
+    const users = await usersList();
+    const monthRev = {}, monthCnt = {};
+    paid.forEach(o => { const k = ym(new Date(o.created_at || Date.now())); monthRev[k] = (monthRev[k] || 0) + (+o.total || 0); monthCnt[k] = (monthCnt[k] || 0) + 1; });
+    const statusBreakdown = {}; orders.forEach(o => { const s = o.status || 'pending'; statusBreakdown[s] = (statusBreakdown[s] || 0) + 1; });
+    const rev = {}; paid.forEach(o => (o.items || []).forEach(it => { rev[it.id] = (rev[it.id] || 0) + ((+it.price || 0) * (+it.qty || 1)); }));
+    const topProducts = Object.entries(rev).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([id, r]) => ({ id: isNaN(+id) ? id : +id, revenue: r }));
+    const recentOrders = orders.slice().sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || ''))).slice(0, 6)
+      .map(o => ({ items: o.items || [], fname: o.name || '', lname: '', status: o.status || 'pending', created_at: o.created_at || new Date().toISOString(), total: +o.total || 0 }));
+    let newsletterCount = 0; try { newsletterCount = (await DB.list('newsletter')).length; } catch (e) {}
+    const repeat = {}; paid.forEach(o => { const k = (o.phone || o.email || '').trim(); if (k) repeat[k] = (repeat[k] || 0) + 1; });
+    return {
+      totalRevenue, totalOrders: orders.length,
+      pending: statusBreakdown.pending || 0, totalUsers: users.length,
+      avgOrder: paid.length ? totalRevenue / paid.length : 0,
+      revenueThisMonth: monthRev[ym(now)] || 0,
+      revenueLastMonth: monthRev[ym(new Date(now.getFullYear(), now.getMonth() - 1, 1))] || 0,
+      newsletterCount, repeatCustomers: Object.values(repeat).filter(n => n > 1).length, pendingReviews: 0,
+      recentOrders, statusBreakdown,
+      monthlyOrders: Object.keys(monthRev).map(k => ({ month: k, revenue: monthRev[k], count: monthCnt[k] })),
+      topProducts
+    };
+  }
+
+  // Intercept admin/read endpoints so the static site serves them from the cloud/local
+  if (window.api && !window.__nasijApiWrapped) {
+    const _api = window.api;
+    window.api = async function (path, opts) {
+      try {
+        if (path === '/api/admin/overview') return await computeOverview();
+        if (path === '/api/admin/orders') return { orders: await DB.list('orders') };
+        if (path === '/api/orders/mine') return { orders: (S ? S.get('axia_local_orders', []) : []) };
+        if (path === '/api/admin/products') return { overrides: [] };
+        if (path === '/api/products/overrides') return { overrides: [] };
+        if (path === '/api/admin/users') return { users: await usersList() };
+      } catch (e) { console.warn('[NASIJ api]', path, e); return {}; }
+      return _api ? _api.apply(this, arguments) : Promise.reject({ offline: true });
+    };
+    window.__nasijApiWrapped = true;
+  }
+})();
+
+/* ═══════════ PART 5 — Live in-place content editor (edit ANY text on the site) ═══════════ */
+(function () {
+  'use strict';
+  const conf = () => window.NASIJ_CONF;
+  const saveNow = () => window.NASIJ_saveConf(true);
+  const tA = (a, e) => (window.tA ? window.tA(a, e) : (window.lang === 'ar' ? a : e));
+  let editing = false;
+
+  const BAD = '.full-card,.home-slider,.rel-slider-track,#page-admin,.nz-modal,.nz-modal-ov,[id^="nz-"],.atbl,.adm-nav,.adm-topbar,.filter-cats,.hero-slide-img,.mob-nav,#toastWrap,.nz-live-toolbar';
+  function isEditable(el) {
+    if (!el || el.children.length !== 0) return false;      // leaf text only
+    if (!el.hasAttribute('data-en') && !el.hasAttribute('data-ar')) return false;
+    if (el.closest(BAD)) return false;
+    const t = (el.textContent || '').trim();
+    return t.length > 0 && t.length < 400;
+  }
+  function editablesIn(scope) {
+    return [...(scope || document).querySelectorAll('[data-en],[data-ar]')].filter(isEditable);
+  }
+  function keyOf(el) {
+    if (el.dataset.nzk) return el.dataset.nzk;
+    const page = el.closest('.page') || document.body;
+    const pid = page.id || 'global';
+    const all = editablesIn(page);
+    const idx = all.indexOf(el);
+    const k = pid + '::' + idx;
+    el.dataset.nzk = k;
+    return k;
+  }
+
+  // Apply saved edits onto the DOM (sets data-en/data-ar so applyLang renders them)
+  function applyContentEdits() {
+    const edits = (conf() || {}).contentEdits;
+    if (!edits) return;
+    // build key→element map once per call
+    editablesIn(document).forEach(el => {
+      const k = keyOf(el);
+      const e = edits[k];
+      if (!e) return;
+      if (e.en != null) el.setAttribute('data-en', e.en);
+      if (e.ar != null) el.setAttribute('data-ar', e.ar);
+    });
+  }
+  window.NASIJ_applyContentEdits = applyContentEdits;
+
+  // Run applyContentEdits before every applyLang so edits always win
+  if (window.applyLang && !window.__nasijLangWrapped) {
+    const _al = window.applyLang;
+    window.applyLang = function () { try { applyContentEdits(); } catch (e) {} return _al.apply(this, arguments); };
+    window.__nasijLangWrapped = true;
+  }
+  // also apply once shortly after load
+  window.addEventListener('load', () => setTimeout(() => { try { applyContentEdits(); } catch (e) {} }, 500));
+
+  function injectEditCss() {
+    if (document.getElementById('nz-live-css')) return;
+    const s = document.createElement('style'); s.id = 'nz-live-css';
+    s.textContent = `
+    body.nz-editing [data-nzk]{outline:1px dashed rgba(120,120,120,.5);outline-offset:2px;cursor:text;transition:outline .15s;border-radius:2px;}
+    body.nz-editing [data-nzk]:hover{outline:2px solid var(--rose);background:rgba(200,139,133,.08);}
+    body.nz-editing [data-nzk][contenteditable="true"]:focus{outline:2px solid var(--rose);background:rgba(200,139,133,.12);}
+    .nz-live-toolbar{position:fixed;top:0;left:0;right:0;z-index:2000;background:#0E0E0D;color:#F4F1EA;display:flex;align-items:center;gap:.8rem;padding:.6rem 1rem;font-family:var(--fb);font-size:.8rem;box-shadow:0 4px 18px rgba(0,0,0,.3);}
+    .nz-live-toolbar b{font-family:var(--fh);letter-spacing:.05em;}
+    .nz-live-toolbar .sp{flex:1}
+    .nz-live-toolbar button{padding:.45rem .9rem;border-radius:5px;border:1px solid rgba(244,241,234,.3);background:transparent;color:#F4F1EA;cursor:pointer;font-size:.75rem;}
+    .nz-live-toolbar button.pri{background:#F4F1EA;color:#0E0E0D;border-color:#F4F1EA;font-weight:600;}
+    .nz-live-toolbar .lng.on{background:var(--rose,#C58B85);color:#0E0E0D;border-color:var(--rose,#C58B85);}
+    body.nz-editing{padding-top:48px;}`;
+    document.head.appendChild(s);
+  }
+
+  function wire(el) {
+    if (el.__nzWired) { el.setAttribute('contenteditable', 'true'); return; }
+    el.__nzWired = true;
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'false');
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } });
+    el.addEventListener('blur', () => {
+      const k = keyOf(el);
+      const txt = (el.innerText || '').replace(/\s+/g, ' ').trim();
+      const lng = (window.lang === 'ar') ? 'ar' : 'en';
+      const c = conf(); c.contentEdits = c.contentEdits || {};
+      c.contentEdits[k] = c.contentEdits[k] || {};
+      if (c.contentEdits[k][lng] === txt) return;
+      c.contentEdits[k][lng] = txt;
+      el.setAttribute('data-' + lng, txt);
+      saveNow();
+      try { toast(tA('اتحفظ ✓', 'Saved ✓')); } catch (e) {}
+    });
+  }
+  function wireAll() { editablesIn(document).forEach(el => { keyOf(el); wire(el); }); }
+  function unwireAll() { document.querySelectorAll('[contenteditable="true"]').forEach(el => el.removeAttribute('contenteditable')); }
+
+  function toolbar() {
+    let t = document.getElementById('nzLiveToolbar');
+    if (t) return t;
+    t = document.createElement('div'); t.id = 'nzLiveToolbar'; t.className = 'nz-live-toolbar';
+    const arOn = window.lang === 'ar';
+    t.innerHTML = `<b>NASIJ</b> <span>${tA('وضع التعديل المباشر — دوس على أي نص وعدّله', 'Live edit — click any text to change it')}</span>
+      <span class="sp"></span>
+      <button class="lng ${!arOn ? 'on' : ''}" onclick="NASIJ_editLang('en')">EN</button>
+      <button class="lng ${arOn ? 'on' : ''}" onclick="NASIJ_editLang('ar')">ع</button>
+      <button class="pri" onclick="NASIJ_editDone()">${tA('تم', 'Done')}</button>`;
+    document.body.appendChild(t);
+    return t;
+  }
+
+  window.NASIJ_editContent = function () {
+    if (!window.NASIJ_isAdmin || !window.NASIJ_isAdmin()) { try { toast('Admin only', 'error'); } catch (e) {} return; }
+    injectEditCss();
+    try { if (document.getElementById('page-admin').classList.contains('active')) go('home'); } catch (e) {}
+    editing = true;
+    document.body.classList.add('nz-editing');
+    toolbar();
+    setTimeout(wireAll, 100);
+    try { toast(tA('دوس على أي نص لتعديله', 'Click any text to edit')); } catch (e) {}
+  };
+  window.NASIJ_editLang = function (l) {
+    if ((l === 'ar') !== (window.lang === 'ar')) { try { toggleLang(); } catch (e) {} }
+    const tb = document.getElementById('nzLiveToolbar');
+    if (tb) tb.querySelectorAll('.lng').forEach(b => b.classList.toggle('on', b.textContent.trim() === (l === 'ar' ? 'ع' : 'EN')));
+    setTimeout(wireAll, 150);
+  };
+  window.NASIJ_editDone = function () {
+    editing = false;
+    document.body.classList.remove('nz-editing');
+    unwireAll();
+    const t = document.getElementById('nzLiveToolbar'); if (t) t.remove();
+    try { toast(tA('اتحفظ كل التعديلات ✓', 'All changes saved ✓')); } catch (e) {}
+    try { go('admin'); } catch (e) {}
+  };
+
+  // Add a "Live Edit" entry to the admin sidebar
+  function injectLiveEditNav() {
+    const ul = document.getElementById('admin-nav-ul');
+    if (!ul || document.getElementById('anav-liveedit')) return;
+    const a = document.createElement('a');
+    a.className = 'adm-nav-item'; a.id = 'anav-liveedit';
+    a.setAttribute('onclick', 'NASIJ_editContent()');
+    a.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span data-en="Live Edit" data-ar="تعديل مباشر">${window.lang === 'ar' ? 'تعديل مباشر' : 'Live Edit'}</span>`;
+    const site = document.getElementById('anav-site');
+    if (site && site.parentNode) site.parentNode.insertBefore(a, site.nextSibling); else ul.appendChild(a);
+  }
+  // hook into admin init
+  const _ia = window.NASIJ_initAdmin;
+  window.NASIJ_initAdmin = function () { if (_ia) _ia(); injectLiveEditNav(); };
+  window.addEventListener('load', () => setTimeout(injectLiveEditNav, 400));
 })();
 
   // __NASIJ_PARTS__
