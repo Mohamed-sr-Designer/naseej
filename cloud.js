@@ -306,9 +306,12 @@
   if (window.go && !window.__nasijGoWrapped) {
     const _go = window.go;
     window.go = function (pg) {
-      if (pg === 'admin' && !window.NASIJ_isAdmin()) {
-        try { toast(window.tA ? tA('لازم تسجّل دخول كأدمن', 'Admin login required') : 'Admin login required', 'error'); } catch (e) {}
-        return _go('login');
+      if (pg === 'admin') {
+        if (!window.NASIJ_isAdmin()) {
+          try { toast(window.tA ? tA('لازم تسجّل دخول كأدمن', 'Admin login required') : 'Admin login required', 'error'); } catch (e) {}
+          return _go('login');
+        }
+        try { window.NASIJ_initAdmin && window.NASIJ_initAdmin(); } catch (e) {}
       }
       return _go.apply(this, arguments);
     };
