@@ -261,13 +261,24 @@
       Auth.logout = () => { try { fb.auth.signOut(); } catch (e) {} localStorage.removeItem('axia_current'); localStorage.removeItem('axia_token'); };
       Auth.init = () => {}; // handled by onAuthStateChanged
     } else {
-      // localStorage demo mode: seed an owner so the dashboard can be previewed on the live site
+      // localStorage demo mode: seed the two managed admin accounts so the dashboard works on the live (static) site.
+      // Super Admin = full access · Manager = limited (products/orders/content/promos, NO staff/settings/users).
       try {
-        const users = S.get('axia_local_users', []);
-        if (!users.find(u => u.email === 'owner@naseej.eg')) {
-          users.push({ id: 9001, fname: 'Store', lname: 'Owner', email: 'owner@naseej.eg', phone: '', role: 'super_admin', _pass: 'nasij-admin' });
-          S.set('axia_local_users', users);
-        }
+        const SEED_V = 2;                                   // bump to re-migrate managed accounts to documented creds
+        const fresh  = (S.get('nasij_admin_seed_v', 0) < SEED_V);
+        let users    = S.get('axia_local_users', []);
+        const MANAGED = [
+          { id: 9001, fname: 'Store', lname: 'Owner',   email: 'owner@naseej.eg',   phone: '', role: 'super_admin', _pass: 'Nasij@Owner2025' },
+          { id: 9002, fname: 'Store', lname: 'Manager', email: 'manager@naseej.eg', phone: '', role: 'staff',
+            perms: { products: true, orders: true, content: true, promos: true }, _pass: 'Nasij@Manager2025' }
+        ];
+        MANAGED.forEach(acc => {
+          const i = users.findIndex(u => u.email === acc.email);
+          if (i < 0) users.push(acc);                       // create if missing
+          else if (fresh) users[i] = Object.assign({}, users[i], acc); // migrate once to documented creds
+        });
+        S.set('axia_local_users', users);
+        S.set('nasij_admin_seed_v', SEED_V);
       } catch (e) {}
     }
     window.NASIJ_afterAuth && window.NASIJ_afterAuth((window.Auth.current && Auth.current()) || null);
@@ -277,6 +288,7 @@
   window.NASIJ_afterAuth = function (u) {
     // (re)inject admin UI so owner-only sections appear once role is known
     try { if (u && window.NASIJ_isAdmin() && window.NASIJ_initAdmin) window.NASIJ_initAdmin(); } catch (e) {}
+    try { window.NASIJ_applyNavPerms && window.NASIJ_applyNavPerms(); } catch (e) {}
     let fab = document.getElementById('nasijAdminFab');
     if (u && window.NASIJ_isAdmin()) {
       if (!fab) {
@@ -507,7 +519,25 @@
       if (it.super && !window.NASIJ_isSuper()) return;
       ul.appendChild(mk(it));
     });
+    applyNavPerms();
   }
+
+  /* ── Permission gating: show a limited admin only what their role allows ── */
+  const NAV_PERM = { analytics: 'orders', orders: 'orders', products: 'products', categories: 'products',
+                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos' };
+  const NAV_SUPER = ['users', 'staff', 'settings'];         // owner-only areas
+  function setNavVis(id, show) {
+    const a = document.getElementById('anav-' + id); if (a) a.style.display = show ? '' : 'none';
+    const li = document.getElementById('anav-li-' + id); if (li) li.style.display = show ? '' : 'none';
+  }
+  function applyNavPerms() {
+    if (!(window.NASIJ_isAdmin && window.NASIJ_isAdmin())) return;
+    const sup = !!(window.NASIJ_isSuper && window.NASIJ_isSuper());
+    NAV_SUPER.forEach(id => setNavVis(id, sup));             // owner-only
+    Object.keys(NAV_PERM).forEach(id => setNavVis(id, sup || window.NASIJ_can(NAV_PERM[id])));
+    setNavVis('overview', true);                            // dashboard home: always
+  }
+  window.NASIJ_applyNavPerms = applyNavPerms;
 
   function injectSections() {
     const main = document.querySelector('#page-admin .adm-main');
@@ -536,9 +566,14 @@
     const _sas = window.showAdminSec;
     const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings };
     window.showAdminSec = function (sec, el) {
-      if ((sec === 'staff' || sec === 'settings') && !window.NASIJ_isSuper()) {
-        try { toast(tA('متاح للمالك فقط', 'Owner only'), 'error'); } catch (e) {}
-        sec = 'overview'; el = document.getElementById('anav-overview');
+      // Permission guard: owner-only areas + per-permission areas for limited admins
+      if (!window.NASIJ_isSuper()) {
+        const ownerOnly = (sec === 'staff' || sec === 'settings' || sec === 'users');
+        const needs = NAV_PERM[sec];
+        if (ownerOnly || (needs && !window.NASIJ_can(needs))) {
+          try { toast(ownerOnly ? tA('متاح للمالك فقط', 'Owner only') : tA('لا تملك صلاحية هذا القسم', 'You don\'t have access to this section'), 'error'); } catch (e) {}
+          sec = 'overview'; el = document.getElementById('anav-overview');
+        }
       }
       _sas(sec, el);
       const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'] };
@@ -620,21 +655,110 @@
     try { await DB.setDoc('orders', id, { status }); toast(tA('تم تحديث الحالة', 'Status updated')); } catch (e) { toast('Error', 'error'); }
   };
   function buildInvoiceHTML(o) {
-    const s = conf().settings || {};
-    const ig = s.instagram ? ('@' + String(s.instagram).replace(/^@/, '')) : '@nasij_brand';
-    const rows = (o.items || []).map(i => `<tr><td>${esc((i.en || i.ar) || '')}${i.size ? ' (' + i.size + ')' : ''}</td><td style="text-align:center">${i.qty}</td><td style="text-align:right">${EGP(i.price)}</td><td style="text-align:right">${EGP((i.price || 0) * (i.qty || 1))}</td></tr>`).join('');
-    return `<!doctype html><html dir="ltr"><head><title>Invoice ${esc(String(o.id))}</title><meta charset="utf-8">
-      <style>body{font-family:Arial,Helvetica,sans-serif;color:#111;max-width:720px;margin:24px auto;padding:0 16px;}h1{letter-spacing:.3em;margin:0;font-size:26px}table{width:100%;border-collapse:collapse;margin-top:16px}th,td{border-bottom:1px solid #ddd;padding:8px;font-size:13px;text-align:left}.tot td{font-weight:bold;font-size:15px;border-top:2px solid #111}.muted{color:#666;font-size:12px}@media print{.noprint{display:none}}</style></head><body>
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div><h1>NASIJ</h1><div class="muted">${esc(ig)} · ${esc(s.whatsapp || '201228748098')}</div></div>
-        <div style="text-align:right"><h2 style="margin:0">INVOICE</h2><div class="muted">${esc(String(o.id))}<br>${esc((o.created_at || '').slice(0, 10))}</div></div>
+    const s   = conf().settings || {};
+    const ig  = s.instagram ? ('@' + String(s.instagram).replace(/^@/, '')) : '@nasij_brand';
+    const wa  = s.whatsapp || '201228748098';
+    const mail = s.email || 'hello@naseej.eg';
+    const items = o.items || [];
+    // Money breakdown (robust to whatever the order object carries)
+    const sub  = items.reduce((t, i) => t + (+i.price || 0) * (+i.qty || 1), 0);
+    const disc = +(o.discount || o.promoValue || 0) || 0;
+    let ship = (o.deliveryFee != null ? o.deliveryFee : (o.delivery != null ? o.delivery : (o.shipping != null ? o.shipping : null)));
+    const total = (o.total != null ? +o.total : sub + (ship || 0) - disc);
+    if (ship == null) ship = Math.max(0, total - sub + disc);
+    const st   = (o.status || 'pending');
+    const stMap = { pending: ['قيد التنفيذ', 'Pending'], confirmed: ['مؤكد', 'Confirmed'], shipped: ['تم الشحن', 'Shipped'], delivered: ['تم التوصيل', 'Delivered'], cancelled: ['ملغي', 'Cancelled'] };
+    const stTxt = (stMap[st] || [st, st])[1];
+    const rows = items.map(i => `<tr>
+        <td class="it"><span class="nm">${esc((i.en || i.ar) || '')}</span>${i.size ? `<span class="sz">${esc(i.size)}</span>` : ''}</td>
+        <td class="c">${(+i.qty || 1)}</td>
+        <td class="r">${EGP(i.price)}</td>
+        <td class="r">${EGP((+i.price || 0) * (+i.qty || 1))}</td></tr>`).join('');
+    const line = (lbl, val, strong) => `<tr class="${strong ? 'grand' : ''}"><td class="sl">${lbl}</td><td class="sv">${val}</td></tr>`;
+    return `<!doctype html><html dir="ltr" lang="en"><head><meta charset="utf-8"><title>NASIJ · Invoice ${esc(String(o.id))}</title>
+    <style>
+      *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      html,body{margin:0;padding:0}
+      body{font-family:'Segoe UI',Arial,Helvetica,sans-serif;color:#1A1A1A;background:#EDE9DF;padding:26px 14px}
+      .inv{max-width:760px;margin:0 auto;background:#FBFAF6;border:1px solid #E2DCCB;box-shadow:0 10px 40px rgba(0,0,0,.10)}
+      /* Brand header */
+      .hd{background:#1A1A1A;color:#F4F1EA;padding:26px 34px;display:flex;justify-content:space-between;align-items:flex-start}
+      .brand .wm{font-size:34px;font-weight:700;letter-spacing:.42em;line-height:1;margin:0}
+      .brand .ar{font-size:20px;letter-spacing:.12em;color:#C9C1AE;margin-top:6px;font-family:'Segoe UI',Tahoma,sans-serif}
+      .brand .tag{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:#9A9280;margin-top:12px}
+      .hd .doc{text-align:right}
+      .hd .doc h2{margin:0;font-size:15px;letter-spacing:.42em;font-weight:600}
+      .hd .doc .no{font-size:12px;color:#C9C1AE;margin-top:8px;line-height:1.7}
+      .badge{display:inline-block;margin-top:8px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;border:1px solid #6A6355;border-radius:20px;padding:3px 12px;color:#F4F1EA}
+      /* Meta strip */
+      .meta{display:flex;flex-wrap:wrap;gap:26px;padding:20px 34px;border-bottom:1px solid #E8E2D2}
+      .meta .k{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#8A8371;margin-bottom:4px}
+      .meta .v{font-size:13px;line-height:1.55}
+      /* Items */
+      .body{padding:8px 34px 4px}
+      table.items{width:100%;border-collapse:collapse}
+      table.items thead th{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#8A8371;text-align:left;padding:12px 8px;border-bottom:1.5px solid #1A1A1A}
+      table.items thead th.c{text-align:center}table.items thead th.r{text-align:right}
+      table.items td{padding:12px 8px;border-bottom:1px solid #EDE7D8;font-size:13px;vertical-align:middle}
+      table.items td.c{text-align:center}table.items td.r{text-align:right;font-variant-numeric:tabular-nums}
+      .it .nm{font-weight:600}
+      .it .sz{display:inline-block;margin-left:8px;font-size:10px;letter-spacing:.08em;background:#1A1A1A;color:#F4F1EA;border-radius:3px;padding:2px 7px;vertical-align:middle}
+      /* Summary */
+      .sum{display:flex;justify-content:flex-end;padding:6px 34px 4px}
+      table.tot{width:280px;border-collapse:collapse}
+      table.tot td{padding:7px 4px;font-size:13px}
+      table.tot td.sl{color:#6A6355}table.tot td.sv{text-align:right;font-variant-numeric:tabular-nums}
+      table.tot tr.grand td{border-top:2px solid #1A1A1A;padding-top:11px;font-size:17px;font-weight:700;letter-spacing:.01em}
+      /* Pay + footer */
+      .pay{margin:14px 34px 0;background:#F2EEE2;border:1px solid #E4DECE;border-left:3px solid #1A1A1A;border-radius:4px;padding:14px 16px;font-size:12px;line-height:1.7}
+      .pay b{letter-spacing:.04em}
+      .ft{margin-top:22px;background:#1A1A1A;color:#C9C1AE;padding:18px 34px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:11.5px}
+      .ft .thanks{color:#F4F1EA;letter-spacing:.06em}
+      .ft .cts{text-align:right;line-height:1.7}
+      .bar{height:5px;background:linear-gradient(90deg,#1A1A1A 0 33%,#B8A98A 33% 66%,#F4F1EA 66% 100%)}
+      .act{max-width:760px;margin:16px auto 0;text-align:center}
+      .act button{padding:11px 26px;background:#1A1A1A;color:#F4F1EA;border:none;border-radius:5px;cursor:pointer;font-size:13px;letter-spacing:.08em}
+      @media print{body{background:#fff;padding:0}.inv{box-shadow:none;border:none}.noprint{display:none!important}}
+    </style></head><body>
+      <div class="inv">
+        <div class="hd">
+          <div class="brand">
+            <p class="wm">NASIJ</p>
+            <div class="ar">نسيج</div>
+            <div class="tag">Identity woven in every piece</div>
+          </div>
+          <div class="doc">
+            <h2>INVOICE</h2>
+            <div class="no"># ${esc(String(o.id))}<br>${esc((o.created_at || '').slice(0, 10) || new Date().toISOString().slice(0, 10))}</div>
+            <span class="badge">${esc(stTxt)}</span>
+          </div>
+        </div>
+        <div class="meta">
+          <div><div class="k">Billed to</div><div class="v"><b>${esc(o.name || '—')}</b><br>${esc(o.phone || '')}</div></div>
+          <div><div class="k">Ship to</div><div class="v">${esc(o.address || '—')}${o.area ? '<br>' + esc(o.area) : ''}</div></div>
+          <div><div class="k">Payment</div><div class="v">${esc(o.payment || 'Cash on delivery')}</div></div>
+        </div>
+        <div class="body">
+          <table class="items">
+            <thead><tr><th>Item</th><th class="c">Qty</th><th class="r">Unit</th><th class="r">Amount</th></tr></thead>
+            <tbody>${rows || '<tr><td colspan="4" style="color:#8A8371;padding:16px">No items</td></tr>'}</tbody>
+          </table>
+        </div>
+        <div class="sum"><table class="tot">
+          ${line('Subtotal', EGP(sub))}
+          ${ship ? line('Delivery', EGP(ship)) : ''}
+          ${disc ? line('Discount', '− ' + EGP(disc)) : ''}
+          ${line('Total', EGP(total), true)}
+        </table></div>
+        <div class="pay"><b>Payment options</b> — InstaPay / Vodafone Cash: <b>${esc(wa)}</b> · Cash on delivery available.<br>Send your transfer screenshot on Instagram DM or WhatsApp to confirm your order.</div>
+        <div class="ft">
+          <div class="thanks">Thank you for choosing NASIJ 🖤</div>
+          <div class="cts">${esc(ig)}&nbsp;·&nbsp;${esc(mail)}<br>WhatsApp ${esc(wa)}</div>
+        </div>
+        <div class="bar"></div>
       </div>
-      <div style="margin-top:14px" class="muted"><b>Bill to:</b> ${esc(o.name || '')} · ${esc(o.phone || '')}<br>${esc(o.address || '')} ${esc(o.area || '')}</div>
-      <table><thead><tr><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
-      <tbody>${rows}</tbody><tfoot><tr class="tot"><td colspan="3" style="text-align:right">TOTAL</td><td style="text-align:right">${EGP(o.total)}</td></tr></tfoot></table>
-      <p class="muted" style="margin-top:20px">Payment: ${esc(o.payment || '—')} · Thank you for shopping with NASIJ 🇪🇬</p>
-      <button class="noprint" onclick="window.print()" style="margin-top:18px;padding:10px 18px;background:#111;color:#fff;border:none;border-radius:5px;cursor:pointer">Print / Save PDF</button>
-      </body></html>`;
+      <div class="act noprint"><button onclick="window.print()">Print / Save PDF</button></div>
+    </body></html>`;
   }
   window.NASIJ_invoice = function (o) {
     const html = buildInvoiceHTML(o);
@@ -1282,6 +1406,7 @@
     a.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span data-en="Live Edit" data-ar="تعديل مباشر">${window.lang === 'ar' ? 'تعديل مباشر' : 'Live Edit'}</span>`;
     const site = document.getElementById('anav-site');
     if (site && site.parentNode) site.parentNode.insertBefore(a, site.nextSibling); else ul.appendChild(a);
+    try { window.NASIJ_applyNavPerms && window.NASIJ_applyNavPerms(); } catch (e) {}
   }
   // hook into admin init
   const _ia = window.NASIJ_initAdmin;
