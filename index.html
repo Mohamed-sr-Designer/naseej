@@ -8052,8 +8052,6 @@ const PRODUCTS = [
       var id = nid++;
       groupIds.push(id);
       var own = 'images/zodiac/' + slug + '-' + ck + '.jpg';
-      var others = COLORS.filter(function (x) { return x[0] !== ck; })
-                         .map(function (x) { return 'images/zodiac/' + slug + '-' + x[0] + '.jpg'; });
       PRODUCTS.push({
         id: id, cat: 'zodiac',
         en: en + ' Zodiac Hoodie — ' + cEn,
@@ -8061,7 +8059,7 @@ const PRODUCTS = [
         de: en + ' zodiac hoodie in ' + cEn.toLowerCase() + ' — ' + tagEn + '. A celestial back print of the ' + en + ' constellation with a small chest emblem. Heavyweight 320gsm brushed cotton, oversized unisex fit. Made in Egypt.',
         da: 'هودي برج ' + arName + ' باللون ' + cAr + ' — ' + tagAr + '. طبعة سماوية على الظهر لكوكبة ' + arName + ' وإمبلم صغير على الصدر. قطن مكرمش تقيل ٣٢٠جم، قصّة أوفرسايز يونيسكس. صناعة مصرية.',
         price: 1650, color: hex, colorName: cEn, sizes: SIZES, lead: 3, sales: sales,
-        imgs: [own].concat(others)
+        imgs: [own]
       });
     });
     VARIANT_GROUPS['zodiac_' + slug] = groupIds;
