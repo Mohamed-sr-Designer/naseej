@@ -1124,14 +1124,6 @@
       color:var(--ink-s);
     }
 
-    /* Zodiac collection banner */
-    .zodiac-collab-banner{position:relative;margin:0 auto 2rem;max-width:1360px;border-radius:12px;overflow:hidden;aspect-ratio:2.3/1;box-shadow:0 14px 44px rgba(0,0,0,.14);}
-    .zodiac-collab-banner img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block;}
-    .zodiac-collab-banner .zcb-kicker{position:absolute;top:1.1rem;left:1.3rem;color:#F4F1EA;font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
-      background:rgba(20,18,15,.34);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:.42rem .8rem;border-radius:20px;border:1px solid rgba(244,241,234,.28);}
-    [dir="rtl"] .zodiac-collab-banner .zcb-kicker{left:auto;right:1.3rem;}
-    @media (max-width:640px){.zodiac-collab-banner{aspect-ratio:1.35/1;border-radius:9px;margin-bottom:1.4rem;}.zodiac-collab-banner .zcb-kicker{font-size:.52rem;letter-spacing:.2em;}}
-
     /* Mobile — show actions always (no hover) */
     @media (max-width:768px) {
       .pc-actions {
@@ -6275,7 +6267,7 @@
      PRODUCTS
 ══════════════════════════════ -->
 <div class="page" id="page-products">
-  <div class="page-hero-banner" style="background-image:url('images/category-banner.jpeg');background-position:center top;">
+  <div class="page-hero-banner" style="background-image:url('images/zodiac/zodiac-banner.jpg');background-position:center 38%;">
     <div class="phb-ov"></div>
     <div class="phb-body">
       <span class="phb-label" data-en="Handmade in Small Batches" data-ar="مصنوعة يدوياً في دفعات صغيرة">Handmade in Small Batches</span>
@@ -6327,12 +6319,6 @@
   <div class="search-results-bar" id="searchResultsBar" style="display:none">
     <span id="searchResultsLabel"></span>
     <button onclick="clearNavSearch()">✕ Clear</button>
-  </div>
-
-  <!-- Zodiac collection banner (shown only when the Zodiac filter is active) -->
-  <div class="zodiac-collab-banner" id="zodiacBanner" style="display:none;">
-    <img src="images/zodiac/zodiac-banner.jpg" alt="NASIJ Zodiac Collection — different people, same sky" loading="lazy">
-    <span class="zcb-kicker" data-en="The Zodiac Collection · الأبراج" data-ar="كولكشن الأبراج · Zodiac">The Zodiac Collection · الأبراج</span>
   </div>
 
   <div class="full-grid" id="prodGrid"></div>
@@ -8758,10 +8744,6 @@ function renderProducts(cat) {
   const ar = lang === 'ar';
   const grid = document.getElementById('prodGrid');
   if (!grid) return;
-
-  // Zodiac collection banner — visible only on the Zodiac category
-  const zBanner = document.getElementById('zodiacBanner');
-  if (zBanner) zBanner.style.display = (cat === 'zodiac') ? 'block' : 'none';
 
   let list = cat === 'all' ? [...PRODUCTS] : PRODUCTS.filter(p => p.cat === cat);
   // Collapse colour-variant groups to a single representative card (primary = first id in the group)
