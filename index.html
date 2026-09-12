@@ -5726,6 +5726,13 @@
                   <span class="mega-cat-desc" data-en="Bombers. Denim. Technical." data-ar="بومبر. دنيم. تكنيكال.">Bombers. Denim. Technical.</span>
                 </div>
               </a>
+              <a class="mega-cat-item" onclick="filterProd('zodiac',document.querySelector('.filter-btn[data-cat=zodiac]'));go('products')">
+                <div class="mega-cat-thumb" style="background-image:url('images/zodiac/leo-black.jpg');background-position:center 22%;"></div>
+                <div>
+                  <span class="mega-cat-name" data-en="Zodiac" data-ar="الأبراج">Zodiac</span>
+                  <span class="mega-cat-desc" data-en="Your sign. Four colours." data-ar="برجك. بأربع ألوان.">Your sign. Four colours.</span>
+                </div>
+              </a>
             </div>
             <!-- Right col: quick links -->
             <div class="mega-col">
@@ -5750,6 +5757,10 @@
                 <a onclick="filterProd('jackets',document.querySelector('.filter-btn[data-cat=jackets]'));go('products')">
                   <span class="mega-lnk-dot"></span>
                   <span data-en="Jackets" data-ar="جاكيتات">Jackets</span>
+                </a>
+                <a onclick="filterProd('zodiac',document.querySelector('.filter-btn[data-cat=zodiac]'));go('products')">
+                  <span class="mega-lnk-dot"></span>
+                  <span data-en="Zodiac — الأبراج" data-ar="الأبراج">Zodiac — الأبراج</span>
                 </a>
               </div>
               <a class="mega-view-all" onclick="go('products')" data-en="View All Products →" data-ar="← عرض كل المنتجات">View All Products →</a>
@@ -5817,6 +5828,7 @@
       <a onclick="filterProd('sweatshirts',document.querySelector('.filter-btn[data-cat=sweatshirts]'));go('products');toggleMob()"><img class="mob-nav-thumb" src="images/products/p13.jpeg" alt="" loading="lazy"><span data-en="Sweatshirts" data-ar="سويت شيرت">Sweatshirts</span></a>
       <a onclick="filterProd('jackets',document.querySelector('.filter-btn[data-cat=jackets]'));go('products');toggleMob()"><img class="mob-nav-thumb" src="images/products/p05.jpeg" alt="" loading="lazy"><span data-en="Jackets" data-ar="جاكيتات">Jackets</span></a>
       <a onclick="filterProd('shirts',document.querySelector('.filter-btn[data-cat=shirts]'));go('products');toggleMob()"><img class="mob-nav-thumb" src="images/products/p41.jpeg" alt="" loading="lazy"><span data-en="Shirts" data-ar="قمصان">Shirts</span></a>
+      <a onclick="filterProd('zodiac',document.querySelector('.filter-btn[data-cat=zodiac]'));go('products');toggleMob()"><img class="mob-nav-thumb" src="images/zodiac/leo-black.jpg" alt="" loading="lazy"><span data-en="Zodiac" data-ar="الأبراج">Zodiac</span></a>
     </div>
   </div>
 
@@ -6271,6 +6283,7 @@
       <button class="filter-btn" onclick="filterProd('sweatshirts',this)" data-en="Sweatshirts" data-ar="سويت شيرت" aria-pressed="false" data-cat="sweatshirts">Sweatshirts</button>
       <button class="filter-btn" onclick="filterProd('jackets',this)" data-en="Jackets" data-ar="جاكيتات" aria-pressed="false" data-cat="jackets">Jackets</button>
       <button class="filter-btn" onclick="filterProd('shirts',this)" data-en="Shirts" data-ar="قمصان" aria-pressed="false" data-cat="shirts">Shirts</button>
+      <button class="filter-btn" onclick="filterProd('zodiac',this)" data-en="Zodiac" data-ar="الأبراج" aria-pressed="false" data-cat="zodiac">Zodiac</button>
     </div>
     <div class="filter-sort-wrap">
       <span class="filter-sort-lbl" data-en="Sort by:" data-ar="ترتيب حسب:">Sort by:</span>
@@ -8007,6 +8020,54 @@ const PRODUCTS = [
     price:1150, color:'#F2EEE6', colorName:'White', sizes:['S','M','L','XL'], lead:2, sales:240, imgs:['images/products/p35.jpeg'] }
 ];
 
+/* ═══ ZODIAC COLLECTION — الأبراج ═══ (11 signs × 4 colourways, linked as colour variants) */
+(function buildZodiac() {
+  const SIGNS = [
+    // slug, En, Ar, tagline EN, tagline AR, sales
+    ['aries',      'Aries',       'الحمل',   'the trailblazer’s spark',   'شرارة الريادة',       210],
+    ['taurus',     'Taurus',      'الثور',   'grounded and steadfast',         'ثبات وأصالة',         240],
+    ['gemini',     'Gemini',      'الجوزاء', 'two minds, one soul',            'عقلان وروح واحدة',    300],
+    ['cancer',     'Cancer',      'السرطان', 'ruled by the moon’s tide',  'على إيقاع القمر',     180],
+    ['leo',        'Leo',         'الأسد',   'radiant and regal',              'ملكية وتألّق',        430],
+    ['virgo',      'Virgo',       'العذراء', 'precise and earthy',             'دقّة وصفاء',          260],
+    ['scorpio',    'Scorpio',     'العقرب',  'intense and magnetic',           'شدّة وجاذبية',        350],
+    ['sagittarius','Sagittarius', 'القوس',   'the free-spirited seeker',       'روح حرّة باحثة',      230],
+    ['capricorn',  'Capricorn',   'الجدي',   'built for the summit',           'انضباط نحو القمّة',   270],
+    ['aquarius',   'Aquarius',    'الدلو',   'the visionary current',          'تيّار الرؤية',        250],
+    ['pisces',     'Pisces',      'الحوت',   'the deep-water dreamer',         'حالم الأعماق',        200]
+  ];
+  const COLORS = [
+    // key, En, Ar, hex  (first = primary/hero shown in the grid)
+    ['black', 'Black',      'أسود',       '#1A1A1A'],
+    ['white', 'White',      'أبيض',       '#EFEBE0'],
+    ['blue',  'Royal Blue', 'أزرق ملكي',  '#22409B'],
+    ['olive', 'Olive',      'زيتوني',     '#4A4A2E']
+  ];
+  let nid = 101;
+  SIGNS.forEach(function (S) {
+    var slug = S[0], en = S[1], arName = S[2], tagEn = S[3], tagAr = S[4], sales = S[5];
+    var groupIds = [];
+    COLORS.forEach(function (C) {
+      var ck = C[0], cEn = C[1], cAr = C[2], hex = C[3];
+      var id = nid++;
+      groupIds.push(id);
+      var own = 'images/zodiac/' + slug + '-' + ck + '.jpg';
+      var others = COLORS.filter(function (x) { return x[0] !== ck; })
+                         .map(function (x) { return 'images/zodiac/' + slug + '-' + x[0] + '.jpg'; });
+      PRODUCTS.push({
+        id: id, cat: 'zodiac',
+        en: en + ' Zodiac Hoodie — ' + cEn,
+        ar: 'هودي برج ' + arName + ' — ' + cAr,
+        de: en + ' zodiac hoodie in ' + cEn.toLowerCase() + ' — ' + tagEn + '. A celestial back print of the ' + en + ' constellation with a small chest emblem. Heavyweight 320gsm brushed cotton, oversized unisex fit. Made in Egypt.',
+        da: 'هودي برج ' + arName + ' باللون ' + cAr + ' — ' + tagAr + '. طبعة سماوية على الظهر لكوكبة ' + arName + ' وإمبلم صغير على الصدر. قطن مكرمش تقيل ٣٢٠جم، قصّة أوفرسايز يونيسكس. صناعة مصرية.',
+        price: 1650, color: hex, colorName: cEn, sizes: SIZES, lead: 3, sales: sales,
+        imgs: [own].concat(others)
+      });
+    });
+    VARIANT_GROUPS['zodiac_' + slug] = groupIds;
+  });
+})();
+
 /* ── STATE ── */
 let lang = localStorage.getItem('axia_lang') || 'en', mobOpen = false, currentProduct = null, currentGiftPg = null, pdImgIdx = 0, pdSize = null;
 
@@ -8684,6 +8745,8 @@ function renderProducts(cat) {
   if (!grid) return;
 
   let list = cat === 'all' ? [...PRODUCTS] : PRODUCTS.filter(p => p.cat === cat);
+  // Collapse colour-variant groups to a single representative card (primary = first id in the group)
+  list = list.filter(p => { const g = getVariantGroup(p.id); return !g || g[0] === p.id; });
 
   // Apply sort — custom admin drag order takes precedence when no explicit sort
   if (_prodSort && _prodSort !== 'default') {
@@ -8798,7 +8861,7 @@ function productCard(p, idx, ar) {
   const wished = _wishlist.includes(p.id);
   const soldOut = isSoldOut(p.id);
   const featured = isFeatured(p.id);
-  const catLabel = { hoodies: ar?'هوديز':'HOODIES', sweatshirts: ar?'سويت شيرت':'SWEATSHIRTS', jackets: ar?'جاكيتات':'JACKETS', shirts: ar?'قمصان':'SHIRTS' };
+  const catLabel = { hoodies: ar?'هوديز':'HOODIES', sweatshirts: ar?'سويت شيرت':'SWEATSHIRTS', jackets: ar?'جاكيتات':'JACKETS', shirts: ar?'قمصان':'SHIRTS', zodiac: ar?'الأبراج':'ZODIAC' };
   // Determine badge — uses global HOT_IDS / NEW_IDS constants
   let badge = '';
   if (soldOut)                       badge = '<span class="pc-badge" style="background:#9A8B7D;">' + (ar?'نفد المخزون':'Sold Out') + '</span>';
@@ -8829,6 +8892,7 @@ function productCard(p, idx, ar) {
           <span class="full-stars-ico">★★★★★</span>
           <span class="full-stars-num">${HOT_IDS.includes(p.id) ? '4.9 (128)' : '4.8 (64)'}</span>
         </div>
+        ${buildCardSwatches(p, ar)}
         ${HOT_IDS.includes(p.id) ? `<span class="full-hot-tag">🔥 ${ar ? 'يُباع بسرعة' : 'Selling Fast'}</span>` : ''}
         <p class="full-desc">${ar ? p.da : p.de}</p>
         <div class="full-foot">
@@ -9116,7 +9180,7 @@ function openProduct(id) {
   currentProduct = p;
   const ar = lang === 'ar';
   pdSize = (p.sizes && p.sizes.length) ? p.sizes[Math.min(1, p.sizes.length - 1)] : null; // default M
-  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts' };
+  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts', zodiac: ar?'الأبراج':'Zodiac' };
 
   document.getElementById('pd-crumb-name').textContent = ar ? p.ar : p.en;
   pdImgIdx = 0;
@@ -12937,7 +13001,7 @@ function renderSearch(query) {
     results.innerHTML = `<p class="search-empty">${ar ? `لا نتائج لـ "${escHtml(q)}" — جربي كلمة أخرى.` : `No results for "${escHtml(q)}" — try something else.`}</p>`;
     return;
   }
-  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts' };
+  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts', zodiac: ar?'الأبراج':'Zodiac' };
   results.innerHTML = list.map(p => `
     <div class="search-item" onclick="closeSearch();openProduct(${p.id})" tabindex="0"
       onkeydown="if(event.key==='Enter'){closeSearch();openProduct(${p.id})}">
@@ -14891,7 +14955,7 @@ if ('serviceWorker' in navigator) {
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script defer src="firebase-config.js?v=8"></script>
-<script defer src="cloud.js?v=8"></script>
+<script defer src="firebase-config.js?v=9"></script>
+<script defer src="cloud.js?v=9"></script>
 </body>
 </html>

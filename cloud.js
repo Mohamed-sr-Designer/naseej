@@ -29,7 +29,8 @@
     { id: 'hoodies',     en: 'Hoodies',     ar: 'هوديز',     hidden: false },
     { id: 'sweatshirts', en: 'Sweatshirts', ar: 'سويت شيرت', hidden: false },
     { id: 'jackets',     en: 'Jackets',     ar: 'جاكيتات',   hidden: false },
-    { id: 'shirts',      en: 'Shirts',      ar: 'قمصان',     hidden: false }
+    { id: 'shirts',      en: 'Shirts',      ar: 'قمصان',     hidden: false },
+    { id: 'zodiac',      en: 'Zodiac',      ar: 'الأبراج',   hidden: false }
   ];
   let CONF = {
     colors: {}, content: {}, heroSlides: {}, pageBanners: {},
@@ -132,6 +133,8 @@
   function applyConfToApp() {
     window.__nasijApplying = true;
     CONF.categories = (CONF.categories && CONF.categories.length) ? CONF.categories : DEFAULT_CATS.slice();
+    // Ensure any newly-shipped default category (e.g. Zodiac) is present even in older stored configs
+    DEFAULT_CATS.forEach(dc => { if (!CONF.categories.some(c => (c.id || c) === dc.id)) CONF.categories.push(Object.assign({}, dc)); });
     window.NASIJ_CATS = CONF.categories;
     window.NASIJ_CONF = CONF;
     try {
