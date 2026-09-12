@@ -129,6 +129,8 @@
   .pd-size-pill.active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
   [data-theme=dark] .pd-size-pill.active{background:var(--ink);color:var(--bg);}
   .c-item-size{font-size:.72rem;color:var(--ink-m);margin:.15rem 0 .35rem;display:flex;align-items:center;gap:.4rem;}
+  .c-item-meta{font-size:.72rem;color:var(--ink-m);margin:.1rem 0;}
+  .c-item-meta b{color:var(--ink);font-weight:600;}
   .c-size-sel{font-family:var(--fb);font-size:.72rem;padding:.15rem 1.3rem .15rem .4rem;border:1px solid var(--border);border-radius:2px;background:var(--bg-elev);color:var(--ink);cursor:pointer;}
   </style>
 
@@ -1792,6 +1794,38 @@
     .co-success-ico{font-size:2.5rem;color:var(--sage);margin-bottom:1.2rem;}
     @media(max-width:900px){.co-layout{grid-template-columns:1fr;}.co-sum{position:relative;top:0;}}
     @media(max-width:600px){.co-page{padding:7rem 1.5rem 4rem;}}
+
+    /* ── AE-STYLE CHECKOUT (4-step bar · two-column · order summary) ── */
+    .co4-steps{display:flex;align-items:flex-start;justify-content:center;max-width:640px;margin:0 auto 2.8rem;}
+    .co4-step{display:flex;flex-direction:column;align-items:center;gap:.55rem;flex:0 0 auto;width:74px;}
+    .co4-num{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.82rem;background:var(--bg);color:var(--ink-s);font-family:var(--fb);transition:all .2s;}
+    .co4-lbl{font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-s);white-space:nowrap;text-align:center;}
+    .co4-step.active .co4-num,.co4-step.done .co4-num{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+    .co4-step.active .co4-lbl{color:var(--ink);font-weight:600;}
+    .co4-seg{flex:1 1 auto;height:1.5px;background:var(--border);margin:17px .1rem 0;min-width:20px;}
+    .co4-seg.done{background:var(--ink);}
+    .co-layout{display:grid;grid-template-columns:1fr 380px;gap:2.8rem;align-items:start;max-width:1120px;margin:0 auto;}
+    .co-form-col{min-width:0;}
+    .co-summary{background:var(--beige);border:1px solid var(--border);border-radius:12px;padding:1.6rem 1.7rem;position:sticky;top:7.5rem;}
+    .co-sum-title{font-family:var(--fh);font-size:1.2rem;font-weight:400;margin:0 0 1.1rem;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;}
+    .free-del-banner{display:flex;align-items:center;gap:.55rem;background:rgba(74,124,89,.12);border:1px solid rgba(74,124,89,.32);color:#3f6b4a;border-radius:9px;padding:.65rem .85rem;font-size:.75rem;margin-bottom:1.15rem;line-height:1.4;}
+    [data-theme="dark"] .free-del-banner{color:#8fce9f;}
+    .co-sum-items{display:flex;flex-direction:column;gap:.75rem;margin-bottom:.4rem;max-height:250px;overflow:auto;}
+    .co-sum-item{display:flex;gap:.7rem;align-items:center;}
+    .co-sum-item img{width:46px;height:60px;object-fit:cover;border-radius:5px;flex-shrink:0;background:#fff;}
+    .co-sum-item .nm{font-size:.75rem;color:var(--ink);line-height:1.35;}
+    .co-sum-item .mt{font-size:.65rem;color:var(--ink-s);margin-top:.15rem;}
+    .co-sum-item .pr{font-size:.75rem;color:var(--ink);margin-inline-start:auto;white-space:nowrap;font-variant-numeric:tabular-nums;}
+    .co-sum-divider{border:none;border-top:1px solid rgba(184,164,144,.4);margin:1rem 0 .6rem;}
+    .co-sum-row{display:flex;justify-content:space-between;font-size:.83rem;color:var(--ink-m);padding:.34rem 0;font-variant-numeric:tabular-nums;}
+    .co-sum-row.grand{font-size:1.06rem;color:var(--ink);font-weight:600;border-top:2px solid var(--ink);margin-top:.5rem;padding-top:.72rem;}
+    .co-sum-note{font-size:.64rem;color:var(--ink-s);display:flex;justify-content:space-between;margin-top:.45rem;letter-spacing:.02em;}
+    .co-secure-btn{width:100%;justify-content:center;margin-top:1.15rem;}
+    .co-addr-recap{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:.9rem 1rem;font-size:.78rem;color:var(--ink-m);line-height:1.7;margin-bottom:1.4rem;}
+    .co-addr-recap b{color:var(--ink);}
+    .co-edit-link{background:none;border:none;color:var(--rose);font-size:.72rem;cursor:pointer;text-decoration:underline;font-family:var(--fb);padding:0;margin-inline-start:auto;}
+    @media(max-width:900px){.co-layout{grid-template-columns:1fr;gap:1.8rem;}.co-summary{position:relative;top:0;}}
+    @media(max-width:600px){.co4-step{width:60px;}.co4-lbl{font-size:.5rem;letter-spacing:.03em;}.co4-num{width:29px;height:29px;font-size:.74rem;}.co4-seg{margin-top:14px;}}
 
     /* ── PROMO INPUT (checkout) ── */
     .promo-row{display:flex;gap:.6rem;margin-bottom:1.2rem;}
@@ -9700,33 +9734,36 @@ function renderCart() {
   const body = document.getElementById('cart-body');
   if (!body) return;
   if (!items.length) {
-    body.innerHTML = `
+    body.innerHTML = coStepsBar(1) + `
       <div class="cart-empty">
         <div class="cart-empty-ico">◇</div>
-        <p style="font-size:.9rem;color:var(--ink-s);margin-bottom:2rem;">${ar?'سلتك فاضية.':'Your bag is empty.'}</p>
-        <button class="btn-dark" onclick="go('products')"><span>${ar?'تسوقي الآن':'Browse Collection'}</span><span>→</span></button>
+        <p style="font-size:.9rem;color:var(--ink-s);margin-bottom:2rem;">${ar?'حقيبتك فاضية.':'Your bag is empty.'}</p>
+        <button class="btn-dark" onclick="go('products')"><span>${ar?'تصفّح المجموعة':'Browse Collection'}</span><span>→</span></button>
       </div>`;
     return;
   }
   const total = Cart.total();
-  body.innerHTML = `
+  const n = items.reduce((s, i) => s + i.qty, 0);
+  body.innerHTML = coStepsBar(1) + `
     <div class="cart-layout">
       <div>
-        ${items.map(item => `
+        <p style="font-family:var(--fh);font-size:1.15rem;font-weight:400;margin:0 0 1rem;">${ar?`الحقيبة (${n} ${n===1?'قطعة':'قطعة'})`:`Shopping Bag (${n} ${n===1?'item':'items'})`}</p>
+        ${items.map(item => { const pp = PRODUCTS.find(x => x.id === item.id) || {}; const sizes = pp.sizes || null; return `
           <div class="c-item">
             <img class="c-item-img" src="${item.imgs[0]}" alt="${ar?item.ar:item.en}" loading="lazy" decoding="async">
             <div>
               <p class="c-item-name">${ar ? item.ar : item.en}</p>
               <p class="c-item-price">${item.price.toLocaleString()} EGP</p>
-              ${(() => { const pp = PRODUCTS.find(x => x.id === item.id); const sizes = (pp && pp.sizes) ? pp.sizes : null; return sizes ? `<p class="c-item-size">${ar?'المقاس':'Size'}: <select class="c-size-sel" onchange="Cart.setSize(${item.id}, this.value);renderCart()">${sizes.map(s=>`<option value="${s}"${s===item.size?' selected':''}>${s}</option>`).join('')}</select></p>` : ''; })()}
+              ${pp.colorName ? `<p class="c-item-meta">${ar?'اللون':'Color'}: <b>${ar?colorAr(colorFamily(pp.colorName)):pp.colorName}</b></p>` : ''}
+              ${sizes ? `<p class="c-item-size">${ar?'المقاس':'Size'}: <select class="c-size-sel" onchange="Cart.setSize(${item.id}, this.value);renderCart()">${sizes.map(s=>`<option value="${s}"${s===item.size?' selected':''}>${s}</option>`).join('')}</select></p>` : ''}
+              <p class="c-item-meta" style="color:var(--ink-s);font-size:.66rem;">${ar?'كود المنتج':'Item Code'}: ${item.id}</p>
               <div class="c-item-foot">
                 <div class="qty-ctrl">
                   ${item.qty === 1
-                    ? `<button class="qty-b qty-del" title="${ar ? 'سيتم حذف المنتج' : 'Will remove item'}"
+                    ? `<button class="qty-b qty-del" title="${ar ? 'هيتحذف المنتج' : 'Will remove item'}"
                         onclick="Cart.remove(${item.id});renderCart();toast(lang==='ar'?'تم الحذف من الحقيبة ✓':'Removed from bag ✓')">
                         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-                          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
-                          <path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+                          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
                         </svg>
                       </button>`
                     : `<button class="qty-b" onclick="Cart.updateQty(${item.id},${item.qty-1});renderCart()">−</button>`
@@ -9738,29 +9775,21 @@ function renderCart() {
               </div>
               <p style="font-size:.82rem;color:var(--ink-m);margin-top:.4rem;">${(item.price*item.qty).toLocaleString()} EGP</p>
             </div>
-          </div>`).join('')}
+          </div>`; }).join('')}
       </div>
       <div class="cart-sum">
         <p class="cart-sum-title">${ar?'ملخص الطلب':'Order Summary'}</p>
-        <div class="sum-row"><span>${ar?'المجموع الفرعي':'Subtotal'}</span><span>${total.toLocaleString()} EGP</span></div>
-        <div class="sum-row"><span>${ar?'التوصيل':'Delivery'}</span><span>${ar?'مجاني':'Free'}</span></div>
-        <div class="sum-row tot"><span>${ar?'الإجمالي':'Total'}</span><span>${total.toLocaleString()} EGP</span></div>
-        <div class="cart-trust-row">
-          <span class="cart-trust-item">
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            ${ar ? 'دفع آمن' : 'Secure Payment'}
-          </span>
-          <span class="cart-trust-item">
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            ${ar ? 'توصيل مجاني' : 'Free Delivery'}
-          </span>
-          <span class="cart-trust-item">
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            ${ar ? 'مصنوع يدوياً' : 'Handmade'}
-          </span>
+        <div class="free-del-banner" style="margin-bottom:1.2rem;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <span>${ar?'طلبك مؤهل للتوصيل المجاني ✓':'Your order qualifies for <b>Free Delivery</b> ✓'}</span>
         </div>
-        <button class="btn-dark" style="width:100%;justify-content:center;margin-top:.8rem;" onclick="go('checkout')">
-          <span>${ar?'إتمام الطلب':'Checkout'}</span><span>→</span>
+        <div class="sum-row"><span>${ar?'المجموع الفرعي':'Subtotal'}</span><span>${total.toLocaleString()} EGP</span></div>
+        <div class="sum-row"><span>${ar?'التوصيل':'Delivery'}</span><span style="color:#3f6b4a;">${ar?'مجاني':'Free'}</span></div>
+        <div class="sum-row tot"><span>${ar?'الإجمالي':'Order Total'}</span><span>${total.toLocaleString()} EGP</span></div>
+        <p class="co-sum-note" style="margin:.3rem 0 .2rem;"><span>${ar?'بدون التوصيل':'Excluding delivery'}</span><span>${ar?'شامل الضريبة':'Inclusive of VAT'}</span></p>
+        <button class="btn-dark co-secure-btn" onclick="go('checkout')">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-end:.45rem;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>${ar?'إتمام الطلب بأمان':'Secure Checkout'}</span>
         </button>
         <button onclick="go('products')" style="background:none;border:none;cursor:pointer;font-size:.75rem;color:var(--ink-s);margin-top:1rem;width:100%;text-align:center;">
           ${ar?'← متابعة التسوق':'← Continue Shopping'}
@@ -9770,7 +9799,7 @@ function renderCart() {
 }
 
 /* ── CHECKOUT ── */
-let _coInfo = null, _selPay = null, _promoDiscount = 0;
+let _coInfo = null, _selPay = null, _promoDiscount = 0, _coDraft = null;
 
 const PROMO_CODES = { 'SUMMER': 0.10, 'NASIJ10': 0.10, 'WELCOME10': 0.10 }; // code → discount fraction
 
@@ -9781,8 +9810,9 @@ function renderCheckout() {
     go('products');
     return;
   }
+  _selPay = null; _coInfo = null; _coDraft = null; _promoDiscount = 0;
   document.getElementById('co-body').innerHTML = coStep1Html();
-  _selPay = null; _coInfo = null; _promoDiscount = 0;
+  applyLang();
 }
 
 function applyPromo() {
@@ -9794,32 +9824,31 @@ function applyPromo() {
   const disc  = PROMO_CODES[code];
   const total = Cart.total();
 
+  const grand = document.getElementById('co-grand-val');
   if (!code) {
     msg.className = 'promo-err';
-    msg.textContent = ar ? 'من فضلك ادخلي الكود' : 'Please enter a code';
+    msg.textContent = ar ? 'من فضلك اكتب الكود' : 'Please enter a code';
     return;
   }
   if (!disc) {
     msg.className = 'promo-err';
     msg.textContent = ar ? 'الكود غلط أو انتهت صلاحيته' : 'Invalid or expired code';
     _promoDiscount = 0;
-    // reset discount row
     const dr = document.getElementById('co-discount-row');
     if (dr) dr.style.display = 'none';
+    if (grand) grand.textContent = `${total.toLocaleString()} EGP`;
     return;
   }
   _promoDiscount = disc;
   const discounted = Math.round(total * (1 - disc));
   msg.className = 'promo-ok';
   msg.textContent = ar
-    ? `✓ تم تطبيق الكود! وفرتِ ${(total - discounted).toLocaleString()} جنيه`
+    ? `✓ تم تطبيق الكود! وفّرت ${(total - discounted).toLocaleString()} جنيه`
     : `✓ Code applied! You save ${(total - discounted).toLocaleString()} EGP`;
   const dr = document.getElementById('co-discount-row');
   const dv = document.getElementById('co-discounted-val');
-  if (dr && dv) {
-    dv.textContent = `${discounted.toLocaleString()} EGP`;
-    dr.style.display = 'flex';
-  }
+  if (dr && dv) { dv.textContent = `${discounted.toLocaleString()} EGP`; dr.style.display = 'flex'; }
+  if (grand) grand.textContent = `${discounted.toLocaleString()} EGP`;
 }
 
 /* ── Cairo & Giza districts ── */
@@ -9877,94 +9906,108 @@ const DISTRICTS = {
   }
 };
 
-function coGovOptions(ar) {
+function coGovOptions(ar, sel) {
   return `<option value="">${ar?'— اختر المحافظة —':'— Select Governorate —'}</option>`
     + Object.entries(DISTRICTS).map(([k,g]) =>
-      `<option value="${k}">${ar ? g.ar : g.en}</option>`).join('');
+      `<option value="${k}"${sel===k?' selected':''}>${ar ? g.ar : g.en}</option>`).join('');
 }
 
-function coDistrictOptions(govKey, ar) {
+function coDistrictOptions(govKey, ar, sel) {
   if (!govKey || !DISTRICTS[govKey]) return `<option value="">${ar?'— اختر أولاً المحافظة —':'— Pick governorate first —'}</option>`;
   const areas = DISTRICTS[govKey].areas;
   return `<option value="">${ar?'— اختر الحي / المنطقة —':'— Select District —'}</option>`
-    + areas.map(a => `<option value="${a.v}">${ar ? a.ar : a.en}</option>`).join('');
+    + areas.map(a => `<option value="${a.v}"${sel===a.v?' selected':''}>${ar ? a.ar : a.en}</option>`).join('');
 }
 
 function onCoGovChange() {
   const gov = document.getElementById('co-gov')?.value;
   const ar  = lang === 'ar';
   const sel = document.getElementById('co-district');
-  if (sel) sel.innerHTML = coDistrictOptions(gov, ar);
+  const keep = (_coDraft && _coDraft.gov === gov) ? _coDraft.district : '';
+  if (sel) sel.innerHTML = coDistrictOptions(gov, ar, keep);
+}
+
+// 4-step progress bar (AE style): 1 Bag · 2 Details · 3 Payment · 4 Confirmation
+function coStepsBar(active) {
+  const ar = lang === 'ar';
+  const steps = [[1, ar?'الحقيبة':'Bag'], [2, ar?'بياناتك':'Details'], [3, ar?'الدفع':'Payment'], [4, ar?'التأكيد':'Confirmation']];
+  let h = '<div class="co4-steps">';
+  steps.forEach((s, i) => {
+    const cls = active > s[0] ? 'done' : (active === s[0] ? 'active' : '');
+    h += `<div class="co4-step ${cls}"><div class="co4-num">${active > s[0] ? '✓' : s[0]}</div><div class="co4-lbl">${s[1]}</div></div>`;
+    if (i < steps.length - 1) h += `<div class="co4-seg ${active > s[0] ? 'done' : ''}"></div>`;
+  });
+  return h + '</div>';
+}
+
+// Persistent right-hand order summary (AE style)
+function coSummaryHtml(opts) {
+  opts = opts || {};
+  const ar    = lang === 'ar';
+  const items = Cart.get();
+  const raw   = Cart.total();
+  const final = _promoDiscount > 0 ? Math.round(raw * (1 - _promoDiscount)) : raw;
+  const n     = items.reduce((s, i) => s + i.qty, 0);
+  return `
+    <aside class="co-summary">
+      <p class="co-sum-title">${ar?'ملخص الطلب':'Order Summary'}<span style="font-size:.72rem;color:var(--ink-s);font-weight:400;font-family:var(--fb);">(${n} ${ar?'قطعة':(n===1?'item':'items')})</span></p>
+      <div class="free-del-banner">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <span>${ar?'طلبك مؤهل للتوصيل المجاني ✓':'Your order qualifies for <b>Free Delivery</b> ✓'}</span>
+      </div>
+      <div class="co-sum-items">
+        ${items.map(it => `<div class="co-sum-item"><img src="${(it.imgs&&it.imgs[0])||''}" alt="" loading="lazy"><div><div class="nm">${ar?it.ar:it.en}</div><div class="mt">${it.size?(ar?'مقاس ':'Size ')+it.size:''}${it.qty>1?((it.size?' · ':'')+'×'+it.qty):''}</div></div><div class="pr">${(it.price*it.qty).toLocaleString()} EGP</div></div>`).join('')}
+      </div>
+      ${opts.showPromo ? `<div style="margin:1rem 0 .2rem;">
+        <div class="promo-row"><input type="text" id="co-promo" placeholder="${ar?'كود الخصم':'Promo code'}" style="text-transform:uppercase;letter-spacing:.1em;" oninput="this.value=this.value.toUpperCase()"><button class="promo-apply" onclick="applyPromo()">${ar?'تطبيق':'Apply'}</button></div>
+        <p id="promo-msg"></p>
+      </div>` : ''}
+      <hr class="co-sum-divider">
+      <div class="co-sum-row"><span>${ar?'المجموع الفرعي':'Subtotal'}</span><span>${raw.toLocaleString()} EGP</span></div>
+      <div class="co-sum-row" id="co-discount-row" style="${_promoDiscount>0?'':'display:none;'}color:var(--sage);"><span>${ar?'بعد الخصم':'Subtotal After Discount'}</span><span id="co-discounted-val">${final.toLocaleString()} EGP</span></div>
+      <div class="co-sum-row"><span>${ar?'التوصيل':'Delivery'}</span><span style="color:#3f6b4a;">${ar?'مجاني':'Free'}</span></div>
+      <div class="co-sum-row grand"><span>${ar?'الإجمالي':'Order Total'}</span><span id="co-grand-val">${final.toLocaleString()} EGP</span></div>
+      <div class="co-sum-note"><span>${ar?'بدون التوصيل':'Excluding delivery'}</span><span>${ar?'شامل الضريبة':'Inclusive of VAT'}</span></div>
+      ${opts.cta ? `<button class="btn-dark co-secure-btn" onclick="${opts.cta.onclick}">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-end:.45rem;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>${opts.cta.label}</span>
+      </button>
+      <p style="text-align:center;font-size:.63rem;color:var(--ink-s);margin-top:.7rem;letter-spacing:.04em;">${ar?'دفع آمن · بياناتك محميّة':'Secure checkout · your data is protected'}</p>` : ''}
+    </aside>`;
+}
+
+// Back to the details step, keeping what was typed
+function coEditInfo() {
+  document.getElementById('co-body').innerHTML = coStep1Html();
+  applyLang();
+  setTimeout(() => { if (_coDraft && _coDraft.gov) onCoGovChange(); }, 0);
 }
 
 function coStep1Html() {
   const ar = lang === 'ar';
-  const u = Auth.current() || {};
-  const total = Cart.total();
-  return `
-    <div class="co-steps">
-      <div class="co-step active"><span class="co-step-n">1</span>${ar?'معلوماتك':'Your Info'}</div>
-      <div class="co-line"></div>
-      <div class="co-step"><span class="co-step-n">2</span>${ar?'الدفع':'Payment'}</div>
-    </div>
-    <h2 style="font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:300;margin-bottom:2rem;">${ar?'معلومات التوصيل':'Delivery Information'}</h2>
-    <div class="field-row">
-      <div class="field"><label>${ar?'الاسم الأول':'First Name'}<em class="field-req">*</em></label><input type="text" id="co-fname" value="${esc(u.fname||'')}" placeholder="${ar?'مثال: نور':'e.g. Nour'}" autocomplete="given-name"></div>
-      <div class="field"><label>${ar?'الاسم الأخير':'Last Name'}<span class="field-opt">${ar?'(اختياري)':'(optional)'}</span></label><input type="text" id="co-lname" value="${esc(u.lname||'')}" placeholder="${ar?'اختياري':'optional'}" autocomplete="family-name"></div>
-    </div>
-    <div class="field"><label>${ar?'البريد الإلكتروني':'Email'}<span class="field-opt">${ar?'(لاستلام الإيصال)':'(for your receipt)'}</span></label><input type="email" id="co-email" value="${esc(u.email||'')}" placeholder="${ar?'example@mail.com':'example@mail.com'}" autocomplete="email"></div>
-    <div class="field-row">
-      <div class="field">
-        <label>${ar?'رقم الهاتف':'Phone'}<em class="field-req">*</em></label>
-        <input type="tel" id="co-phone" placeholder="01XXXXXXXXX" inputmode="numeric" autocomplete="tel-national"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)">
+  const u  = Auth.current() || {};
+  const d  = _coDraft || {};
+  const v  = (k, fb) => esc(d[k] != null ? d[k] : (fb || ''));
+  return coStepsBar(2) + `
+    <div class="co-layout">
+      <div class="co-form-col">
+        <h2 style="font-family:var(--fh);font-size:clamp(1.5rem,3vw,2rem);font-weight:300;margin:0 0 1.6rem;">${ar?'بيانات التوصيل':'Delivery Details'}</h2>
+        <div class="field-row">
+          <div class="field"><label>${ar?'الاسم الأول':'First Name'}<em class="field-req">*</em></label><input type="text" id="co-fname" value="${v('fname', u.fname)}" placeholder="${ar?'مثال: نور':'e.g. Nour'}" autocomplete="given-name"></div>
+          <div class="field"><label>${ar?'الاسم الأخير':'Last Name'}<span class="field-opt">${ar?'(اختياري)':'(optional)'}</span></label><input type="text" id="co-lname" value="${v('lname', u.lname)}" placeholder="${ar?'اختياري':'optional'}" autocomplete="family-name"></div>
+        </div>
+        <div class="field"><label>${ar?'البريد الإلكتروني':'Email'}<span class="field-opt">${ar?'(لاستلام الإيصال)':'(for your receipt)'}</span></label><input type="email" id="co-email" value="${v('email', u.email)}" placeholder="example@mail.com" autocomplete="email"></div>
+        <div class="field-row">
+          <div class="field"><label>${ar?'رقم الهاتف':'Phone'}<em class="field-req">*</em></label><input type="tel" id="co-phone" value="${v('phone')}" placeholder="01XXXXXXXXX" inputmode="numeric" autocomplete="tel-national" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></div>
+          <div class="field"><label>${ar?'واتساب':'WhatsApp'}<span class="field-opt">${ar?'(لو مختلف)':'(if different)'}</span></label><input type="tel" id="co-whatsapp" value="${v('whatsapp')}" placeholder="${ar?'لو مختلف عن الهاتف':'if different'}" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)"></div>
+        </div>
+        <div class="field"><label>${ar?'المحافظة':'Governorate'}<em class="field-req">*</em></label><select id="co-gov" onchange="onCoGovChange()">${coGovOptions(ar, d.gov)}</select></div>
+        <div class="field"><label>${ar?'الحي / المنطقة':'District / Area'}<em class="field-req">*</em></label><select id="co-district">${coDistrictOptions(d.gov||'', ar, d.district)}</select></div>
+        <div class="field"><label>${ar?'اسم الشارع والمبنى':'Street & Building'}<em class="field-req">*</em></label><input type="text" id="co-street" value="${v('street')}" placeholder="${ar?'مثال: ٥ شارع التحرير، شقة ٣':'e.g. 5 El Tahrir St, Apt 3'}"></div>
+        <div class="field"><label>${ar?'ملاحظات':'Notes'}<span class="field-opt">${ar?'(اختياري)':'(optional)'}</span></label><textarea id="co-notes" rows="2" placeholder="${ar?'أي تفاصيل إضافية للطلب…':'Any special instructions…'}" style="resize:vertical;min-height:60px;font-family:var(--fb);font-size:.82rem;padding:.7rem .9rem;border:1px solid var(--border);width:100%;background:var(--bg-elev);color:var(--ink);outline:none;">${v('notes')}</textarea></div>
       </div>
-      <div class="field">
-        <label>${ar?'واتس اب':'WhatsApp'}<span class="field-opt">${ar?'(لو مختلف)':'(if different)'}</span></label>
-        <input type="tel" id="co-whatsapp" placeholder="${ar?'لو مختلف عن رقم الهاتف':'if different from phone'}" inputmode="numeric"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)">
-      </div>
-    </div>
-    <div class="field">
-      <label>${ar?'المحافظة':'Governorate'}<em class="field-req">*</em></label>
-      <select id="co-gov" onchange="onCoGovChange()">${coGovOptions(ar)}</select>
-    </div>
-    <div class="field">
-      <label>${ar?'الحي / المنطقة':'District / Area'}<em class="field-req">*</em></label>
-      <select id="co-district">${coDistrictOptions('', ar)}</select>
-    </div>
-    <div class="field">
-      <label>${ar?'اسم الشارع والمبنى':'Street & Building'}<em class="field-req">*</em></label>
-      <input type="text" id="co-street" placeholder="${ar?'مثال: شارع التحرير، مبنى ٥، شقة ٣':'e.g. 5 El Tahrir St, Apt 3'}">
-    </div>
-    <div class="field">
-      <label>${ar?'ملاحظات / رسالة هدية':'Notes / Gift Message'}<span class="field-opt">${ar?'(اختياري)':'(optional)'}</span></label>
-      <textarea id="co-notes" rows="2" placeholder="${ar?'أي تفاصيل إضافية أو رسالة تريد كتابتها على الهدية…':'Any special instructions or a personal message to include with the gift…'}" style="resize:vertical;min-height:64px;font-family:var(--fb);font-size:.82rem;padding:.7rem .9rem;border:1px solid var(--border);width:100%;background:var(--bg-elev);color:var(--ink);outline:none;transition:border .2s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-    </div>
-    <div style="margin-bottom:1.2rem;">
-      <label style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.5rem;color:var(--ink-s);">${ar?'كود الخصم':'Promo Code'}<span class="field-opt">${ar?'(اختياري)':'(optional)'}</span></label>
-      <div class="promo-row">
-        <input type="text" id="co-promo" placeholder="${ar?'Summer':'Summer'}" style="text-transform:uppercase;letter-spacing:.12em;"
-          oninput="this.value=this.value.toUpperCase()">
-        <button class="promo-apply" onclick="applyPromo()">${ar?'تطبيق':'Apply'}</button>
-      </div>
-      <p id="promo-msg"></p>
-    </div>
-    <div class="sum-row tot" style="margin-bottom:.5rem;" id="co-total-row">
-      <span>${ar?'إجمالي الطلب':'Order Total'}</span>
-      <span>${total.toLocaleString()} EGP</span>
-    </div>
-    <div class="sum-row" style="margin-bottom:1.5rem;display:none;color:var(--sage);" id="co-discount-row">
-      <span>${ar?'بعد الخصم (10%)':'After Discount (10%)'}</span>
-      <span id="co-discounted-val">—</span>
-    </div>
-    <button class="btn-dark" onclick="goCoStep2()" style="width:100%;justify-content:center;">
-      <span>${ar?'متابعة للدفع':'Continue to Payment'}</span><span>→</span>
-    </button>
-    <p style="text-align:center;font-size:.65rem;color:var(--ink-s);margin-top:1rem;letter-spacing:.05em;">
-      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-${ar?'left':'right'}:.3rem;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      ${ar ? 'بياناتك محمية ومش بتتشارك مع أي طرف تالت' : 'Your information is secure and never shared'}
-    </p>`;
+      ${coSummaryHtml({ showPromo:true, cta:{ label: ar?'متابعة للدفع →':'Continue to Payment →', onclick:'goCoStep2()' } })}
+    </div>`;
 }
 
 function goCoStep2() {
@@ -10001,63 +10044,48 @@ function goCoStep2() {
   const areaLabel= areaData ? (ar ? areaData.ar : areaData.en) : district;
   const address  = `${street}، ${areaLabel}، ${govLabel}`;
 
-  _coInfo = {
-    fname, lname: document.getElementById('co-lname')?.value.trim(),
-    email: document.getElementById('co-email')?.value.trim(),
-    phone, whatsapp: document.getElementById('co-whatsapp')?.value.trim(),
-    area: areaLabel, address,
-    notes: document.getElementById('co-notes')?.value.trim() || ''
-  };
+  const lname = document.getElementById('co-lname')?.value.trim();
+  const whatsapp = document.getElementById('co-whatsapp')?.value.trim();
+  const notes = document.getElementById('co-notes')?.value.trim() || '';
+  // Keep raw field values so the "Edit" link can restore them
+  _coDraft = { fname, lname, email: emailRaw, phone, whatsapp, gov, district, street, notes };
+  _coInfo = { fname, lname, email: emailRaw, phone, whatsapp, area: areaLabel, address, notes };
   document.getElementById('co-body').innerHTML = coStep2Html();
+  applyLang();
   trackEvent('begin_checkout', { total: Cart.total(), item_count: Cart.get().length, currency: 'EGP' });
 }
 
 function coStep2Html() {
   const ar = lang === 'ar';
-  const rawTotal = Cart.total();
-  const finalTotal = _promoDiscount > 0 ? Math.round(rawTotal * (1 - _promoDiscount)) : rawTotal;
-  const promoLine = _promoDiscount > 0
-    ? `<div class="sum-row" style="color:var(--sage);margin-bottom:.5rem;">
-        <span>${ar?'خصم (10%)':'Discount (10%)'}</span>
-        <span>−${(rawTotal - finalTotal).toLocaleString()} EGP</span>
-       </div>`
-    : '';
-  return `
-    <div class="co-steps">
-      <div class="co-step done"><span class="co-step-n">✓</span>${ar?'معلوماتك':'Your Info'}</div>
-      <div class="co-line"></div>
-      <div class="co-step active"><span class="co-step-n">2</span>${ar?'الدفع':'Payment'}</div>
-    </div>
-    <h2 style="font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:300;margin-bottom:2rem;">${ar?'طريقة الدفع':'Payment Method'}</h2>
-    <div class="pay-opts">
-      <div class="pay-opt" id="po-instapay" onclick="selPay('instapay',this)">
-        <div class="pay-radio"><div class="pay-dot"></div></div>
-        <div>
-          <p class="pay-lbl">InstaPay</p>
-          <p class="pay-sub">${ar?'تحويل فوري':'Instant transfer'}</p>
-        </div>
+  const i  = _coInfo || {};
+  const recap = `
+    <div class="co-addr-recap">
+      <div style="display:flex;align-items:baseline;">
+        <b>${ar?'التوصيل إلى':'Deliver to'}</b>
+        <button class="co-edit-link" onclick="coEditInfo()">${ar?'تعديل':'Edit'}</button>
       </div>
-      <div class="pay-opt" id="po-vodafone" onclick="selPay('vodafone',this)">
-        <div class="pay-radio"><div class="pay-dot"></div></div>
-        <div>
-          <p class="pay-lbl">Vodafone Cash</p>
-          <p class="pay-sub">${ar?'محفظة موبايل':'Mobile wallet'}</p>
+      ${esc((i.fname||'') + ' ' + (i.lname||''))} · ${esc(i.phone||'')}<br>
+      ${esc(i.address||'')}
+    </div>`;
+  return coStepsBar(3) + `
+    <div class="co-layout">
+      <div class="co-form-col">
+        <h2 style="font-family:var(--fh);font-size:clamp(1.5rem,3vw,2rem);font-weight:300;margin:0 0 1.4rem;">${ar?'طريقة الدفع':'Payment Method'}</h2>
+        ${recap}
+        <div class="pay-opts">
+          <div class="pay-opt" id="po-instapay" onclick="selPay('instapay',this)">
+            <div class="pay-radio"><div class="pay-dot"></div></div>
+            <div><p class="pay-lbl">InstaPay</p><p class="pay-sub">${ar?'تحويل فوري':'Instant transfer'}</p></div>
+          </div>
+          <div class="pay-opt" id="po-vodafone" onclick="selPay('vodafone',this)">
+            <div class="pay-radio"><div class="pay-dot"></div></div>
+            <div><p class="pay-lbl">Vodafone Cash</p><p class="pay-sub">${ar?'محفظة موبايل':'Mobile wallet'}</p></div>
+          </div>
         </div>
+        <div id="pay-details" style="display:none;background:var(--beige);border-radius:9px;padding:1.1rem 1.3rem;font-size:.84rem;color:var(--ink-m);line-height:1.9;margin-top:1.2rem;"></div>
       </div>
-    </div>
-    <div id="pay-details" style="display:none;background:var(--beige);padding:1.2rem 1.4rem;font-size:.84rem;color:var(--ink-m);line-height:1.9;margin-bottom:1.5rem;"></div>
-    ${promoLine}
-    <div class="sum-row tot" style="margin-bottom:1.5rem;">
-      <span>${ar?'المبلغ الإجمالي':'Amount Due'}</span>
-      <span>${finalTotal.toLocaleString()} EGP</span>
-    </div>
-    <button class="btn-dark" onclick="placeOrder()" style="width:100%;justify-content:center;">
-      <span>${ar?'تأكيد الطلب':'Place Order'}</span><span>✓</span>
-    </button>
-    <p style="text-align:center;font-size:.65rem;color:var(--ink-s);margin-top:1rem;letter-spacing:.05em;">
-      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-${ar?'left':'right'}:.3rem;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      ${ar ? 'طلبك محفوظ وهنتواصل معاكِ على واتساب لتأكيده' : 'Your order is recorded — we\'ll confirm on WhatsApp'}
-    </p>`;
+      ${coSummaryHtml({ showPromo:false, cta:{ label: ar?'تأكيد الطلب ✓':'Place Order ✓', onclick:'placeOrder()' } })}
+    </div>`;
 }
 
 function selPay(method, el) {
@@ -10077,7 +10105,7 @@ function selPay(method, el) {
 
 async function placeOrder() {
   const ar = lang === 'ar';
-  if (!_selPay) { toast(ar?'اختاري طريقة الدفع':'Choose a payment method','error'); return; }
+  if (!_selPay) { toast(ar?'اختر طريقة الدفع':'Choose a payment method','error'); return; }
   const btn = document.querySelector('#co-body .btn-dark');
   if (btn) { btn.disabled = true; const s = btn.querySelector('span'); if (s) s.textContent = ar ? 'جاري...' : 'Placing...'; }
   try {
@@ -10087,19 +10115,19 @@ async function placeOrder() {
     const orderId = result?.order?.id || '';
     trackEvent('purchase', { order_id: orderId, total: finalTotal, item_count: Cart.get().length, currency: 'EGP', payment: _selPay });
     Cart.clear();
-    _selPay = null; _coInfo = null; _promoDiscount = 0;
-    document.getElementById('co-body').innerHTML = `
-      <div class="co-success" style="max-width:460px;margin:0 auto;padding:6rem 2rem;">
+    _selPay = null; _coInfo = null; _coDraft = null; _promoDiscount = 0;
+    document.getElementById('co-body').innerHTML = coStepsBar(4) + `
+      <div class="co-success" style="max-width:460px;margin:0 auto;padding:2rem 2rem 5rem;">
         <div class="co-success-ico">✦</div>
-        <h2 style="font-family:var(--fh);font-size:2rem;font-weight:300;margin-bottom:1rem;">${ar?'تم تقديم طلبك ✓':'Order Placed ✓'}</h2>
+        <h2 style="font-family:var(--fh);font-size:2rem;font-weight:300;margin-bottom:1rem;">${ar?'تم تأكيد طلبك ✓':'Order Placed ✓'}</h2>
         ${orderId ? `<p style="font-size:.72rem;letter-spacing:.1em;color:var(--ink-s);margin-bottom:1.2rem;font-family:var(--fb);">${ar?'رقم الطلب':'ORDER'} · <strong style="color:var(--ink)">${orderId}</strong></p>` : ''}
         <p style="font-size:.86rem;color:var(--ink-m);line-height:1.9;margin-bottom:2.5rem;">
-          ${ar?'شكراً جزيلاً. ابعتي صورة الإيصال على واتساب عشان نأكد طلبك ونحدد موعد التسليم.':'Thank you. Please send your payment screenshot to our WhatsApp to confirm your order and arrange delivery.'}
+          ${ar?'شكراً جزيلاً. ابعت صورة الإيصال على واتساب عشان نأكّد طلبك ونحدّد موعد التسليم.':'Thank you. Please send your payment screenshot to our WhatsApp to confirm your order and arrange delivery.'}
         </p>
-        <button class="btn-dark" onclick="go('account')"><span>${ar?'تابعي طلباتك':'Track My Orders'}</span><span>→</span></button>
+        <button class="btn-dark" onclick="go('account')"><span>${ar?'تابع طلباتك':'Track My Orders'}</span><span>→</span></button>
       </div>`;
   } catch (err) {
-    toast(ar ? 'حصل خطأ، حاولي تاني' : 'Something went wrong, please try again', 'error');
+    toast(ar ? 'حصل خطأ، حاول تاني' : 'Something went wrong, please try again', 'error');
     if (btn) { btn.disabled = false; const s = btn.querySelector('span'); if (s) s.textContent = ar ? 'تأكيد الطلب' : 'Place Order'; }
   }
 }
