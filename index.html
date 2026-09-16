@@ -110,9 +110,9 @@
   /* footer sits on a dark ground → always the white logo */
   .ft-logo{width:132px!important;height:34px!important;background-image:url('images/logo-en-white.png')!important;background-position:left center!important;margin-bottom:1.1rem!important;letter-spacing:normal!important;}
   [dir=rtl] .ft-logo{background-image:url('images/logo-ar-white.png')!important;background-position:right center!important;}
-  .ldr-wordmark{width:190px!important;height:48px!important;background-image:url('images/logo-en.png')!important;background-position:center!important;margin:0 auto!important;}
-  [dir=rtl] .ldr-wordmark{background-image:url('images/logo-ar.png')!important;}
-  [data-theme=dark] .ldr-wordmark{background-image:url('images/logo-en-white.png')!important;}
+  /* loader sits on a dark ground (#16130F) in every theme → always the white logo */
+  .ldr-wordmark{width:190px!important;height:48px!important;background-image:url('images/logo-en-white.png')!important;background-position:center!important;margin:0 auto!important;}
+  [dir=rtl] .ldr-wordmark{background-image:url('images/logo-ar-white.png')!important;}
   .auth-logo{width:156px!important;height:40px!important;background-image:url('images/logo-en.png')!important;background-position:center!important;margin:0 auto 1.3rem!important;}
   [dir=rtl] .auth-logo{background-image:url('images/logo-ar.png')!important;}
   [data-theme=dark] .auth-logo{background-image:url('images/logo-en-white.png')!important;}
@@ -3753,6 +3753,14 @@
       .page-hero-banner .phb-body{padding:2rem 1.5rem;}
       .page-hero-banner .phb-title{font-size:clamp(1.9rem,7vw,2.8rem);}
     }
+    /* Products hero: show the FULL campaign image (1920×1020) — no top/bottom crop */
+    #page-products .page-hero-banner{
+      height:auto;aspect-ratio:1920/1020;min-height:0;max-height:84vh;
+      background-size:contain;background-repeat:no-repeat;background-position:center center;background-color:#14100b;
+    }
+    @media(max-width:768px){
+      #page-products .page-hero-banner{aspect-ratio:1920/1020;height:auto;min-height:0;}
+    }
 
     /* ── NEW ARRIVALS ── */
     .new-arr-sec{background:var(--beige);padding:.6rem 0 1.8rem;}
@@ -3824,6 +3832,16 @@
     .exit-popup-cta:hover{background:var(--rose);}
     .exit-popup-no{background:none;border:none;font-size:.63rem;color:var(--ink-s);text-decoration:underline;cursor:pointer;transition:color .2s;}
     .exit-popup-no:hover{color:var(--ink);}
+    /* Minimized promo gift button (bottom-left) */
+    #promoFab{position:fixed;left:20px;bottom:24px;z-index:940;width:56px;height:56px;border-radius:50%;
+      background:#16130F;color:#F4F1EA;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;
+      box-shadow:0 8px 28px rgba(0,0,0,.32);transition:transform .2s;animation:promoFabIn .35s ease;}
+    #promoFab.show{display:flex;}
+    #promoFab:hover{transform:scale(1.07);}
+    #promoFab .pf-badge{position:absolute;top:-5px;right:-6px;background:var(--rose);color:#fff;font-size:.56rem;font-weight:700;
+      border-radius:20px;padding:2px 6px;letter-spacing:.02em;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+    @keyframes promoFabIn{from{opacity:0;transform:translateY(14px) scale(.82);}to{opacity:1;transform:none;}}
+    @media(max-width:600px){#promoFab{width:50px;height:50px;bottom:20px;left:16px;}#promoFab svg{width:23px;height:23px;}}
 
     /* ── FREQUENTLY BOUGHT TOGETHER ── */
     .fbt-strip{padding:2rem clamp(1.5rem,3.5vw,3.5rem);background:#fff;border-top:1px solid var(--border);}
@@ -4987,8 +5005,8 @@
       .trust-t { font-size: .74rem !important; margin-bottom: .08rem !important; }
       .trust-s { font-size: .62rem !important; line-height: 1.4 !important; }
 
-      /* ─── PRODUCT CARDS: consistent portrait ratio across all grids ─── */
-      .full-img { aspect-ratio: 4/5 !important; }
+      /* ─── PRODUCT CARDS: match the 3:4 photos so nothing is cropped ─── */
+      .full-img { aspect-ratio: 3/4 !important; }
       .full-body { padding: .75rem .85rem .9rem !important; }
       .full-cat { font-size: .52rem !important; margin-bottom: .28rem !important; }
       .full-name {
@@ -5755,7 +5773,7 @@
       <span class="ann-bar-divider">✦</span>
       <a onclick="go('products')" data-en="Shop the Collection →" data-ar="← تسوّق المجموعة">Shop the Collection →</a>
       <span class="ann-bar-divider">✦</span>
-      <span data-en="Use code NASIJ10 for 10% off your first order" data-ar="استخدمي كود NASIJ10 للحصول على خصم ١٠٪">Use code NASIJ10 for 10% off your first order</span>
+      <span data-en="Use code NASIJ10 for 10% off your first order" data-ar="استخدم كود NASIJ10 للحصول على خصم ١٠٪">Use code NASIJ10 for 10% off your first order</span>
       <span class="ann-bar-divider">✦</span>
       <span data-en="🇪🇬 Designed &amp; made in Egypt" data-ar="🇪🇬 مصمّم ومصنوع في مصر">🇪🇬 Designed &amp; made in Egypt</span>
       <span class="ann-bar-divider">✦</span>
@@ -6702,14 +6720,21 @@
 <div class="exit-popup-bg" id="exitPopupBg" onclick="if(event.target===this)closeExitPopup()">
   <div class="exit-popup" role="dialog" aria-modal="true" aria-labelledby="exitPopupHeading">
     <button class="exit-popup-close" onclick="closeExitPopup()" aria-label="Close">✕</button>
-    <span class="exit-popup-eyebrow" data-en="🎁 A gift from us to you" data-ar="🎁 هدية منا إليكِ">🎁 A gift from us to you</span>
+    <span class="exit-popup-eyebrow" data-en="🎁 A gift from us to you" data-ar="🎁 هدية منا إليك">🎁 A gift from us to you</span>
     <h2 class="exit-popup-title" id="exitPopupHeading" data-en="Wait — take 10% off your order" data-ar="لحظة — خصم ١٠٪ على طلبك">Wait — take 10% off your order</h2>
-    <p class="exit-popup-sub" data-en="Use code NASIJ10 for 10% off — crafted pieces made just for you." data-ar="استخدمي كود NASIJ10 وتمتعي بخصم ١٠٪ — قطع مصنوعة خصيصًا لك.">Use code NASIJ10 for 10% off — crafted pieces made just for you.</p>
+    <p class="exit-popup-sub" data-en="Use code NASIJ10 for 10% off — crafted pieces made just for you." data-ar="استخدم كود NASIJ10 وتمتّع بخصم ١٠٪ — قطع مصنوعة خصيصًا لك.">Use code NASIJ10 for 10% off — crafted pieces made just for you.</p>
     <div class="exit-popup-code">NASIJ10</div>
-    <button class="exit-popup-cta" onclick="applyExitPromo()" data-en="Claim My 10% Off →" data-ar="← استخدمي الخصم الآن">Claim My 10% Off →</button>
+    <button class="exit-popup-cta" onclick="applyExitPromo()" data-en="Claim My 10% Off →" data-ar="← استخدم الخصم الآن">Claim My 10% Off →</button>
     <button class="exit-popup-no" onclick="closeExitPopup()" data-en="No thanks, I'll pay full price" data-ar="لا شكراً، سأدفع السعر الكامل">No thanks, I'll pay full price</button>
   </div>
 </div>
+
+<!-- ══ MINIMIZED PROMO — re-open the 10% offer ══ -->
+<button id="promoFab" onclick="reopenExitPopup()" aria-label="Reopen 10% off offer"
+  title="خصم ١٠٪ · 10% off">
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+  <span class="pf-badge">-10%</span>
+</button>
 
 <!-- ══ LIVE ACTIVITY NOTIFICATIONS ══ -->
 <div class="activity-notif" id="activityNotif" aria-hidden="true"></div>
@@ -14048,14 +14073,14 @@ a11yPatchLinks();
       const sub = document.querySelector('.exit-popup-sub');
       if (sub) {
         sub.innerHTML = ar
-          ? 'عندك <strong>' + cartCount + ' قطعة</strong> في سلتك بقيمة ' + cartTotal.toLocaleString() + ' جنيه. استخدمي كود الخصم وكمّل طلبك الآن!'
+          ? 'عندك <strong>' + cartCount + ' قطعة</strong> في سلتك بقيمة ' + cartTotal.toLocaleString() + ' جنيه. استخدم كود الخصم وكمّل طلبك الآن!'
           : 'You have <strong>' + cartCount + ' item' + (cartCount > 1 ? 's' : '') + '</strong> in your bag (' + cartTotal.toLocaleString() + ' EGP). Use your discount and complete your order!';
       }
       // Update CTA to go to checkout with promo
       const cta = document.querySelector('.exit-popup-cta');
       if (cta) {
         cta.setAttribute('data-en', 'Claim 10% Off + Go to Checkout →');
-        cta.setAttribute('data-ar', '← استخدمي الخصم وأكمل الطلب');
+        cta.setAttribute('data-ar', '← استخدم الخصم وأكمل الطلب');
       }
       // Add WhatsApp recovery option
       const noBtn = document.querySelector('.exit-popup-no');
@@ -14100,14 +14125,25 @@ a11yPatchLinks();
   });
 })();
 
-function closeExitPopup() {
+function closeExitPopup(keepOffer) {
   document.getElementById('exitPopupBg')?.classList.remove('open');
+  // Minimize the offer to a gift button (bottom-left) so it can be reopened — unless the offer was claimed
+  if (!keepOffer) { const f = document.getElementById('promoFab'); if (f) f.classList.add('show'); }
   trackEvent('exit_intent_dismissed');
+}
+
+// Re-open the 10% offer from the minimized gift button
+function reopenExitPopup() {
+  const f = document.getElementById('promoFab'); if (f) f.classList.remove('show');
+  document.getElementById('exitPopupBg')?.classList.add('open');
+  try { applyLang(); } catch (e) {}
+  trackEvent('exit_intent_reopened');
 }
 
 function applyExitPromo() {
   _promoDiscount = 0.10;
-  closeExitPopup();
+  closeExitPopup(true);
+  const f = document.getElementById('promoFab'); if (f) f.classList.remove('show');
   toast(lang === 'ar' ? '✓ خصم ١٠٪ محجوز — أكمل طلبك الآن!' : '✓ 10% off saved — complete your order now!', 'success');
   go('checkout');
   trackEvent('exit_intent_converted', { promo: 'NASIJ10' });
