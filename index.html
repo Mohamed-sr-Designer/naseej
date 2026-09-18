@@ -5985,7 +5985,7 @@
                 <div class="mega-cat-thumb" style="background-image:url('images/zodiac/leo-black.jpg');background-position:center 22%;"></div>
                 <div>
                   <span class="mega-cat-name" data-en="Zodiac" data-ar="الأبراج">Zodiac</span>
-                  <span class="mega-cat-desc" data-en="Your sign. Four colours." data-ar="برجك. بأربع ألوان.">Your sign. Four colours.</span>
+                  <span class="mega-cat-desc" data-en="Your sign. Five colours." data-ar="برجك. بخمس ألوان.">Your sign. Five colours.</span>
                 </div>
               </a>
             </div>
@@ -6345,7 +6345,7 @@
         <div>
           <span class="zod-feat-label" data-en="Pre-order · Limited Drop" data-ar="حجز · دروب محدود">Pre-order · Limited Drop</span>
           <h2 class="zod-feat-title" data-en="The Zodiac Collection" data-ar="كولكشن الأبراج">The Zodiac Collection</h2>
-          <p class="zod-feat-tag" data-en="Twelve signs. Four colourways. Reserve yours before it drops." data-ar="١٢ برج. ٤ ألوان. احجز برجك قبل ما ينزل.">Twelve signs. Four colourways. Reserve yours before it drops.</p>
+          <p class="zod-feat-tag" data-en="Twelve signs. Five colourways. Reserve yours before it drops." data-ar="١٢ برج. ٥ ألوان. احجز برجك قبل ما ينزل.">Twelve signs. Five colourways. Reserve yours before it drops.</p>
         </div>
         <div class="zod-feat-count" id="zodFeatCount">
           <div class="zfc-cell"><span class="zfc-n" id="zfD">00</span><span class="zfc-l" data-en="D" data-ar="ي">D</span></div>
@@ -6999,7 +6999,7 @@
     <div class="drop-step">
       <span class="ds-n">1</span>
       <p class="ds-t" data-en="Pick your sign, colour & size" data-ar="اختار برجك ولونك ومقاسك">Pick your sign, colour &amp; size</p>
-      <p class="ds-d" data-en="Twelve signs, four colourways, S–XXL." data-ar="١٢ برج، ٤ ألوان، من S لـ XXL.">Twelve signs, four colourways, S–XXL.</p>
+      <p class="ds-d" data-en="Twelve signs, five colourways, S–XXL." data-ar="١٢ برج، ٥ ألوان، من S لـ XXL.">Twelve signs, five colourways, S–XXL.</p>
     </div>
     <div class="drop-step">
       <span class="ds-n">2</span>
@@ -8423,7 +8423,7 @@ const PRODUCTS = [
     price:1150, color:'#F2EEE6', colorName:'White', sizes:['S','M','L','XL'], lead:2, sales:240, imgs:['images/products/p35.jpeg'] }
 ];
 
-/* ═══ ZODIAC COLLECTION — الأبراج ═══ (12 signs × up-to-4 colourways, linked as colour variants) */
+/* ═══ ZODIAC COLLECTION — الأبراج ═══ (12 signs × 5 colourways, linked as colour variants) */
 (function buildZodiac() {
   const SIGNS = [
     // slug, En, Ar, tagline EN, tagline AR, sales, [optional: available colour keys — defaults to all]
@@ -8433,7 +8433,7 @@ const PRODUCTS = [
     ['cancer',     'Cancer',      'السرطان', 'ruled by the moon’s tide',  'على إيقاع القمر',     180],
     ['leo',        'Leo',         'الأسد',   'radiant and regal',              'ملكية وتألّق',        430],
     ['virgo',      'Virgo',       'العذراء', 'precise and earthy',             'دقّة وصفاء',          260],
-    ['libra',      'Libra',       'الميزان', 'poised and in balance',          'اتزان وانسجام',       220, ['black', 'blue', 'olive']],
+    ['libra',      'Libra',       'الميزان', 'poised and in balance',          'اتزان وانسجام',       220],
     ['scorpio',    'Scorpio',     'العقرب',  'intense and magnetic',           'شدّة وجاذبية',        350],
     ['sagittarius','Sagittarius', 'القوس',   'the free-spirited seeker',       'روح حرّة باحثة',      230],
     ['capricorn',  'Capricorn',   'الجدي',   'built for the summit',           'انضباط نحو القمّة',   270],
@@ -8442,20 +8442,22 @@ const PRODUCTS = [
   ];
   const COLORS = [
     // key, En, Ar, hex  (first = primary/hero shown in the grid)
-    ['black', 'Black',      'أسود',       '#1A1A1A'],
-    ['white', 'White',      'أبيض',       '#EFEBE0'],
-    ['blue',  'Royal Blue', 'أزرق ملكي',  '#22409B'],
-    ['olive', 'Olive',      'زيتوني',     '#4A4A2E']
+    ['black',  'Black',      'أسود',       '#1A1A1A'],
+    ['white',  'White',      'أبيض',       '#EFEBE0'],
+    ['blue',   'Royal Blue', 'أزرق ملكي',  '#22409B'],
+    ['olive',  'Olive',      'زيتوني',     '#4A4A2E'],
+    ['maroon', 'Maroon',     'عنّابي',      '#6B1A2B']
   ];
-  let nid = 101;
-  SIGNS.forEach(function (S) {
+  // Stable ids: 101 + signIndex*10 + colourIndex — so adding a colourway later
+  // never renumbers the signs that come after it (orders/stock keep pointing right).
+  SIGNS.forEach(function (S, si) {
     var slug = S[0], en = S[1], arName = S[2], tagEn = S[3], tagAr = S[4], sales = S[5];
     var avail = S[6] || COLORS.map(function (c) { return c[0]; }); // colours this sign is available in
     var groupIds = [];
-    COLORS.forEach(function (C) {
+    COLORS.forEach(function (C, ci) {
       var ck = C[0], cEn = C[1], cAr = C[2], hex = C[3];
-      if (avail.indexOf(ck) < 0) return; // skip colours not available for this sign (e.g. Libra has no white)
-      var id = nid++;
+      if (avail.indexOf(ck) < 0) return; // skip colours not available for this sign
+      var id = 101 + si * 10 + ci;
       groupIds.push(id);
       var own = 'images/zodiac/' + slug + '-' + ck + '.jpg';
       PRODUCTS.push({
@@ -15853,7 +15855,7 @@ if ('serviceWorker' in navigator) {
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script defer src="firebase-config.js?v=11"></script>
-<script defer src="cloud.js?v=11"></script>
+<script defer src="firebase-config.js?v=12"></script>
+<script defer src="cloud.js?v=12"></script>
 </body>
 </html>
