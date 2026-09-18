@@ -28,7 +28,7 @@
   const DEFAULT_CATS = [
     { id: 'hoodies',     en: 'Hoodies',     ar: 'هوديز',     hidden: false },
     { id: 'sweatshirts', en: 'Sweatshirts', ar: 'سويت شيرت', hidden: false },
-    { id: 'jackets',     en: 'Jackets',     ar: 'جاكيتات',   hidden: false },
+    { id: 'jackets',     en: 'Jackets',     ar: 'جاكيتات',   hidden: true },
     { id: 'shirts',      en: 'Shirts',      ar: 'قمصان',     hidden: false },
     { id: 'zodiac',      en: 'Zodiac',      ar: 'الأبراج',   hidden: false }
   ];
@@ -167,6 +167,7 @@
     try { window.NASIJ_applySettings && window.NASIJ_applySettings(); } catch (e) {}
     try { window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); } catch (e) {}
     try { window.NASIJ_applySections && window.NASIJ_applySections(); } catch (e) {}
+    try { window.NASIJ_applyVisibility && window.NASIJ_applyVisibility(); } catch (e) {}
     reRenderAll();
     window.__nasijApplying = false;
   }
@@ -337,6 +338,11 @@
         }
         try { window.NASIJ_initAdmin && window.NASIJ_initAdmin(); } catch (e) {}
       }
+      // A page hidden from the dashboard can't be reached directly either
+      if (window.NASIJ_pageHidden && window.NASIJ_pageHidden(pg) && !window.NASIJ_isAdmin()) {
+        try { toast(window.tA ? tA('الصفحة دي مش متاحة حالياً', 'This page is not available') : 'Not available', 'error'); } catch (e) {}
+        return _go('home');
+      }
       return _go.apply(this, arguments);
     };
     window.__nasijGoWrapped = true;
@@ -383,6 +389,67 @@
     row.innerHTML = html;
   };
 
+  /* ── Page & category visibility (dashboard-controlled) ──
+     Hiding a page pulls every link to it out of the nav/footer/menus and blocks
+     direct navigation; hiding a category does the same and drops its products.  */
+  window.NASIJ_PAGE_LIST = [
+    { id: 'products', ar: 'المتجر',        en: 'Shop' },
+    { id: 'drops',    ar: 'الدروب',        en: 'Drops' },
+    { id: 'custom',   ar: 'التخصيص',       en: 'Custom' },
+    { id: 'about',    ar: 'قصتنا',         en: 'Our Story' },
+    { id: 'contact',  ar: 'تواصل',         en: 'Contact' },
+    { id: 'blog',     ar: 'المدونة',       en: 'Journal' },
+    { id: 'faq',      ar: 'الأسئلة الشائعة', en: 'FAQ' },
+    { id: 'reviews',  ar: 'آراء العملاء',   en: 'Reviews' },
+    { id: 'policy',   ar: 'السياسات',      en: 'Policies' }
+  ];
+  window.NASIJ_pageHidden = function (pg) {
+    return ((conf().hiddenPages) || []).indexOf(pg) > -1;
+  };
+  window.NASIJ_catHidden = function (id) {
+    const c = (conf().categories || []).find(x => (x.id || x) === id);
+    return !!(c && c.hidden);
+  };
+  // Hide/show every entry point for the pages and categories that are switched off
+  window.NASIJ_applyVisibility = function () {
+    const hiddenPages = (conf().hiddenPages) || [];
+    const hiddenCats  = (conf().categories || []).filter(c => c.hidden).map(c => c.id);
+    const admin = !!(window.NASIJ_isAdmin && window.NASIJ_isAdmin());
+
+    // Clean slate first — un-hide everything this ran on before, then re-apply.
+    // (Deciding per-link, rather than trying to "restore", avoids mis-reading a
+    //  wrapper that holds links to several different categories.)
+    document.querySelectorAll('[data-nz-hidden="1"]').forEach(el => {
+      delete el.dataset.nzHidden; el.style.display = '';
+    });
+    // Hide every link that points at a page or category that's switched off
+    document.querySelectorAll('a[onclick],button[onclick],[data-page],[data-cat]').forEach(el => {
+      const oc = el.getAttribute('onclick') || '';
+      const dp = el.getAttribute('data-page') || '';
+      const dc = el.getAttribute('data-cat') || '';
+      let hit = false;
+      if (dp && hiddenPages.indexOf(dp) > -1) hit = true;
+      if (!hit && dc && dc !== 'all' && hiddenCats.indexOf(dc) > -1) hit = true;
+      if (!hit && oc) {
+        for (const p of hiddenPages) { if (oc.indexOf("go('" + p + "')") > -1) { hit = true; break; } }
+        if (!hit) for (const c of hiddenCats) { if (oc.indexOf("filterProd('" + c + "'") > -1) { hit = true; break; } }
+      }
+      if (!hit) return;
+      // hide the whole row/tile, not just the inner anchor
+      const wrap = el.closest('li') || el;
+      wrap.dataset.nzHidden = '1';
+      wrap.style.display = 'none';
+    });
+    // Publish for the storefront so product listings can drop hidden categories
+    window.NASIJ_HIDDEN_CATS = hiddenCats;
+    // If the visitor is sitting on a page that just got hidden, send them home
+    const cur = document.querySelector('.page.active');
+    if (cur && !admin) {
+      const id = (cur.id || '').replace('page-', '');
+      if (hiddenPages.indexOf(id) > -1) { try { window.go('home'); } catch (e) {} }
+    }
+  };
+
   /* ── Show / hide homepage & storefront sections ── */
   // map: section key → CSS selector(s)
   const SECTION_MAP = {
@@ -390,6 +457,7 @@
     categories:   '.gift-cats-sec',
     bestsellers:  '#page-home .feat-sec:not(.gold-edit-sec)',
     cairoEdit:    '.gold-edit-sec',
+    zodiacFeature:'.zod-feat-sec',
     newEdit:      '.new-edit-sec',
     newArrivals:  '.new-arr-sec',
     collectionCta:'.coll-banner',
@@ -470,6 +538,7 @@
     { id: 'promos',     en: 'Promo Codes',ar: 'أكواد الخصم',svg: '<path d="M20 12l-8 8-9-9V4h7z"/><circle cx="7.5" cy="7.5" r="1.5"/>' },
     { id: 'sections',   en: 'Sections',   ar: 'أقسام الموقع',svg: '<rect x="3" y="4" width="18" height="4"/><rect x="3" y="10" width="18" height="4"/><rect x="3" y="16" width="18" height="4"/>' },
     { id: 'drop',       en: 'Drop / Pre-order', ar: 'الدروب والحجز', svg: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>' },
+    { id: 'pages',      en: 'Pages', ar: 'الصفحات', svg: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/>' },
     { id: 'staff',      en: 'Staff & Roles', ar: 'الموظفون', svg: '<circle cx="9" cy="8" r="3"/><path d="M3 21v-1a6 6 0 0 1 12 0v1"/><path d="M17 11a3 3 0 1 0-2-5"/>', super: true },
     { id: 'settings',   en: 'Settings',   ar: 'الإعدادات',  svg: '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 0 0-1.7-1L14.5 2h-5l-.4 2.4a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L3.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.3-1a7 7 0 0 0 1.7 1L9.5 22h5l.4-2.4a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/>', super: true }
   ];
@@ -537,7 +606,7 @@
 
   /* ── Permission gating: show a limited admin only what their role allows ── */
   const NAV_PERM = { analytics: 'orders', orders: 'orders', products: 'products', categories: 'products',
-                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos', drop: 'products' };
+                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos', drop: 'products', pages: 'content' };
   const NAV_SUPER = ['users', 'staff', 'settings'];         // owner-only areas
   function setNavVis(id, show) {
     const a = document.getElementById('anav-' + id); if (a) a.style.display = show ? '' : 'none';
@@ -577,7 +646,7 @@
   function wrapShowAdminSec() {
     if (window.__nasijSASWrapped || !window.showAdminSec) return;
     const _sas = window.showAdminSec;
-    const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings, drop: renderDrop };
+    const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings, drop: renderDrop, pages: renderPages };
     window.showAdminSec = function (sec, el) {
       // Permission guard: owner-only areas + per-permission areas for limited admins
       if (!window.NASIJ_isSuper()) {
@@ -589,7 +658,7 @@
         }
       }
       _sas(sec, el);
-      const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'], drop: ['الدروب والحجز', 'Drop & Pre-orders'] };
+      const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'], drop: ['الدروب والحجز', 'Drop & Pre-orders'], pages: ['الصفحات', 'Pages'] };
       if (titles[sec]) { const t = document.getElementById('adm-page-title'); if (t) t.textContent = tA(titles[sec][0], titles[sec][1]); }
       if (mine[sec]) mine[sec]();
       if (sec === 'orders') setTimeout(renderCloudOrders, 30);
@@ -955,6 +1024,7 @@
   function renderPromos() { window.__nzPromos && window.__nzPromos(); }
   function renderSections() { window.__nzSections && window.__nzSections(); }
   function renderDrop()     { window.__nzDrop && window.__nzDrop(); }
+  function renderPages()    { window.__nzPages && window.__nzPages(); }
   function renderStaff() { window.__nzStaff && window.__nzStaff(); }
   function renderSettings() { window.__nzSettings && window.__nzSettings(); }
 })();
@@ -991,7 +1061,7 @@
       <div class="nz-row" style="margin-top:1rem"><input id="nz-newcat-en" placeholder="${tA('اسم إنجليزي', 'English name')}" style="padding:.5rem;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--ink)"><input id="nz-newcat-ar" placeholder="${tA('اسم عربي', 'Arabic name')}" style="padding:.5rem;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--ink)"><button class="nz-btn" onclick="NASIJ_catAdd()">＋ ${tA('إضافة فئة', 'Add category')}</button></div>`;
   };
   const slug = s => (s || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || ('cat' + Date.now());
-  window.NASIJ_catEdit = function (i, k, v) { conf().categories[i][k] = v; saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.NASIJ_reRenderAll(); window.__nzCategories(); };
+  window.NASIJ_catEdit = function (i, k, v) { conf().categories[i][k] = v; saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.NASIJ_applyVisibility && window.NASIJ_applyVisibility(); window.NASIJ_reRenderAll(); window.__nzCategories(); };
   window.NASIJ_catMove = function (i, d) { const a = conf().categories; const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.__nzCategories(); };
   window.NASIJ_catDel = function (i) { if (!confirm(tA('حذف الفئة؟', 'Delete category?'))) return; conf().categories.splice(i, 1); saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.NASIJ_reRenderAll(); window.__nzCategories(); };
   window.NASIJ_catAdd = function () {
@@ -1050,10 +1120,55 @@
   const SECTION_LABELS = {
     trustBar: ['شريط المميزات', 'Trust bar'], categories: ['قسم الفئات', 'Categories'],
     bestsellers: ['الأكثر مبيعاً', 'Bestsellers'], cairoEdit: ['ذا كايرو إيديت', 'The Cairo Edit'],
+    zodiacFeature: ['كولكشن الأبراج (الرئيسية)', 'Zodiac feature'],
     newEdit: ['الإصدار الجديد', 'The New Edit'], newArrivals: ['وصل حديثاً', 'New Arrivals'],
     collectionCta: ['بانر المجموعة', 'Collection CTA'], instagram: ['إنستجرام/UGC', 'Instagram / UGC'],
     testimonials: ['آراء العملاء', 'Testimonials']
   };
+  /* ── PAGES: show / hide any page or category across the whole site ── */
+  window.__nzPages = function () {
+    const b = box('pages'); if (!b) return;
+    const hidden = conf().hiddenPages || [];
+    const cats   = conf().categories || [];
+    const pages  = window.NASIJ_PAGE_LIST || [];
+    const pill = (on, onClick) => `<button class="edit-ico-btn" style="background:${on ? 'rgba(16,185,129,.12)' : 'rgba(220,38,38,.08)'};color:${on ? '#0E9F6E' : '#DC2626'}" onclick="${onClick}">${on ? '✓ ' + tA('ظاهر', 'Visible') : '✕ ' + tA('مخفي', 'Hidden')}</button>`;
+
+    b.innerHTML = sub(tA('أخفِ أي صفحة أو فئة من الموقع كله — الروابط بتختفي من المينيو والفوتر، والدخول المباشر بيتمنع.',
+                         'Hide any page or category site-wide — its links disappear from the menus and footer, and direct access is blocked.')) +
+      `<div class="admin-table-wrap" style="margin-bottom:1.6rem">
+        <div class="admin-table-header"><span class="admin-table-title">${tA('صفحات الموقع', 'SITE PAGES')}</span></div>
+        <table class="atbl"><thead><tr><th>${tA('الصفحة', 'Page')}</th><th>${tA('الحالة', 'State')}</th></tr></thead><tbody>${
+          pages.map(p => { const on = hidden.indexOf(p.id) < 0;
+            return `<tr><td>${tA(p.ar, p.en)}<br><span style="font-size:.64rem;color:var(--ink-s)">/${p.id}</span></td>
+                    <td>${pill(on, `NASIJ_togglePage('${p.id}',${on})`)}</td></tr>`; }).join('')
+        }</tbody></table>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header"><span class="admin-table-title">${tA('صفحات الفئات', 'CATEGORY PAGES')}</span></div>
+        <table class="atbl"><thead><tr><th>${tA('الفئة', 'Category')}</th><th>${tA('المنتجات', 'Products')}</th><th>${tA('الحالة', 'State')}</th></tr></thead><tbody>${
+          cats.length ? cats.map((c, i) => { const on = !c.hidden;
+            const n = (window.PRODUCTS || []).filter(p => p.cat === c.id).length;
+            return `<tr><td>${tA(c.ar || c.en, c.en || c.ar)}<br><span style="font-size:.64rem;color:var(--ink-s)">/${c.id}</span></td>
+                    <td>${n}</td><td>${pill(on, `NASIJ_catEdit(${i},'hidden',${on})`)}</td></tr>`; }).join('')
+          : `<tr><td colspan="3" style="color:var(--ink-s);padding:1rem">${tA('لا فئات.', 'No categories.')}</td></tr>`
+        }</tbody></table>
+      </div>
+      <p style="font-size:.66rem;color:var(--ink-s);margin:.8rem 0 0">${tA('ملاحظة: إخفاء فئة بيشيل منتجاتها من المتجر والبحث كمان. الأدمن لسه بيقدر يفتح الصفحات المخفية.', 'Note: hiding a category also removes its products from the store and search. Admins can still open hidden pages.')}</p>`;
+  };
+
+  window.NASIJ_togglePage = function (id, hide) {
+    const c = conf();
+    c.hiddenPages = c.hiddenPages || [];
+    const i = c.hiddenPages.indexOf(id);
+    if (hide && i < 0) c.hiddenPages.push(id);
+    if (!hide && i > -1) c.hiddenPages.splice(i, 1);
+    saveNow();
+    try { window.NASIJ_applyVisibility && window.NASIJ_applyVisibility(); } catch (e) {}
+    toast(hide ? tA('تم إخفاء الصفحة', 'Page hidden') : tA('الصفحة ظاهرة', 'Page visible'));
+    window.__nzPages();
+  };
+
   /* ── DROP / PRE-ORDER (الدروب والحجز) ── */
   const DROP_FALLBACK = { dropDate: '2026-10-23T20:00:00', depositPct: 20, goal: 120, seed: 0, cancelDays: 7, active: true,
                           en: 'The Zodiac Collection', ar: 'كولكشن الأبراج',

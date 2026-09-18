@@ -1795,6 +1795,46 @@
     @media(max-width:900px){.co-layout{grid-template-columns:1fr;}.co-sum{position:relative;top:0;}}
     @media(max-width:600px){.co-page{padding:7rem 1.5rem 4rem;}}
 
+    /* ── ZODIAC FEATURE (homepage) ── */
+    .zod-feat-sec{position:relative;padding:4.5rem 3.5rem;overflow:hidden;background:#12100C;}
+    .zod-feat-bg{position:absolute;inset:0;background-image:url('images/zodiac/zodiac-banner.jpg');background-size:cover;background-position:center 40%;opacity:.22;}
+    .zod-feat-sec::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(18,16,12,.55),rgba(18,16,12,.9));pointer-events:none;}
+    .zod-feat-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;}
+    .zod-feat-hd{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+    .zod-feat-label{display:inline-block;font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);
+      border:1px solid rgba(201,168,156,.45);border-radius:20px;padding:.32rem .9rem;margin-bottom:.9rem;}
+    .zod-feat-title{font-family:var(--fh);font-size:clamp(1.9rem,4.4vw,3rem);font-weight:300;color:#F4F1EA;margin:0 0 .5rem;line-height:1.1;}
+    .zod-feat-tag{font-size:.85rem;color:rgba(250,247,242,.68);margin:0;line-height:1.75;max-width:460px;}
+    .zod-feat-count{display:flex;gap:.45rem;}
+    .zfc-cell{display:flex;flex-direction:column;align-items:center;gap:.25rem;min-width:54px;
+      background:rgba(244,241,234,.08);border:1px solid rgba(244,241,234,.18);border-radius:9px;padding:.6rem .4rem;}
+    .zfc-n{font-family:var(--fh);font-size:1.32rem;color:#F4F1EA;line-height:1;font-variant-numeric:tabular-nums;}
+    .zfc-l{font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(250,247,242,.45);}
+    .zod-feat-sec .home-slider-wrap{position:relative;}
+    .zod-feat-sec .slider-arr{background:rgba(244,241,234,.12);border-color:rgba(244,241,234,.2);color:#F4F1EA;}
+    .zod-feat-sec .slider-arr:hover{background:rgba(244,241,234,.22);}
+    .zod-sign-card{flex:0 0 auto;width:210px;background:#fff;border-radius:11px;overflow:hidden;cursor:pointer;
+      transition:transform .25s ease,box-shadow .25s ease;position:relative;}
+    .zod-sign-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.4);}
+    .zod-sign-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#f2efe8;}
+    .zod-sign-card .zsc-b{padding:.7rem .8rem .85rem;text-align:center;}
+    .zod-sign-card .zsc-n{font-family:var(--fh);font-size:.95rem;font-weight:500;color:#1A1A1A;margin:0 0 .12rem;}
+    .zod-sign-card .zsc-d{font-size:.6rem;color:#8A8371;margin:0 0 .5rem;}
+    .zod-sign-card .zsc-cta{display:block;width:100%;background:#1A1A1A;color:#F4F1EA;border:none;border-radius:5px;
+      padding:.48rem;font-family:var(--fb);font-size:.66rem;letter-spacing:.07em;cursor:pointer;transition:background .2s;}
+    .zod-sign-card .zsc-cta:hover{background:var(--rose);color:#1A1A1A;}
+    .zod-feat-foot{display:flex;align-items:center;gap:1.2rem;margin-top:2rem;flex-wrap:wrap;}
+    .zod-feat-cta{flex-shrink:0;}
+    .zod-feat-note{font-size:.74rem;color:rgba(250,247,242,.6);letter-spacing:.03em;}
+    @media(max-width:768px){
+      .zod-feat-sec{padding:3rem 1.5rem;}
+      .zod-feat-hd{align-items:flex-start;}
+      .zod-sign-card{width:165px;}
+      .zfc-cell{min-width:46px;padding:.5rem .3rem;}
+      .zfc-n{font-size:1.1rem;}
+      .zod-feat-cta{width:100%;justify-content:center;}
+    }
+
     /* ── DROPS / PRE-ORDER (الحجز) ── */
     .drop-hero{position:relative;min-height:74vh;display:flex;align-items:center;justify-content:center;text-align:center;
       background-image:url('images/zodiac/zodiac-banner.jpg');background-size:cover;background-position:center 42%;overflow:hidden;}
@@ -6297,6 +6337,41 @@
     </div>
   </section>
 
+  <!-- ZODIAC FEATURE -->
+  <section class="zod-feat-sec">
+    <div class="zod-feat-bg"></div>
+    <div class="zod-feat-inner">
+      <div class="zod-feat-hd">
+        <div>
+          <span class="zod-feat-label" data-en="Pre-order · Limited Drop" data-ar="حجز · دروب محدود">Pre-order · Limited Drop</span>
+          <h2 class="zod-feat-title" data-en="The Zodiac Collection" data-ar="كولكشن الأبراج">The Zodiac Collection</h2>
+          <p class="zod-feat-tag" data-en="Twelve signs. Four colourways. Reserve yours before it drops." data-ar="١٢ برج. ٤ ألوان. احجز برجك قبل ما ينزل.">Twelve signs. Four colourways. Reserve yours before it drops.</p>
+        </div>
+        <div class="zod-feat-count" id="zodFeatCount">
+          <div class="zfc-cell"><span class="zfc-n" id="zfD">00</span><span class="zfc-l" data-en="D" data-ar="ي">D</span></div>
+          <div class="zfc-cell"><span class="zfc-n" id="zfH">00</span><span class="zfc-l" data-en="H" data-ar="س">H</span></div>
+          <div class="zfc-cell"><span class="zfc-n" id="zfM">00</span><span class="zfc-l" data-en="M" data-ar="د">M</span></div>
+          <div class="zfc-cell"><span class="zfc-n" id="zfS">00</span><span class="zfc-l" data-en="S" data-ar="ث">S</span></div>
+        </div>
+      </div>
+      <div class="home-slider-wrap">
+        <button class="slider-arr prev" onclick="slideProducts('zodFeatGrid',-1)" aria-label="Previous">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="home-slider" id="zodFeatGrid"></div>
+        <button class="slider-arr next" onclick="slideProducts('zodFeatGrid',1)" aria-label="Next">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="zod-feat-foot">
+        <button class="btn-dark zod-feat-cta" onclick="go('drops')">
+          <span data-en="Reserve your sign" data-ar="احجز برجك">Reserve your sign</span><span>→</span>
+        </button>
+        <span class="zod-feat-note" id="zodFeatNote"></span>
+      </div>
+    </div>
+  </section>
+
   <!-- THE NEW EDIT -->
   <section class="new-edit-sec">
     <div class="new-edit-inner">
@@ -7288,38 +7363,6 @@
       <p style="font-style:italic;color:var(--rose);font-size:.9rem;" data-en='"More than clothing — identity woven in every piece."' data-ar="«أكتر من مجرد هدوم — هوية منسوجة في كل قطعة.»">"More than clothing — identity woven in every piece."</p>
     </div>
   </div>
-
-  <!-- FOUNDERS -->
-  <section class="founders-sec">
-    <div class="sec-inner">
-      <span class="sec-label" data-en="The Makers" data-ar="الصانعتان">The Makers</span>
-      <h2 class="sec-title" data-en="Two hands, one vision." data-ar="يدان، رؤية واحدة.">Two hands, one vision.</h2>
-      <div class="founders-grid">
-        <div class="founder-card obs">
-          <div class="founder-ava ava-1"></div>
-          <h3 class="founder-name" data-en="The Designer" data-ar="المصممة">The Designer</h3>
-          <p class="founder-role" data-en="Senior Designer · Visual Storyteller" data-ar="مصممة أولى · راوية قصص بصرية">Senior Designer · Visual Storyteller</p>
-          <p style="font-size:.84rem;color:var(--ink-m);line-height:1.9;margin-bottom:1.5rem;" data-en="Brings the brand to life visually — from the first sketch to the final aesthetic. Background in design, visual communication, and motion." data-ar="بتعطي البراند روحه البصرية — من الرسمة الأولى للإستيتيك النهائي. خلفية في التصميم، التواصل البصري، والحركة.">Brings the brand to life visually — from the first sketch to the final aesthetic. Background in design, visual communication, and motion.</p>
-          <div class="skill-wrap">
-            <span class="skill">Photoshop</span><span class="skill">Illustrator</span><span class="skill">Figma</span>
-            <span class="skill">Premiere</span><span class="skill">After Effects</span><span class="skill">Blender</span>
-          </div>
-        </div>
-        <div class="founder-card obs">
-          <div class="founder-ava ava-2"></div>
-          <h3 class="founder-name" data-en="The Producer" data-ar="المنتج">The Producer</h3>
-          <p class="founder-role" data-en="Garment Dev · Production Lead" data-ar="تطوير المنتج · مسؤول الإنتاج">Garment Dev · Production Lead</p>
-          <p style="font-size:.84rem;color:var(--ink-m);line-height:1.9;margin-bottom:1.5rem;" data-en="The hands behind every stitch and print. Obsessed with heavyweight fabric, clean cuts, and getting every graphic exactly right — made locally in Egypt." data-ar="الأيدي وراء كل غرزة وطبعة. مهووس بالخامة التقيلة، القصّات النظيفة، وضبط كل جرافيك بالظبط — صناعة محلية في مصر.">The hands behind every stitch and print. Obsessed with heavyweight fabric, clean cuts, and getting every graphic exactly right — made locally in Egypt.</p>
-          <div class="skill-wrap">
-            <span class="skill" data-en="Garment Dev" data-ar="تطوير المنتج">Garment Dev</span>
-            <span class="skill" data-en="Screen Print" data-ar="طباعة سلك">Screen Print</span>
-            <span class="skill" data-en="Embroidery" data-ar="تطريز">Embroidery</span>
-            <span class="skill" data-en="Quality Control" data-ar="مراقبة الجودة">Quality Control</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- VALUES -->
   <section class="values-sec">
@@ -8584,6 +8627,50 @@ function updateDropCountdown() {
 function startDropCountdown() { stopDropCountdown(); updateDropCountdown(); _dropTimer = setInterval(updateDropCountdown, 1000); }
 function stopDropCountdown() { if (_dropTimer) { clearInterval(_dropTimer); _dropTimer = null; } }
 
+/* ── Homepage zodiac feature ── */
+function renderZodiacFeature() {
+  const sec = document.querySelector('.zod-feat-sec');
+  if (!sec) return;
+  const d = dropCfg(), ar = lang === 'ar';
+  // If the drop is off or the category is hidden, take the whole band down
+  const hiddenCats = window.NASIJ_HIDDEN_CATS || [];
+  if (!d.active || hiddenCats.indexOf(d.cat) > -1) { sec.style.display = 'none'; stopZodFeatCountdown(); return; }
+  sec.style.display = '';
+
+  const grid = document.getElementById('zodFeatGrid');
+  if (grid) {
+    grid.innerHTML = ZODIAC_SIGNS.map(s => {
+      const prods = signProducts(s.slug);
+      if (!prods.length) return '';
+      const hero = prods[0], from = Math.min(...prods.map(p => p.price));
+      return `<div class="zod-sign-card" onclick="openReserve('${s.slug}')" tabindex="0" role="button"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openReserve('${s.slug}')}">
+          <img src="${hero.imgs[0]}" alt="${ar ? s.ar : s.en}" loading="lazy" decoding="async">
+          <div class="zsc-b">
+            <p class="zsc-n">${ar ? s.ar : s.en}</p>
+            <p class="zsc-d">${ar ? s.dAr : s.dEn}</p>
+            <button class="zsc-cta" onclick="event.stopPropagation();openReserve('${s.slug}')">${ar ? `احجز · ${depositOf(from).toLocaleString()} ج.م` : `Reserve · ${depositOf(from).toLocaleString()} EGP`}</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+  const note = document.getElementById('zodFeatNote');
+  if (note) note.textContent = ar
+    ? `${reservedCount()} حجز من ${d.goal} · عربون ${d.depositPct}٪ بس`
+    : `${reservedCount()} reserved of ${d.goal} · just a ${d.depositPct}% deposit`;
+  startZodFeatCountdown();
+  applyLang();
+}
+let _zodFeatTimer = null;
+function updateZodFeatCountdown() {
+  const t = dropTimeLeft(), pad = v => String(v).padStart(2, '0');
+  const set = (id, v) => { const el = document.getElementById(id); if (el && el.textContent !== v) el.textContent = v; };
+  set('zfD', pad(t.d)); set('zfH', pad(t.h)); set('zfM', pad(t.m)); set('zfS', pad(t.s));
+  if (t.ended) stopZodFeatCountdown();
+}
+function startZodFeatCountdown() { stopZodFeatCountdown(); updateZodFeatCountdown(); _zodFeatTimer = setInterval(updateZodFeatCountdown, 1000); }
+function stopZodFeatCountdown() { if (_zodFeatTimer) { clearInterval(_zodFeatTimer); _zodFeatTimer = null; } }
+
 /* ── Reserve modal ── */
 let _resSign = null, _resColor = null, _resSize = null;
 
@@ -9149,6 +9236,7 @@ function go(pg) {
 
   if (pg === 'products')              renderProducts();
   if (pg === 'drops')                 renderDrops(); else stopDropCountdown();
+  if (pg === 'home')                  renderZodiacFeature(); else stopZodFeatCountdown();
   if (pg === 'wishlist')              renderWishlist();
   if (pg === 'cart')                  renderCart();
   if (pg === 'checkout')              renderCheckout();
@@ -9277,7 +9365,7 @@ function setLangModal(l) {
   if (pg?.startsWith('gift') && currentGiftPg) renderGift(currentGiftPg);
   if (pg === 'faq') renderFaq();
   if (pg === 'reviews') renderReviews();
-  if (pg === 'home') { renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderGoldEdit(); renderTesti(); updateHeroSlide(); }
+  if (pg === 'home') { renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit(); renderTesti(); updateHeroSlide(); }
   if (document.getElementById('cartOv')?.classList.contains('open')) renderCartDrawer();
   if (document.getElementById('wishOv')?.classList.contains('open')) renderWishDrawer();
   if (pg === 'admin') renderAdmin();
@@ -9323,7 +9411,7 @@ function toggleLang() {
   if (pg === 'home') {
     renderHomePreview();
     renderNewArrivals();
-    renderNewEdit();
+    renderNewEdit(); renderZodiacFeature();
     renderGoldEdit();
     renderTesti();
     updateHeroSlide(); // refresh per-slide copy in the new language
@@ -9391,6 +9479,9 @@ function renderProducts(cat) {
   if (!grid) return;
 
   let list = cat === 'all' ? [...PRODUCTS] : PRODUCTS.filter(p => p.cat === cat);
+  // Drop anything in a category the dashboard has switched off
+  const _hc = window.NASIJ_HIDDEN_CATS || [];
+  if (_hc.length) list = list.filter(p => _hc.indexOf(p.cat) < 0);
   // Collapse colour-variant groups to a single representative card (primary = first id in the group)
   list = list.filter(p => { const g = getVariantGroup(p.id); return !g || g[0] === p.id; });
 
@@ -14533,16 +14624,16 @@ _syncMobTabBadges();
 // (no hash = home; other pages render themselves via go() navigation)
 const _initOnHome = !location.hash || location.hash === '#' || location.hash === '#home';
 if (_initOnHome) {
-  renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderGoldEdit();
+  renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit();
   initHero(); startHeroAuto(); renderTesti();
 }
 // Fetch server price/image overrides then re-render home sections with fresh data
 loadProductOverrides().then(() => {
   if (_initOnHome) {
-    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderGoldEdit();
+    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit();
   } else {
     // For non-home pages, still init hero so navigating back to home works
-    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderGoldEdit();
+    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit();
     initHero(); startHeroAuto(); renderTesti();
   }
 });
@@ -15762,7 +15853,7 @@ if ('serviceWorker' in navigator) {
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script defer src="firebase-config.js?v=10"></script>
-<script defer src="cloud.js?v=10"></script>
+<script defer src="firebase-config.js?v=11"></script>
+<script defer src="cloud.js?v=11"></script>
 </body>
 </html>
