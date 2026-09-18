@@ -1795,6 +1795,116 @@
     @media(max-width:900px){.co-layout{grid-template-columns:1fr;}.co-sum{position:relative;top:0;}}
     @media(max-width:600px){.co-page{padding:7rem 1.5rem 4rem;}}
 
+    /* ── DROPS / PRE-ORDER (الحجز) ── */
+    .drop-hero{position:relative;min-height:74vh;display:flex;align-items:center;justify-content:center;text-align:center;
+      background-image:url('images/zodiac/zodiac-banner.jpg');background-size:cover;background-position:center 42%;overflow:hidden;}
+    .drop-hero-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(16,13,9,.93) 0%,rgba(16,13,9,.72) 45%,rgba(16,13,9,.55) 100%);}
+    .drop-hero-body{position:relative;z-index:1;padding:4.5rem 1.5rem;max-width:760px;width:100%;}
+    .drop-kicker{display:inline-block;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);
+      border:1px solid rgba(201,168,156,.45);border-radius:20px;padding:.4rem 1rem;margin-bottom:1.2rem;}
+    .drop-title{font-family:var(--fh);font-size:clamp(2.2rem,6vw,3.8rem);font-weight:300;color:#F4F1EA;line-height:1.08;margin:0 0 .6rem;}
+    .drop-sub{font-size:.9rem;color:rgba(250,247,242,.72);margin:0 0 2rem;line-height:1.8;}
+    /* countdown */
+    .drop-count{display:flex;align-items:flex-start;justify-content:center;gap:.4rem;margin-bottom:2rem;}
+    .dc-cell{display:flex;flex-direction:column;align-items:center;gap:.4rem;min-width:66px;
+      background:rgba(244,241,234,.07);border:1px solid rgba(244,241,234,.16);border-radius:10px;padding:.8rem .5rem;backdrop-filter:blur(4px);}
+    .dc-n{font-family:var(--fh);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:400;color:#F4F1EA;line-height:1;font-variant-numeric:tabular-nums;}
+    .dc-l{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,247,242,.5);}
+    .dc-sep{font-family:var(--fh);font-size:1.4rem;color:rgba(250,247,242,.3);line-height:2.4;}
+    /* progress */
+    .drop-prog-wrap{max-width:440px;margin:0 auto 2rem;}
+    .drop-prog-top{display:flex;justify-content:space-between;font-size:.72rem;color:rgba(250,247,242,.8);margin-bottom:.5rem;letter-spacing:.04em;font-variant-numeric:tabular-nums;}
+    .drop-prog{height:7px;background:rgba(244,241,234,.14);border-radius:20px;overflow:hidden;}
+    .drop-prog-fill{height:100%;width:0;border-radius:20px;background:linear-gradient(90deg,var(--rose),#E4D6C4);
+      transition:width 1.1s cubic-bezier(.4,0,.2,1);box-shadow:0 0 14px rgba(201,168,156,.5);}
+    .drop-prog-note{font-size:.63rem;color:rgba(250,247,242,.45);margin:.6rem 0 0;letter-spacing:.03em;}
+    .drop-cta{display:inline-flex;margin:0 auto;}
+    /* steps */
+    .drop-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:1000px;margin:0 auto;padding:3.5rem 2rem 1rem;}
+    .drop-step{text-align:center;padding:1.4rem 1rem;}
+    .ds-n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+      background:var(--ink);color:var(--cream);font-size:.82rem;margin-bottom:.9rem;}
+    .ds-t{font-family:var(--fh);font-size:1.02rem;font-weight:500;color:var(--ink);margin:0 0 .35rem;}
+    .ds-d{font-size:.78rem;color:var(--ink-s);line-height:1.75;margin:0;}
+    /* sign grid */
+    .drop-signs-sec{max-width:1240px;margin:0 auto;padding:2rem 2rem 4rem;}
+    .drop-sec-head{text-align:center;margin-bottom:2.2rem;}
+    .drop-sec-title{font-family:var(--fh);font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:300;margin:0 0 .4rem;}
+    .drop-sec-sub{font-size:.82rem;color:var(--ink-s);margin:0;}
+    .drop-signs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+    .sign-card{position:relative;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;
+      transition:transform .25s ease,box-shadow .25s ease,border-color .2s;display:flex;flex-direction:column;}
+    .sign-card:hover{transform:translateY(-4px);box-shadow:0 14px 38px rgba(44,35,25,.14);border-color:var(--ink);}
+    [data-theme="dark"] .sign-card{background:var(--bg-elev,#1b1815);}
+    .sign-card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#f4f1ea;}
+    .sign-card-body{padding:.85rem .9rem 1rem;text-align:center;}
+    .sign-card-name{font-family:var(--fh);font-size:1rem;font-weight:500;color:var(--ink);margin:0 0 .15rem;}
+    .sign-card-dates{font-size:.63rem;color:var(--ink-s);letter-spacing:.04em;margin:0 0 .55rem;}
+    .sign-card-btn{display:block;width:100%;background:var(--ink);color:var(--cream);border:none;border-radius:6px;
+      padding:.55rem;font-family:var(--fb);font-size:.72rem;letter-spacing:.08em;cursor:pointer;transition:background .2s;}
+    .sign-card-btn:hover{background:var(--rose);color:#1A1A1A;}
+    .sign-badge{position:absolute;top:.6rem;inset-inline-start:.6rem;z-index:2;background:rgba(16,13,9,.82);color:#F4F1EA;
+      font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .6rem;border-radius:20px;backdrop-filter:blur(3px);}
+    /* terms */
+    .drop-terms{max-width:760px;margin:0 auto;padding:0 2rem 6rem;}
+    .drop-terms-title{font-family:var(--fh);font-size:1.25rem;font-weight:400;margin:0 0 1rem;}
+    .drop-terms-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.7rem;}
+    .drop-terms-list li{position:relative;padding-inline-start:1.4rem;font-size:.82rem;color:var(--ink-m);line-height:1.8;}
+    .drop-terms-list li::before{content:"—";position:absolute;inset-inline-start:0;color:var(--rose);}
+    .drop-terms-list li.warn{color:var(--ink);font-weight:500;}
+    @media(max-width:860px){
+      .drop-steps{grid-template-columns:1fr;gap:.4rem;padding:2.5rem 1.5rem .5rem;}
+      .drop-signs-grid{grid-template-columns:repeat(2,1fr);gap:.9rem;}
+      .drop-signs-sec{padding:1.5rem 1.2rem 3rem;}
+      .drop-terms{padding:0 1.5rem 4rem;}
+      .dc-cell{min-width:58px;padding:.65rem .4rem;}
+      .drop-hero{min-height:66vh;}
+    }
+    @media(max-width:420px){.drop-signs-grid{grid-template-columns:1fr 1fr;gap:.7rem;}.dc-cell{min-width:50px;}.dc-sep{font-size:1.1rem;}}
+
+    /* ── RESERVE MODAL ── */
+    .res-ov{position:fixed;inset:0;background:rgba(16,13,9,.62);backdrop-filter:blur(3px);z-index:1300;
+      display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:4vh 1rem;}
+    .res-ov.open{display:flex;}
+    .res-box{position:relative;background:var(--bg);border:1px solid var(--border);border-radius:14px;
+      width:min(520px,100%);padding:2rem 1.9rem 1.7rem;box-shadow:0 24px 70px rgba(0,0,0,.34);}
+    .res-close{position:absolute;top:.9rem;inset-inline-end:1rem;background:none;border:none;font-size:1rem;color:var(--ink-s);cursor:pointer;}
+    .res-close:hover{color:var(--ink);}
+    .res-kicker{display:block;font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--rose);margin-bottom:.5rem;}
+    .res-title{font-family:var(--fh);font-size:1.5rem;font-weight:300;margin:0 0 1.4rem;}
+    .res-field{margin-bottom:1.1rem;}
+    .res-field > label{display:block;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-s);margin-bottom:.55rem;}
+    .res-signs{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;}
+    .res-sign{border:1px solid var(--border);border-radius:7px;padding:.45rem .2rem;font-size:.7rem;text-align:center;
+      cursor:pointer;transition:all .15s;background:none;color:var(--ink);font-family:var(--fb);}
+    .res-sign:hover{border-color:var(--ink);}
+    .res-sign.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+    .res-colors{display:flex;gap:.6rem;flex-wrap:wrap;}
+    .res-color{display:flex;flex-direction:column;align-items:center;gap:.3rem;cursor:pointer;border:none;background:none;padding:0;}
+    .res-color .rc-dot{width:30px;height:30px;border-radius:50%;border:1px solid rgba(140,120,90,.4);transition:box-shadow .15s;}
+    .res-color.on .rc-dot{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink);}
+    .res-color .rc-l{font-size:.55rem;letter-spacing:.06em;color:var(--ink-s);text-transform:uppercase;}
+    .res-color.on .rc-l{color:var(--ink);font-weight:600;}
+    .res-sizes{display:flex;gap:.45rem;flex-wrap:wrap;}
+    .res-size{min-width:46px;border:1px solid var(--border);border-radius:6px;padding:.5rem .4rem;font-size:.78rem;
+      cursor:pointer;background:none;color:var(--ink);font-family:var(--fb);transition:all .15s;}
+    .res-size:hover{border-color:var(--ink);}
+    .res-size.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+    .res-sum{background:var(--beige);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;margin:1.3rem 0 1rem;}
+    .res-sum-row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink-m);padding:.28rem 0;font-variant-numeric:tabular-nums;}
+    .res-sum-row.big{font-size:1.02rem;color:var(--ink);font-weight:600;border-top:1.5px solid var(--ink);margin-top:.5rem;padding-top:.6rem;}
+    .res-sum-row .muted{font-size:.68rem;color:var(--ink-s);}
+    .res-agree{display:flex;align-items:flex-start;gap:.6rem;font-size:.74rem;color:var(--ink-m);line-height:1.65;cursor:pointer;margin-bottom:1rem;}
+    .res-agree input{margin-top:.2rem;accent-color:var(--ink);width:15px;height:15px;flex-shrink:0;cursor:pointer;}
+    .res-confirm{width:100%;justify-content:center;}
+    .res-confirm[disabled]{opacity:.45;cursor:not-allowed;}
+    .res-foot{text-align:center;font-size:.64rem;color:var(--ink-s);margin:.7rem 0 0;letter-spacing:.03em;}
+    @media(max-width:520px){.res-box{padding:1.7rem 1.2rem 1.4rem;}.res-signs{grid-template-columns:repeat(3,1fr);}}
+
+    /* pre-order badge on product cards */
+    .pc-badge-pre{position:absolute;top:.7rem;inset-inline-start:.7rem;z-index:3;background:var(--ink);color:var(--cream);
+      font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;padding:.28rem .65rem;border-radius:20px;}
+
     /* ── AE-STYLE CHECKOUT (4-step bar · two-column · order summary) ── */
     .co4-steps{display:flex;align-items:flex-start;justify-content:center;max-width:640px;margin:0 auto 2.8rem;}
     .co4-step{display:flex;flex-direction:column;align-items:center;gap:.55rem;flex:0 0 auto;width:74px;}
@@ -5873,6 +5983,7 @@
           </div>
         </div>
       </li>
+      <li><a onclick="go('drops')" data-page="drops" data-en="Drops" data-ar="الدروب">Drops</a></li>
       <li><a onclick="go('custom')" data-page="custom" data-en="Custom" data-ar="تخصيص">Custom</a></li>
       <li><a onclick="go('about')" data-page="about" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
       <li><a onclick="go('contact')" data-page="contact" data-en="Contact" data-ar="تواصل">Contact</a></li>
@@ -6769,6 +6880,111 @@
   </div>
   <div class="prod-page" style="padding-top:3.5rem;">
     <div id="wishlistGrid" class="prod-grid"></div>
+  </div>
+</div>
+
+<!-- ══ DROPS / PRE-ORDER (الحجز) ══ -->
+<div class="page" id="page-drops">
+  <div class="drop-hero">
+    <div class="drop-hero-ov"></div>
+    <div class="drop-hero-body">
+      <span class="drop-kicker" id="dropKicker" data-en="Pre-Order · Limited Drop" data-ar="حجز · دروب محدود">Pre-Order · Limited Drop</span>
+      <h1 class="drop-title" id="dropTitle">The Zodiac Collection</h1>
+      <p class="drop-sub" id="dropSub">Reserve your sign before it drops.</p>
+
+      <!-- Live countdown -->
+      <div class="drop-count" id="dropCount" aria-live="polite">
+        <div class="dc-cell"><span class="dc-n" id="dcD">00</span><span class="dc-l" data-en="Days" data-ar="يوم">Days</span></div>
+        <span class="dc-sep">:</span>
+        <div class="dc-cell"><span class="dc-n" id="dcH">00</span><span class="dc-l" data-en="Hours" data-ar="ساعة">Hours</span></div>
+        <span class="dc-sep">:</span>
+        <div class="dc-cell"><span class="dc-n" id="dcM">00</span><span class="dc-l" data-en="Min" data-ar="دقيقة">Min</span></div>
+        <span class="dc-sep">:</span>
+        <div class="dc-cell"><span class="dc-n" id="dcS">00</span><span class="dc-l" data-en="Sec" data-ar="ثانية">Sec</span></div>
+      </div>
+
+      <!-- Reservation progress -->
+      <div class="drop-prog-wrap">
+        <div class="drop-prog-top">
+          <span id="dropProgText">0 reserved of 120</span>
+          <span id="dropProgPct">0%</span>
+        </div>
+        <div class="drop-prog"><div class="drop-prog-fill" id="dropProgFill" style="width:0%"></div></div>
+        <p class="drop-prog-note" data-en="Production starts once the goal is reached." data-ar="الإنتاج بيبدأ أول ما نوصل للهدف.">Production starts once the goal is reached.</p>
+      </div>
+
+      <a class="btn-dark drop-cta" onclick="document.getElementById('dropSigns').scrollIntoView({behavior:'smooth',block:'start'})">
+        <span data-en="Reserve your sign" data-ar="احجز برجك">Reserve your sign</span><span>↓</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="drop-steps">
+    <div class="drop-step">
+      <span class="ds-n">1</span>
+      <p class="ds-t" data-en="Pick your sign, colour & size" data-ar="اختار برجك ولونك ومقاسك">Pick your sign, colour &amp; size</p>
+      <p class="ds-d" data-en="Twelve signs, four colourways, S–XXL." data-ar="١٢ برج، ٤ ألوان، من S لـ XXL.">Twelve signs, four colourways, S–XXL.</p>
+    </div>
+    <div class="drop-step">
+      <span class="ds-n">2</span>
+      <p class="ds-t" id="dsDepositT">Pay a 20% deposit</p>
+      <p class="ds-d" data-en="It locks your exact piece. The rest is paid on delivery." data-ar="العربون بيثبّت قطعتك بالظبط، والباقي عند الاستلام.">It locks your exact piece. The rest is paid on delivery.</p>
+    </div>
+    <div class="drop-step">
+      <span class="ds-n">3</span>
+      <p class="ds-t" data-en="We produce & deliver" data-ar="بننتج ونوصّل">We produce &amp; deliver</p>
+      <p class="ds-d" data-en="You get a WhatsApp update at every stage." data-ar="هيوصلك تحديث على واتساب في كل مرحلة.">You get a WhatsApp update at every stage.</p>
+    </div>
+  </div>
+
+  <!-- Sign picker grid -->
+  <div class="drop-signs-sec" id="dropSigns">
+    <div class="drop-sec-head">
+      <h2 class="drop-sec-title" data-en="Choose your sign" data-ar="اختار برجك">Choose your sign</h2>
+      <p class="drop-sec-sub" data-en="Each piece is made to order for the drop." data-ar="كل قطعة بتتعمل خصيصاً للدروب.">Each piece is made to order for the drop.</p>
+    </div>
+    <div class="drop-signs-grid" id="dropSignsGrid"></div>
+  </div>
+
+  <!-- Terms -->
+  <div class="drop-terms">
+    <h3 class="drop-terms-title" data-en="Reservation terms" data-ar="شروط الحجز">Reservation terms</h3>
+    <ul class="drop-terms-list" id="dropTermsList"></ul>
+  </div>
+</div>
+
+<!-- ══ RESERVE MODAL ══ -->
+<div class="res-ov" id="resOv" onclick="if(event.target===this)closeReserve()">
+  <div class="res-box" role="dialog" aria-modal="true" aria-labelledby="resHeading">
+    <button class="res-close" onclick="closeReserve()" aria-label="Close">✕</button>
+    <span class="res-kicker" data-en="Pre-order" data-ar="حجز">Pre-order</span>
+    <h3 class="res-title" id="resHeading">Reserve your piece</h3>
+
+    <div class="res-field">
+      <label data-en="Your sign" data-ar="برجك">Your sign</label>
+      <div class="res-signs" id="resSigns"></div>
+    </div>
+    <div class="res-field">
+      <label data-en="Colour" data-ar="اللون">Colour</label>
+      <div class="res-colors" id="resColors"></div>
+    </div>
+    <div class="res-field">
+      <label data-en="Size" data-ar="المقاس">Size</label>
+      <div class="res-sizes" id="resSizes"></div>
+    </div>
+
+    <div class="res-sum" id="resSum"></div>
+
+    <label class="res-agree">
+      <input type="checkbox" id="resAgree">
+      <span id="resAgreeTxt"></span>
+    </label>
+
+    <button class="btn-dark res-confirm" id="resConfirm" onclick="confirmReserve()">
+      <span data-en="Confirm reservation" data-ar="أكّد الحجز">Confirm reservation</span><span>→</span>
+    </button>
+    <p class="res-foot" data-en="You'll pay only the deposit now — the rest on delivery." data-ar="هتدفع العربون بس دلوقتي — والباقي عند الاستلام.">You'll pay only the deposit now — the rest on delivery.</p>
   </div>
 </div>
 
@@ -8213,6 +8429,276 @@ const PRODUCTS = [
   });
 })();
 
+/* ═══════════ DROPS / PRE-ORDER — نظام الحجز ═══════════ */
+/* A drop makes a whole category reservation-only: the pieces can't be bought
+   outright, only reserved with a deposit until the drop date arrives.        */
+const DROP_DEFAULTS = {
+  id:        'zodiac-01',
+  cat:       'zodiac',                    // which category this drop covers
+  en:        'The Zodiac Collection',
+  ar:        'كولكشن الأبراج',
+  subEn:     'Reserve your sign before it drops.',
+  subAr:     'احجز برجك قبل ما ينزل.',
+  dropDate:  '2026-10-23T20:00:00',       // countdown target (admin-editable)
+  depositPct: 20,                          // % paid now to lock the piece
+  goal:      120,                          // reservations needed — drives the progress bar
+  seed:      0,                            // starting count shown on the bar
+  cancelDays: 7,                           // no refund inside this many days of handover
+  active:    true
+};
+// Live config = admin overrides (cloud.js CONF.drop) merged over the defaults
+function dropCfg() {
+  const o = (window.NASIJ_CONF && window.NASIJ_CONF.drop) || {};
+  return Object.assign({}, DROP_DEFAULTS, o);
+}
+function dropIsLive() { const d = dropCfg(); return !!d.active && new Date(d.dropDate).getTime() > Date.now(); }
+// A product is reservation-only while its drop is running
+function isPreorder(p) { const d = dropCfg(); return !!(p && d.active && p.cat === d.cat && dropIsLive()); }
+function depositOf(price) { return Math.max(1, Math.round((price || 0) * dropCfg().depositPct / 100)); }
+// Countdown parts to the drop date
+function dropTimeLeft() {
+  const ms = new Date(dropCfg().dropDate).getTime() - Date.now();
+  if (!(ms > 0)) return { ended: true, d: 0, h: 0, m: 0, s: 0 };
+  return { ended: false,
+    d: Math.floor(ms / 86400000),
+    h: Math.floor(ms / 3600000) % 24,
+    m: Math.floor(ms / 60000) % 60,
+    s: Math.floor(ms / 1000) % 60 };
+}
+/* Reservations already placed — seed + this browser's own, and the cloud count
+   when Firebase is wired (NASIJ_DROP_COUNT is published by cloud.js).        */
+function reservedCount() {
+  const d = dropCfg();
+  const cloud = (typeof window.NASIJ_DROP_COUNT === 'number') ? window.NASIJ_DROP_COUNT : 0;
+  const mine  = S.get('nasij_reservations', []).length;
+  return (d.seed || 0) + cloud + mine;
+}
+function reservedPct() { const d = dropCfg(); return Math.min(100, Math.round(reservedCount() / Math.max(1, d.goal) * 100)); }
+
+/* ── The twelve signs (slug order matches the drop grid) ── */
+const ZODIAC_SIGNS = [
+  { slug:'aries',       en:'Aries',       ar:'الحمل',   dEn:'Mar 21 – Apr 19', dAr:'٢١ مارس – ١٩ أبريل' },
+  { slug:'taurus',      en:'Taurus',      ar:'الثور',   dEn:'Apr 20 – May 20', dAr:'٢٠ أبريل – ٢٠ مايو' },
+  { slug:'gemini',      en:'Gemini',      ar:'الجوزاء', dEn:'May 21 – Jun 20', dAr:'٢١ مايو – ٢٠ يونيو' },
+  { slug:'cancer',      en:'Cancer',      ar:'السرطان', dEn:'Jun 21 – Jul 22', dAr:'٢١ يونيو – ٢٢ يوليو' },
+  { slug:'leo',         en:'Leo',         ar:'الأسد',   dEn:'Jul 23 – Aug 22', dAr:'٢٣ يوليو – ٢٢ أغسطس' },
+  { slug:'virgo',       en:'Virgo',       ar:'العذراء', dEn:'Aug 23 – Sep 22', dAr:'٢٣ أغسطس – ٢٢ سبتمبر' },
+  { slug:'libra',       en:'Libra',       ar:'الميزان', dEn:'Sep 23 – Oct 22', dAr:'٢٣ سبتمبر – ٢٢ أكتوبر' },
+  { slug:'scorpio',     en:'Scorpio',     ar:'العقرب',  dEn:'Oct 23 – Nov 21', dAr:'٢٣ أكتوبر – ٢١ نوفمبر' },
+  { slug:'sagittarius', en:'Sagittarius', ar:'القوس',   dEn:'Nov 22 – Dec 21', dAr:'٢٢ نوفمبر – ٢١ ديسمبر' },
+  { slug:'capricorn',   en:'Capricorn',   ar:'الجدي',   dEn:'Dec 22 – Jan 19', dAr:'٢٢ ديسمبر – ١٩ يناير' },
+  { slug:'aquarius',    en:'Aquarius',    ar:'الدلو',   dEn:'Jan 20 – Feb 18', dAr:'٢٠ يناير – ١٨ فبراير' },
+  { slug:'pisces',      en:'Pisces',      ar:'الحوت',   dEn:'Feb 19 – Mar 20', dAr:'١٩ فبراير – ٢٠ مارس' }
+];
+// All colour variants available for one sign
+function signProducts(slug) {
+  return (VARIANT_GROUPS['zodiac_' + slug] || []).map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+}
+function signMeta(slug) { return ZODIAC_SIGNS.find(s => s.slug === slug); }
+// Which sign does a given product id belong to?
+function signOfProduct(id) {
+  const z = ZODIAC_SIGNS.find(s => (VARIANT_GROUPS['zodiac_' + s.slug] || []).includes(id));
+  return z ? z.slug : '';
+}
+
+/* ── Drops page ── */
+let _dropTimer = null;
+
+function renderDrops() {
+  const ar = lang === 'ar', d = dropCfg();
+  const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+  set('dropTitle', ar ? d.ar : d.en);
+  set('dropSub',   ar ? d.subAr : d.subEn);
+  set('dsDepositT', ar ? `ادفع عربون ${d.depositPct}٪` : `Pay a ${d.depositPct}% deposit`);
+
+  // Sign cards
+  const grid = document.getElementById('dropSignsGrid');
+  if (grid) {
+    grid.innerHTML = ZODIAC_SIGNS.map(s => {
+      const prods = signProducts(s.slug);
+      if (!prods.length) return '';
+      const hero = prods[0];
+      const from = Math.min(...prods.map(p => p.price));
+      return `<div class="sign-card" onclick="openReserve('${s.slug}')" tabindex="0" role="button"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openReserve('${s.slug}')}">
+          <span class="sign-badge">${ar ? 'حجز' : 'Pre-order'}</span>
+          <img class="sign-card-img" src="${hero.imgs[0]}" alt="${ar ? s.ar : s.en}" loading="lazy" decoding="async">
+          <div class="sign-card-body">
+            <p class="sign-card-name">${ar ? s.ar : s.en}</p>
+            <p class="sign-card-dates">${ar ? s.dAr : s.dEn}</p>
+            <button class="sign-card-btn" onclick="event.stopPropagation();openReserve('${s.slug}')">
+              ${ar ? `احجز · عربون ${depositOf(from).toLocaleString()} ج.م` : `Reserve · ${depositOf(from).toLocaleString()} EGP deposit`}
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // Terms
+  const terms = document.getElementById('dropTermsList');
+  if (terms) {
+    const items = ar ? [
+      `الحجز بيتم بدفع عربون <strong>${d.depositPct}٪</strong> من سعر القطعة، والباقي بيتدفع عند الاستلام.`,
+      'العربون بيثبّت البرج واللون والمقاس اللي اخترته — القطعة بتتصنع مخصوص لك.',
+      `<span class="warn">الإلغاء والاسترداد: تقدر تلغي وتسترد العربون كامل لحد ${d.cancelDays} أيام قبل موعد الاستلام. أي إلغاء في آخر ${d.cancelDays} أيام العربون <strong>لا يُرد</strong> لأن القطعة بتكون دخلت الإنتاج.</span>`,
+      'لو حصل تأخير من عندنا، هنبلّغك على واتساب وليك حق الاسترداد الكامل.',
+      'الأسعار والمقاسات مضمونة من وقت الحجز لحد التسليم.'
+    ] : [
+      `A reservation is made with a <strong>${d.depositPct}%</strong> deposit of the piece's price; the balance is paid on delivery.`,
+      'The deposit locks the exact sign, colour and size you picked — the piece is produced for you.',
+      `<span class="warn">Cancellation &amp; refunds: you can cancel and get a full deposit refund up to ${d.cancelDays} days before the handover date. Cancelling inside the last ${d.cancelDays} days means the deposit is <strong>non-refundable</strong>, as the piece has entered production.</span>`,
+      'If the delay is on our side, we notify you on WhatsApp and you are entitled to a full refund.',
+      'Your price and size are locked from the moment you reserve until delivery.'
+    ];
+    terms.innerHTML = items.map(t => `<li${/class="warn"/.test(t) ? ' class="warn"' : ''}>${t.replace(/<span class="warn">|<\/span>/g, '')}</li>`).join('');
+  }
+
+  updateDropProgress();
+  startDropCountdown();
+  applyLang();
+}
+
+function updateDropProgress() {
+  const ar = lang === 'ar', d = dropCfg();
+  const n = reservedCount(), pct = reservedPct();
+  const t = document.getElementById('dropProgText');
+  const p = document.getElementById('dropProgPct');
+  const f = document.getElementById('dropProgFill');
+  if (t) t.textContent = ar ? `${n} حجز من ${d.goal}` : `${n} reserved of ${d.goal}`;
+  if (p) p.textContent = pct + '%';
+  if (f) requestAnimationFrame(() => { f.style.width = pct + '%'; });
+}
+
+function updateDropCountdown() {
+  const t = dropTimeLeft();
+  const pad = v => String(v).padStart(2, '0');
+  const set = (id, v) => { const el = document.getElementById(id); if (el && el.textContent !== v) el.textContent = v; };
+  set('dcD', pad(t.d)); set('dcH', pad(t.h)); set('dcM', pad(t.m)); set('dcS', pad(t.s));
+  if (t.ended) {
+    stopDropCountdown();
+    const ar = lang === 'ar';
+    const sub = document.getElementById('dropSub');
+    if (sub) sub.textContent = ar ? 'الدروب نزل — الحجوزات بتتحوّل لطلبات.' : 'The drop is live — reservations are becoming orders.';
+  }
+}
+function startDropCountdown() { stopDropCountdown(); updateDropCountdown(); _dropTimer = setInterval(updateDropCountdown, 1000); }
+function stopDropCountdown() { if (_dropTimer) { clearInterval(_dropTimer); _dropTimer = null; } }
+
+/* ── Reserve modal ── */
+let _resSign = null, _resColor = null, _resSize = null;
+
+function openReserve(slug) {
+  const ar = lang === 'ar';
+  if (!dropIsLive()) { toast(ar ? 'الحجز مقفول حالياً' : 'Reservations are closed', 'error'); return; }
+  _resSign = slug; _resColor = null; _resSize = null;
+  const prods = signProducts(slug);
+  if (!prods.length) return;
+  _resColor = prods[0].colorName;
+  _resSize  = (prods[0].sizes && prods[0].sizes[Math.min(1, prods[0].sizes.length - 1)]) || 'M';
+
+  const s = signMeta(slug);
+  const h = document.getElementById('resHeading');
+  if (h) h.textContent = ar ? `احجز هودي برج ${s.ar}` : `Reserve the ${s.en} hoodie`;
+
+  // sign chips
+  const sg = document.getElementById('resSigns');
+  if (sg) sg.innerHTML = ZODIAC_SIGNS.filter(z => signProducts(z.slug).length).map(z =>
+    `<button class="res-sign${z.slug === _resSign ? ' on' : ''}" data-sign="${z.slug}" onclick="resPickSign('${z.slug}')">${ar ? z.ar : z.en}</button>`).join('');
+
+  renderResColors(); renderResSizes(); renderResSummary();
+  const agree = document.getElementById('resAgree'); if (agree) agree.checked = false;
+  const at = document.getElementById('resAgreeTxt');
+  if (at) at.innerHTML = ar
+    ? `أوافق على شروط الحجز — وإن إلغاء الحجز في آخر <strong>${dropCfg().cancelDays} أيام</strong> قبل الاستلام لا يُرد فيه العربون.`
+    : `I agree to the reservation terms — cancelling within the last <strong>${dropCfg().cancelDays} days</strong> before handover forfeits the deposit.`;
+  syncResConfirm();
+  document.getElementById('resOv')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  trackEvent('reserve_open', { sign: slug });
+}
+function closeReserve() {
+  document.getElementById('resOv')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function resPickSign(slug) {
+  _resSign = slug;
+  const prods = signProducts(slug);
+  if (!prods.some(p => p.colorName === _resColor)) _resColor = prods[0]?.colorName || null;
+  document.querySelectorAll('#resSigns .res-sign').forEach(b => b.classList.toggle('on', b.dataset.sign === slug));
+  const s = signMeta(slug), ar = lang === 'ar';
+  const h = document.getElementById('resHeading');
+  if (h) h.textContent = ar ? `احجز هودي برج ${s.ar}` : `Reserve the ${s.en} hoodie`;
+  renderResColors(); renderResSizes(); renderResSummary();
+}
+function renderResColors() {
+  const ar = lang === 'ar', box = document.getElementById('resColors');
+  if (!box) return;
+  box.innerHTML = signProducts(_resSign).map(p =>
+    `<button class="res-color${p.colorName === _resColor ? ' on' : ''}" data-c="${esc(p.colorName)}" onclick="resPickColor('${esc(p.colorName).replace(/'/g, "\\'")}')" title="${esc(p.colorName)}">
+       <span class="rc-dot" style="background:${p.color}"></span>
+       <span class="rc-l">${ar ? colorAr(colorFamily(p.colorName)) : p.colorName}</span>
+     </button>`).join('');
+}
+function resPickColor(c) {
+  _resColor = c;
+  document.querySelectorAll('#resColors .res-color').forEach(b => b.classList.toggle('on', b.dataset.c === c));
+  renderResSizes(); renderResSummary();
+}
+function renderResSizes() {
+  const box = document.getElementById('resSizes');
+  if (!box) return;
+  const p = resProduct();
+  const sizes = (p && p.sizes) || SIZES;
+  if (!sizes.includes(_resSize)) _resSize = sizes[Math.min(1, sizes.length - 1)];
+  box.innerHTML = sizes.map(s =>
+    `<button class="res-size${s === _resSize ? ' on' : ''}" data-s="${s}" onclick="resPickSize('${s}')">${s}</button>`).join('');
+}
+function resPickSize(s) {
+  _resSize = s;
+  document.querySelectorAll('#resSizes .res-size').forEach(b => b.classList.toggle('on', b.dataset.s === s));
+  renderResSummary();
+}
+// The exact product for the current sign + colour
+function resProduct() { return signProducts(_resSign).find(p => p.colorName === _resColor) || signProducts(_resSign)[0] || null; }
+
+function renderResSummary() {
+  const ar = lang === 'ar', d = dropCfg(), p = resProduct(), box = document.getElementById('resSum');
+  if (!box || !p) return;
+  const dep = depositOf(p.price), rest = p.price - dep;
+  const dd = new Date(d.dropDate);
+  const dateTxt = dd.toLocaleDateString(ar ? 'ar-EG' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  box.innerHTML = `
+    <div class="res-sum-row"><span>${ar ? 'القطعة' : 'Piece'}</span><span>${ar ? p.ar : p.en}</span></div>
+    <div class="res-sum-row"><span>${ar ? 'المقاس' : 'Size'}</span><span>${_resSize}</span></div>
+    <div class="res-sum-row"><span>${ar ? 'السعر الكامل' : 'Full price'}</span><span>${p.price.toLocaleString()} EGP</span></div>
+    <div class="res-sum-row"><span>${ar ? 'الباقي عند الاستلام' : 'Balance on delivery'}</span><span>${rest.toLocaleString()} EGP</span></div>
+    <div class="res-sum-row big"><span>${ar ? `العربون الآن (${d.depositPct}٪)` : `Deposit now (${d.depositPct}%)`}</span><span>${dep.toLocaleString()} EGP</span></div>
+    <div class="res-sum-row"><span class="muted">${ar ? 'موعد النزول' : 'Drop date'}</span><span class="muted">${dateTxt}</span></div>`;
+  syncResConfirm();
+}
+function syncResConfirm() {
+  const btn = document.getElementById('resConfirm'), agree = document.getElementById('resAgree');
+  if (btn) btn.disabled = !(agree && agree.checked && resProduct() && _resSize);
+}
+
+function confirmReserve() {
+  const ar = lang === 'ar', p = resProduct(), d = dropCfg();
+  const agree = document.getElementById('resAgree');
+  if (!p || !_resSize) return;
+  if (!agree || !agree.checked) { toast(ar ? 'لازم توافق على شروط الحجز' : 'Please accept the reservation terms', 'error'); return; }
+  const dep = depositOf(p.price);
+  Cart.addPreorder(p, _resSize, dep, p.price, d.dropDate);
+  // remember locally so the progress bar reflects this browser's reservations
+  const mine = S.get('nasij_reservations', []);
+  mine.push({ id: p.id, size: _resSize, at: Date.now() });
+  S.set('nasij_reservations', mine);
+  updateDropProgress();
+  closeReserve();
+  toast(ar ? `تم الحجز ✓ — العربون ${dep.toLocaleString()} ج.م` : `Reserved ✓ — ${dep.toLocaleString()} EGP deposit`);
+  trackEvent('reserve_confirm', { item_id: p.id, size: _resSize, deposit: dep, currency: 'EGP' });
+  go('checkout');
+}
+
 /* ── STATE ── */
 let lang = localStorage.getItem('axia_lang') || 'en', mobOpen = false, currentProduct = null, currentGiftPg = null, pdImgIdx = 0, pdSize = null;
 
@@ -8378,9 +8864,23 @@ const Cart = {
     // data (missing imgs, outdated price, etc.) never breaks rendering.
     return raw.map(item => {
       const p = PRODUCTS.find(x => x.id === item.id);
+      // Pre-order lines keep their own deposit price + drop metadata — only refresh name/photo
+      if (item.preorder) {
+        return { ...item, en: p ? p.en : item.en, ar: p ? p.ar : item.ar, imgs: p ? p.imgs : (item.imgs || []) };
+      }
       if (p) return { id: p.id, en: p.en, ar: p.ar, price: p.price, imgs: p.imgs, qty: item.qty, size: item.size || (p.sizes ? p.sizes[Math.min(1, p.sizes.length - 1)] : null) };
       return { ...item, imgs: item.imgs || [] }; // fallback: keep original but guard imgs
     }).filter(i => i.qty > 0);
+  },
+  // Reserve a drop piece — `price` is the deposit paid now, `fullPrice` is settled on delivery
+  addPreorder(product, size, deposit, fullPrice, dropDate) {
+    let c = this.get();
+    const idx = c.findIndex(i => i.preorder && i.id === product.id && i.size === size);
+    if (idx > -1) c[idx].qty += 1;
+    else c.push({ id: product.id, en: product.en, ar: product.ar, price: deposit, fullPrice,
+                  preorder: true, dropDate, imgs: product.imgs, qty: 1, size });
+    S.set('axia_cart', c);
+    updateCartBadge();
   },
   add(product, qty = 1, size = null) {
     let c = this.get();
@@ -8435,7 +8935,7 @@ function getUTM() {
 
 const Orders = {
   async add(order) {
-    const items = order.items.map(i => ({ id: i.id, en: i.en, ar: i.ar, price: i.price, qty: i.qty, size: i.size || null }));
+    const items = order.items.map(i => ({ id: i.id, en: i.en, ar: i.ar, price: i.price, qty: i.qty, size: i.size || null, preorder: !!i.preorder, fullPrice: i.fullPrice || null, dropDate: i.dropDate || null }));
     const utm = getUTM();
     try {
       return await api('/api/orders', {
@@ -8648,6 +9148,7 @@ function go(pg) {
   if (mobOpen) toggleMob();
 
   if (pg === 'products')              renderProducts();
+  if (pg === 'drops')                 renderDrops(); else stopDropCountdown();
   if (pg === 'wishlist')              renderWishlist();
   if (pg === 'cart')                  renderCart();
   if (pg === 'checkout')              renderCheckout();
@@ -9017,7 +9518,8 @@ function productCard(p, idx, ar) {
   const catLabel = { hoodies: ar?'هوديز':'HOODIES', sweatshirts: ar?'سويت شيرت':'SWEATSHIRTS', jackets: ar?'جاكيتات':'JACKETS', shirts: ar?'قمصان':'SHIRTS', zodiac: ar?'الأبراج':'ZODIAC' };
   // Determine badge — uses global HOT_IDS / NEW_IDS constants
   let badge = '';
-  if (soldOut)                       badge = '<span class="pc-badge" style="background:#9A8B7D;">' + (ar?'نفد المخزون':'Sold Out') + '</span>';
+  if (isPreorder(p))                 badge = '<span class="pc-badge-pre">' + (ar?'حجز':'Pre-order') + '</span>';
+  else if (soldOut)                       badge = '<span class="pc-badge" style="background:#9A8B7D;">' + (ar?'نفد المخزون':'Sold Out') + '</span>';
   else if (featured)                 badge = '<span class="pc-badge" style="background:var(--rose);">★ ' + (ar?'مميز':'Featured') + '</span>';
   else if (HOT_IDS.includes(p.id))   badge = '<span class="pc-badge">' + (ar?'مميز':'HOT') + '</span>';
   else if (NEW_IDS.includes(p.id))   badge = '<span class="pc-badge new">' + (ar?'جديد':'NEW') + '</span>';
@@ -9057,8 +9559,8 @@ function productCard(p, idx, ar) {
               onclick="event.stopPropagation();toggleWish(${p.id})"
               aria-label="${ar?'إضافة للمفضلة':'Add to wishlist'}">${heartSvg}</button>
             <button class="full-icon"
-              onclick="event.stopPropagation();addToCart(${p.id})"
-              aria-label="${ar?'إضافة للسلة':'Add to cart'}">${cartSvg}</button>
+              onclick="event.stopPropagation();${isPreorder(p) ? `openReserve('${signOfProduct(p.id)}')` : `addToCart(${p.id})`}"
+              aria-label="${isPreorder(p) ? (ar?'احجز':'Reserve') : (ar?'إضافة للسلة':'Add to cart')}">${cartSvg}</button>
           </div>
         </div>
       </div>
@@ -9497,13 +9999,22 @@ function openProduct(id) {
       '<p class="pd-delivery-note">' + deliveryNote + '</p>' +
       (isSoldOut(p.id) ? '<div class="pd-soldout-banner">' + (ar ? '⊘ هذه القطعة نفدت مؤقتاً — تواصل معنا للحجز' : '⊘ This piece is temporarily sold out — contact us to reserve') + '</div>' : '') +
       '<div class="pd-btn-group" style="flex-direction:column;">' +
-        '<button class="btn-dark pd-add" onclick="addCurrentToCart()" style="width:100%;justify-content:center;" ' + (isSoldOut(p.id) ? 'disabled style="opacity:.55;cursor:not-allowed;width:100%;justify-content:center;"' : '') + '>' +
-          '<span>' + (isSoldOut(p.id) ? (ar ? 'نفد المخزون' : 'Sold Out') : (ar ? 'إضافة للسلة' : 'Add to Bag')) + '</span>' + (isSoldOut(p.id) ? '' : '<span>→</span>') +
-        '</button>' +
-        (!isSoldOut(p.id) ?
-          '<button class="btn-dark pd-checkout-btn" onclick="pdCheckout(' + p.id + ')" style="width:100%;justify-content:center;">' +
-            '<span>' + (ar ? 'الدفع الآن' : 'Checkout') + '</span><span>→</span>' +
-          '</button>' : '') +
+        (isPreorder(p)
+          /* Drop piece — reservation only, no direct purchase */
+          ? '<button class="btn-dark pd-add" onclick="openReserve(\'' + signOfProduct(p.id) + '\')" style="width:100%;justify-content:center;">' +
+              '<span>' + (ar ? 'احجز · عربون ' + depositOf(p.price).toLocaleString() + ' ج.م' : 'Reserve · ' + depositOf(p.price).toLocaleString() + ' EGP deposit') + '</span><span>→</span>' +
+            '</button>' +
+            '<button class="btn-dark pd-checkout-btn" onclick="go(\'drops\')" style="width:100%;justify-content:center;background:transparent;color:var(--ink);border:1px solid var(--border);">' +
+              '<span>' + (ar ? 'تفاصيل الدروب' : 'Drop details') + '</span><span>→</span>' +
+            '</button>'
+          : '<button class="btn-dark pd-add" onclick="addCurrentToCart()" style="width:100%;justify-content:center;" ' + (isSoldOut(p.id) ? 'disabled style="opacity:.55;cursor:not-allowed;width:100%;justify-content:center;"' : '') + '>' +
+              '<span>' + (isSoldOut(p.id) ? (ar ? 'نفد المخزون' : 'Sold Out') : (ar ? 'إضافة للسلة' : 'Add to Bag')) + '</span>' + (isSoldOut(p.id) ? '' : '<span>→</span>') +
+            '</button>' +
+            (!isSoldOut(p.id) ?
+              '<button class="btn-dark pd-checkout-btn" onclick="pdCheckout(' + p.id + ')" style="width:100%;justify-content:center;">' +
+                '<span>' + (ar ? 'الدفع الآن' : 'Checkout') + '</span><span>→</span>' +
+              '</button>' : '')
+        ) +
       '</div>' +
       '<div class="pd-trust-bar">' +
         '<span class="pd-trust-badge">' +
@@ -9778,7 +10289,8 @@ function renderCart() {
             <img class="c-item-img" src="${item.imgs[0]}" alt="${ar?item.ar:item.en}" loading="lazy" decoding="async">
             <div>
               <p class="c-item-name">${ar ? item.ar : item.en}</p>
-              <p class="c-item-price">${item.price.toLocaleString()} EGP</p>
+              <p class="c-item-price">${item.price.toLocaleString()} EGP${item.preorder ? ` <span style="font-size:.62rem;background:var(--ink);color:var(--cream);padding:.14rem .5rem;border-radius:20px;letter-spacing:.08em;vertical-align:middle;">${ar?'عربون':'DEPOSIT'}</span>` : ''}</p>
+              ${item.preorder ? `<p class="c-item-meta" style="color:var(--ink-s);font-size:.68rem;">${ar?`حجز · السعر الكامل ${(item.fullPrice||0).toLocaleString()} ج.م — الباقي عند الاستلام`:`Pre-order · full price ${(item.fullPrice||0).toLocaleString()} EGP — balance on delivery`}</p>` : ''}
               ${pp.colorName ? `<p class="c-item-meta">${ar?'اللون':'Color'}: <b>${ar?colorAr(colorFamily(pp.colorName)):pp.colorName}</b></p>` : ''}
               ${sizes ? `<p class="c-item-size">${ar?'المقاس':'Size'}: <select class="c-size-sel" onchange="Cart.setSize(${item.id}, this.value);renderCart()">${sizes.map(s=>`<option value="${s}"${s===item.size?' selected':''}>${s}</option>`).join('')}</select></p>` : ''}
               <p class="c-item-meta" style="color:var(--ink-s);font-size:.66rem;">${ar?'كود المنتج':'Item Code'}: ${item.id}</p>
@@ -9981,7 +10493,7 @@ function coSummaryHtml(opts) {
         <span>${ar?'طلبك مؤهل للتوصيل المجاني ✓':'Your order qualifies for <b>Free Delivery</b> ✓'}</span>
       </div>
       <div class="co-sum-items">
-        ${items.map(it => `<div class="co-sum-item"><img src="${(it.imgs&&it.imgs[0])||''}" alt="" loading="lazy"><div><div class="nm">${ar?it.ar:it.en}</div><div class="mt">${it.size?(ar?'مقاس ':'Size ')+it.size:''}${it.qty>1?((it.size?' · ':'')+'×'+it.qty):''}</div></div><div class="pr">${(it.price*it.qty).toLocaleString()} EGP</div></div>`).join('')}
+        ${items.map(it => `<div class="co-sum-item"><img src="${(it.imgs&&it.imgs[0])||''}" alt="" loading="lazy"><div><div class="nm">${ar?it.ar:it.en}</div><div class="mt">${it.size?(ar?'مقاس ':'Size ')+it.size:''}${it.qty>1?((it.size?' · ':'')+'×'+it.qty):''}${it.preorder?` · <strong>${ar?'عربون':'deposit'}</strong>`:''}</div></div><div class="pr">${(it.price*it.qty).toLocaleString()} EGP</div></div>`).join('')}
       </div>
       ${opts.showPromo ? `<div style="margin:1rem 0 .2rem;">
         <div class="promo-row"><input type="text" id="co-promo" placeholder="${ar?'كود الخصم':'Promo code'}" style="text-transform:uppercase;letter-spacing:.1em;" oninput="this.value=this.value.toUpperCase()"><button class="promo-apply" onclick="applyPromo()">${ar?'تطبيق':'Apply'}</button></div>
@@ -9993,6 +10505,15 @@ function coSummaryHtml(opts) {
       <div class="co-sum-row"><span>${ar?'التوصيل':'Delivery'}</span><span style="color:#3f6b4a;">${ar?'مجاني':'Free'}</span></div>
       <div class="co-sum-row grand"><span>${ar?'الإجمالي':'Order Total'}</span><span id="co-grand-val">${final.toLocaleString()} EGP</span></div>
       <div class="co-sum-note"><span>${ar?'بدون التوصيل':'Excluding delivery'}</span><span>${ar?'شامل الضريبة':'Inclusive of VAT'}</span></div>
+      ${(() => {
+        const pre = items.filter(i => i.preorder);
+        if (!pre.length) return '';
+        const bal = pre.reduce((s,i) => s + ((i.fullPrice||0) - i.price) * i.qty, 0);
+        return `<div class="free-del-banner" style="margin:.9rem 0 0;background:rgba(201,168,156,.14);border-color:rgba(201,168,156,.4);color:var(--ink-m);">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>${ar ? `ده عربون حجز — الباقي <b>${bal.toLocaleString()} ج.م</b> بيتدفع عند الاستلام.` : `This is a reservation deposit — the remaining <b>${bal.toLocaleString()} EGP</b> is paid on delivery.`}</span>
+        </div>`;
+      })()}
       ${opts.cta ? `<button class="btn-dark co-secure-btn" onclick="${opts.cta.onclick}">
         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-end:.45rem;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <span>${opts.cta.label}</span>
@@ -15241,7 +15762,7 @@ if ('serviceWorker' in navigator) {
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script defer src="firebase-config.js?v=9"></script>
-<script defer src="cloud.js?v=9"></script>
+<script defer src="firebase-config.js?v=10"></script>
+<script defer src="cloud.js?v=10"></script>
 </body>
 </html>

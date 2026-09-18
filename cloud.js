@@ -137,6 +137,15 @@
     DEFAULT_CATS.forEach(dc => { if (!CONF.categories.some(c => (c.id || c) === dc.id)) CONF.categories.push(Object.assign({}, dc)); });
     window.NASIJ_CATS = CONF.categories;
     window.NASIJ_CONF = CONF;
+    // Publish how many pieces have actually been reserved so the drop progress bar is real
+    (async () => {
+      try {
+        const os = await DB.list('orders');
+        window.NASIJ_DROP_COUNT = os.reduce((s, o) =>
+          s + (o.items || []).filter(i => i.preorder).reduce((n, i) => n + (i.qty || 1), 0), 0);
+        if (document.getElementById('page-drops')?.classList.contains('active')) window.updateDropProgress && window.updateDropProgress();
+      } catch (e) {}
+    })();
     try {
       if (window._soldOutIds) { window._soldOutIds.clear(); (CONF.soldOut || []).forEach(id => window._soldOutIds.add(+id)); }
       if (window._featuredIds) { window._featuredIds.clear(); (CONF.featured || []).forEach(id => window._featuredIds.add(+id)); }
@@ -460,6 +469,7 @@
     { id: 'categories', en: 'Categories', ar: 'الفئات',     svg: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>' },
     { id: 'promos',     en: 'Promo Codes',ar: 'أكواد الخصم',svg: '<path d="M20 12l-8 8-9-9V4h7z"/><circle cx="7.5" cy="7.5" r="1.5"/>' },
     { id: 'sections',   en: 'Sections',   ar: 'أقسام الموقع',svg: '<rect x="3" y="4" width="18" height="4"/><rect x="3" y="10" width="18" height="4"/><rect x="3" y="16" width="18" height="4"/>' },
+    { id: 'drop',       en: 'Drop / Pre-order', ar: 'الدروب والحجز', svg: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>' },
     { id: 'staff',      en: 'Staff & Roles', ar: 'الموظفون', svg: '<circle cx="9" cy="8" r="3"/><path d="M3 21v-1a6 6 0 0 1 12 0v1"/><path d="M17 11a3 3 0 1 0-2-5"/>', super: true },
     { id: 'settings',   en: 'Settings',   ar: 'الإعدادات',  svg: '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 0 0-1.7-1L14.5 2h-5l-.4 2.4a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L3.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.3-1a7 7 0 0 0 1.7 1L9.5 22h5l.4-2.4a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/>', super: true }
   ];
@@ -527,7 +537,7 @@
 
   /* ── Permission gating: show a limited admin only what their role allows ── */
   const NAV_PERM = { analytics: 'orders', orders: 'orders', products: 'products', categories: 'products',
-                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos' };
+                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos', drop: 'products' };
   const NAV_SUPER = ['users', 'staff', 'settings'];         // owner-only areas
   function setNavVis(id, show) {
     const a = document.getElementById('anav-' + id); if (a) a.style.display = show ? '' : 'none';
@@ -567,7 +577,7 @@
   function wrapShowAdminSec() {
     if (window.__nasijSASWrapped || !window.showAdminSec) return;
     const _sas = window.showAdminSec;
-    const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings };
+    const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings, drop: renderDrop };
     window.showAdminSec = function (sec, el) {
       // Permission guard: owner-only areas + per-permission areas for limited admins
       if (!window.NASIJ_isSuper()) {
@@ -579,7 +589,7 @@
         }
       }
       _sas(sec, el);
-      const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'] };
+      const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'], drop: ['الدروب والحجز', 'Drop & Pre-orders'] };
       if (titles[sec]) { const t = document.getElementById('adm-page-title'); if (t) t.textContent = tA(titles[sec][0], titles[sec][1]); }
       if (mine[sec]) mine[sec]();
       if (sec === 'orders') setTimeout(renderCloudOrders, 30);
@@ -944,6 +954,7 @@
   function renderCategories() { window.__nzCategories && window.__nzCategories(); }
   function renderPromos() { window.__nzPromos && window.__nzPromos(); }
   function renderSections() { window.__nzSections && window.__nzSections(); }
+  function renderDrop()     { window.__nzDrop && window.__nzDrop(); }
   function renderStaff() { window.__nzStaff && window.__nzStaff(); }
   function renderSettings() { window.__nzSettings && window.__nzSettings(); }
 })();
@@ -960,6 +971,7 @@
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const box = id => document.getElementById('nz-' + id);
   const sub = (t) => `<p class="admin-page-sub">${t}</p>`;
+  const EGP = n => (Number(n) || 0).toLocaleString() + ' EGP';
 
   /* ── CATEGORIES ── */
   window.__nzCategories = function () {
@@ -1042,6 +1054,108 @@
     collectionCta: ['بانر المجموعة', 'Collection CTA'], instagram: ['إنستجرام/UGC', 'Instagram / UGC'],
     testimonials: ['آراء العملاء', 'Testimonials']
   };
+  /* ── DROP / PRE-ORDER (الدروب والحجز) ── */
+  const DROP_FALLBACK = { dropDate: '2026-10-23T20:00:00', depositPct: 20, goal: 120, seed: 0, cancelDays: 7, active: true,
+                          en: 'The Zodiac Collection', ar: 'كولكشن الأبراج',
+                          subEn: 'Reserve your sign before it drops.', subAr: 'احجز برجك قبل ما ينزل.' };
+  const dconf = () => Object.assign({}, DROP_FALLBACK, conf().drop || {});
+
+  window.__nzDrop = async function () {
+    const b = box('drop'); if (!b) return;
+    const d = dconf();
+    // local datetime value for the input (strip seconds/zone)
+    const dtVal = (() => { try { const x = new Date(d.dropDate); const p = n => String(n).padStart(2, '0');
+      return `${x.getFullYear()}-${p(x.getMonth() + 1)}-${p(x.getDate())}T${p(x.getHours())}:${p(x.getMinutes())}`; } catch (e) { return ''; } })();
+
+    // Reservations placed so far (orders that contain a pre-order line)
+    let orders = [];
+    try { orders = await DB.list('orders'); } catch (e) {}
+    const resOrders = orders.filter(o => (o.items || []).some(i => i.preorder));
+    const resCount  = resOrders.reduce((s, o) => s + (o.items || []).filter(i => i.preorder).reduce((n, i) => n + (i.qty || 1), 0), 0);
+    const depTaken  = resOrders.reduce((s, o) => s + (o.items || []).filter(i => i.preorder).reduce((n, i) => n + (i.price || 0) * (i.qty || 1), 0), 0);
+    const balDue    = resOrders.reduce((s, o) => s + (o.items || []).filter(i => i.preorder).reduce((n, i) => n + (((i.fullPrice || 0) - (i.price || 0)) * (i.qty || 1)), 0), 0);
+    const shown     = (d.seed || 0) + resCount;
+    const pct       = Math.min(100, Math.round(shown / Math.max(1, d.goal) * 100));
+
+    const f = (id, lbl, val, type, attrs) => `<div class="nz-field"><label>${lbl}</label><input id="nz-drop-${id}" type="${type || 'text'}" value="${esc(val == null ? '' : val)}" ${attrs || ''}></div>`;
+
+    b.innerHTML = sub(tA('اتحكّم في الدروب: تاريخ النزول، نسبة العربون، هدف الحجوزات، وشروط الإلغاء.',
+                         'Control the drop: launch date, deposit %, reservation goal and cancellation window.')) +
+      `<div class="nz-stat-grid">
+        <div class="nz-stat"><div class="lbl">${tA('الحجوزات', 'Reservations')}</div><div class="val">${resCount}</div><div class="sub">${tA('المعروض على الموقع', 'shown on site')}: ${shown} / ${d.goal} · ${pct}%</div></div>
+        <div class="nz-stat"><div class="lbl">${tA('عرابين محصّلة', 'Deposits collected')}</div><div class="val">${EGP(depTaken)}</div></div>
+        <div class="nz-stat"><div class="lbl">${tA('المتبقي عند الاستلام', 'Balance on delivery')}</div><div class="val">${EGP(balDue)}</div></div>
+        <div class="nz-stat"><div class="lbl">${tA('الحالة', 'Status')}</div><div class="val" style="font-size:1.1rem">${d.active ? tA('مفتوح', 'Open') : tA('مقفول', 'Closed')}</div></div>
+      </div>
+
+      <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1.4rem;max-width:720px">
+        <h3 style="font-family:var(--fh);font-size:1.15rem;margin:0 0 .9rem">${tA('إعدادات الدروب', 'Drop settings')}</h3>
+        <div class="nz-grid2">
+          ${f('date', tA('تاريخ ووقت النزول', 'Drop date & time'), dtVal, 'datetime-local')}
+          ${f('pct', tA('نسبة العربون %', 'Deposit %'), d.depositPct, 'number', 'min="1" max="100"')}
+        </div>
+        <div class="nz-grid2">
+          ${f('goal', tA('هدف الحجوزات', 'Reservation goal'), d.goal, 'number', 'min="1"')}
+          ${f('seed', tA('رقم بداية العدّاد', 'Counter head-start'), d.seed, 'number', 'min="0"')}
+        </div>
+        <div class="nz-grid2">
+          ${f('cancel', tA('أيام منع الاسترداد قبل الاستلام', 'No-refund window (days)'), d.cancelDays, 'number', 'min="0"')}
+          <div class="nz-field"><label>${tA('حالة الحجز', 'Reservations')}</label>
+            <select id="nz-drop-active">
+              <option value="1"${d.active ? ' selected' : ''}>${tA('مفتوح', 'Open')}</option>
+              <option value="0"${!d.active ? ' selected' : ''}>${tA('مقفول', 'Closed')}</option>
+            </select></div>
+        </div>
+        <div class="nz-grid2">
+          ${f('en', tA('اسم الدروب (EN)', 'Drop name (EN)'), d.en)}
+          ${f('ar', tA('اسم الدروب (AR)', 'Drop name (AR)'), d.ar)}
+        </div>
+        <div class="nz-grid2">
+          ${f('subEn', tA('السطر التحتاني (EN)', 'Subtitle (EN)'), d.subEn)}
+          ${f('subAr', tA('السطر التحتاني (AR)', 'Subtitle (AR)'), d.subAr)}
+        </div>
+        <div class="nz-actions"><button class="nz-btn" onclick="NASIJ_saveDrop()">${tA('حفظ إعدادات الدروب', 'Save drop settings')}</button></div>
+        <p style="font-size:.66rem;color:var(--ink-s);margin:.4rem 0 0">${tA('«رقم بداية العدّاد» بيتضاف للحجوزات الحقيقية على الشريط — سيبه صفر لو عايز أرقام حقيقية بس.', 'The head-start is added to real reservations on the progress bar — leave it at 0 for real numbers only.')}</p>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header"><span class="admin-table-title">${tA('الحجوزات', 'RESERVATIONS')}</span></div>
+        <table class="atbl"><thead><tr>
+          <th>${tA('رقم', 'ID')}</th><th>${tA('العميل', 'Customer')}</th><th>${tA('القطعة', 'Piece')}</th>
+          <th>${tA('المقاس', 'Size')}</th><th>${tA('العربون', 'Deposit')}</th><th>${tA('المتبقي', 'Balance')}</th>
+        </tr></thead><tbody>${
+          resOrders.length ? resOrders.map(o => (o.items || []).filter(i => i.preorder).map(i => `<tr>
+            <td style="font-size:.66rem;color:var(--ink-s)">${esc(String(o.id).slice(0, 10))}</td>
+            <td>${esc(o.name || '—')}<br><span style="font-size:.64rem;color:var(--ink-s)">${esc(o.phone || '')}</span></td>
+            <td style="font-size:.74rem">${esc((ar() ? i.ar : i.en) || '')}</td>
+            <td>${esc(i.size || '—')}</td>
+            <td>${EGP((i.price || 0) * (i.qty || 1))}</td>
+            <td>${EGP(((i.fullPrice || 0) - (i.price || 0)) * (i.qty || 1))}</td>
+          </tr>`).join('')).join('')
+          : `<tr><td colspan="6" style="color:var(--ink-s);padding:1rem">${tA('لا حجوزات بعد.', 'No reservations yet.')}</td></tr>`
+        }</tbody></table>
+      </div>`;
+  };
+
+  window.NASIJ_saveDrop = function () {
+    const v = id => (document.getElementById('nz-drop-' + id) || {}).value;
+    const c = conf();
+    c.drop = Object.assign({}, c.drop || {}, {
+      dropDate:   v('date') ? new Date(v('date')).toISOString() : dconf().dropDate,
+      depositPct: Math.max(1, Math.min(100, +v('pct') || 20)),
+      goal:       Math.max(1, +v('goal') || 120),
+      seed:       Math.max(0, +v('seed') || 0),
+      cancelDays: Math.max(0, +v('cancel') || 7),
+      active:     v('active') === '1',
+      en: v('en'), ar: v('ar'), subEn: v('subEn'), subAr: v('subAr')
+    });
+    saveNow();
+    try { window.NASIJ_reRenderAll && window.NASIJ_reRenderAll(); } catch (e) {}
+    try { if (document.getElementById('page-drops')?.classList.contains('active')) window.renderDrops && window.renderDrops(); } catch (e) {}
+    toast(tA('تم حفظ إعدادات الدروب ✓', 'Drop settings saved ✓'));
+    window.__nzDrop();
+  };
+
   window.__nzSections = function () {
     const b = box('sections'); if (!b) return;
     const sec = conf().sections || {};
