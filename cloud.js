@@ -25,12 +25,26 @@
   }));
   window.BASE_PRODUCTS = BASE_PRODUCTS;
 
+  /* Store categories. `hidden` pulls the category out of the whole storefront;
+     the tile fields drive the homepage "Shop by category" block; `collection`
+     puts it under Collections instead of Apparel in the shop sidebar.
+     All of it is editable from Dashboard → Categories.                      */
+  const CATS_SEED_V = 2;   // bump to re-seed browsers that stored an older list
   const DEFAULT_CATS = [
-    { id: 'hoodies',     en: 'Hoodies',     ar: 'هوديز',     hidden: false },
-    { id: 'sweatshirts', en: 'Sweatshirts', ar: 'سويت شيرت', hidden: false },
-    { id: 'jackets',     en: 'Jackets',     ar: 'جاكيتات',   hidden: true },
-    { id: 'shirts',      en: 'Shirts',      ar: 'قمصان',     hidden: false },
-    { id: 'zodiac',      en: 'Zodiac',      ar: 'الأبراج',   hidden: false }
+    { id: 'zodiac',      en: 'Zodiac',      ar: 'الأبراج',     hidden: false, collection: true,
+      tileImg: 'images/zodiac/leo-black.jpg',      tilePos: 'center 30%',
+      subEn: 'Twelve signs. Five colours.',        subAr: '١٢ برج. ٥ ألوان.' },
+    { id: 'sweatpants',  en: 'Sweatpants',  ar: 'بناطيل',      hidden: false,
+      tileImg: 'images/sweatpants/black.jpg',      tilePos: 'center 40%',
+      subEn: 'Wide-leg. Heavyweight.',             subAr: 'واسع. تقيل.' },
+    { id: 'hoodies',     en: 'Hoodies',     ar: 'هوديز',       hidden: true,
+      tileImg: 'images/products/p24.jpeg', tilePos: 'center 12%', subEn: 'Heavyweight. Oversized.', subAr: 'تقيل. أوفرسايز.' },
+    { id: 'sweatshirts', en: 'Sweatshirts', ar: 'سويت شيرت',   hidden: true,
+      tileImg: 'images/products/p13.jpeg', tilePos: 'center 12%', subEn: 'Crewnecks. Knits.',       subAr: 'كرو. تريكو.' },
+    { id: 'jackets',     en: 'Jackets',     ar: 'جاكيتات',     hidden: true,
+      tileImg: 'images/products/p01.jpeg', tilePos: 'center 12%', subEn: 'Bombers. Denim.',         subAr: 'بومبر. دنيم.' },
+    { id: 'shirts',      en: 'Shirts',      ar: 'قمصان',       hidden: true,
+      tileImg: 'images/products/p31.jpeg', tilePos: 'center 12%', subEn: 'Overshirts. Linen.',      subAr: 'أوفرشيرت. كتان.' }
   ];
   let CONF = {
     colors: {}, content: {}, heroSlides: {}, pageBanners: {},
@@ -133,8 +147,27 @@
   function applyConfToApp() {
     window.__nasijApplying = true;
     CONF.categories = (CONF.categories && CONF.categories.length) ? CONF.categories : DEFAULT_CATS.slice();
-    // Ensure any newly-shipped default category (e.g. Zodiac) is present even in older stored configs
-    DEFAULT_CATS.forEach(dc => { if (!CONF.categories.some(c => (c.id || c) === dc.id)) CONF.categories.push(Object.assign({}, dc)); });
+    // A shipped change to the default category list (new category, new default
+    // visibility, new tile art) is pushed once per version to browsers holding
+    // an older stored config; after that the owner's own edits stand.
+    // The marker lives inside CONF (not localStorage) so it travels with the
+    // stored/cloud config — otherwise a later apply() would re-read the old
+    // category list while the marker already said "done".
+    let _reseeded = false;
+    if ((CONF.catsSeedV || 0) < CATS_SEED_V) {
+      CONF.categories = DEFAULT_CATS.map(c => Object.assign({}, c));
+      CONF.catsSeedV = CATS_SEED_V;
+      _reseeded = true;
+    } else {
+      // Ensure any newly-shipped default category is present even in older stored configs
+      DEFAULT_CATS.forEach(dc => { if (!CONF.categories.some(c => (c.id || c) === dc.id)) CONF.categories.push(Object.assign({}, dc)); });
+      // …and backfill tile metadata the owner has never touched
+      CONF.categories.forEach(c => {
+        const dc = DEFAULT_CATS.find(d => d.id === c.id); if (!dc) return;
+        ['tileImg', 'tilePos', 'subEn', 'subAr'].forEach(k => { if (c[k] == null) c[k] = dc[k]; });
+        if (c.collection == null && dc.collection != null) c.collection = dc.collection;
+      });
+    }
     window.NASIJ_CATS = CONF.categories;
     window.NASIJ_CONF = CONF;
     // Publish how many pieces have actually been reserved so the drop progress bar is real
@@ -166,10 +199,12 @@
     try { if (typeof loadSiteCustomizations === 'function') loadSiteCustomizations(); } catch (e) {}
     try { window.NASIJ_applySettings && window.NASIJ_applySettings(); } catch (e) {}
     try { window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); } catch (e) {}
-    try { window.NASIJ_applySections && window.NASIJ_applySections(); } catch (e) {}
     try { window.NASIJ_applyVisibility && window.NASIJ_applyVisibility(); } catch (e) {}
+    try { window.NASIJ_applySectionOrder && window.NASIJ_applySectionOrder(); } catch (e) {}
+    try { window.NASIJ_applySections && window.NASIJ_applySections(); } catch (e) {}
     reRenderAll();
     window.__nasijApplying = false;
+    if (_reseeded) { try { window.NASIJ_saveConf && window.NASIJ_saveConf(true); } catch (e) {} }
   }
   function reRenderAll() {
     try {
@@ -177,6 +212,8 @@
       if (typeof renderNewArrivals === 'function') renderNewArrivals();
       if (typeof renderNewEdit === 'function') renderNewEdit();
       if (typeof renderGoldEdit === 'function') renderGoldEdit();
+      if (typeof renderZodiacFeature === 'function') renderZodiacFeature();
+      if (typeof renderCatTiles === 'function') renderCatTiles();
       const pv = document.getElementById('page-products');
       if (pv && pv.classList.contains('active') && typeof renderProducts === 'function') renderProducts('all');
       if (typeof applyLang === 'function') applyLang();
@@ -387,7 +424,28 @@
       html += `<button class="filter-btn" onclick="filterProd('${c.id}',this)" data-en="${(c.en || '').replace(/"/g, '&quot;')}" data-ar="${(c.ar || '').replace(/"/g, '&quot;')}" aria-pressed="false" data-cat="${c.id}">${ar ? (c.ar || c.en) : (c.en || c.ar)}</button>`;
     });
     row.innerHTML = html;
+    rebuildShopSidebar(cats, ar);
   };
+  /* The shop page's left rail mirrors the same list: plain categories land under
+     Apparel, ones flagged `collection` under Collections. */
+  function rebuildShopSidebar(cats, ar) {
+    const side = document.getElementById('pcSidebar');
+    if (!side) return;
+    const groups = side.querySelectorAll('.pc-side-group');
+    const link = c => `<a class="pc-side-link" data-cat="${c.id}" onclick="filterProd('${c.id}',null)" data-en="${(c.en || '').replace(/"/g, '&quot;')}" data-ar="${(c.ar || '').replace(/"/g, '&quot;')}">${ar ? (c.ar || c.en) : (c.en || c.ar)}</a>`;
+    const apparel = cats.filter(c => !c.collection), coll = cats.filter(c => c.collection);
+    if (groups[0]) {
+      const head = groups[0].querySelector('.pc-side-head');
+      groups[0].innerHTML = (head ? head.outerHTML : '') +
+        `<a class="pc-side-link active" data-cat="all" onclick="filterProd('all',null)" data-en="All Products" data-ar="كل المنتجات">${ar ? 'كل المنتجات' : 'All Products'}</a>` +
+        apparel.map(link).join('');
+    }
+    if (groups[1]) {
+      const head = groups[1].querySelector('.pc-side-head');
+      groups[1].style.display = coll.length ? '' : 'none';
+      groups[1].innerHTML = (head ? head.outerHTML : '') + coll.map(link).join('');
+    }
+  }
 
   /* ── Page & category visibility (dashboard-controlled) ──
      Hiding a page pulls every link to it out of the nav/footer/menus and blocks
@@ -469,7 +527,53 @@
     const sec = conf().sections || {};
     Object.entries(SECTION_MAP).forEach(([key, sel]) => {
       const off = sec[key] === false;
-      document.querySelectorAll(sel).forEach(el => { el.style.display = off ? 'none' : ''; });
+      document.querySelectorAll(sel).forEach(el => {
+        // a block that rendered nothing stays collapsed even when switched on
+        el.style.display = (off || el.dataset.nzEmpty === '1') ? 'none' : '';
+      });
+    });
+  };
+
+  /* ── Homepage section ORDER (dashboard-controlled) ──
+     The shipped markup order is the default; saving an order in the dashboard
+     re-stacks the real <section> nodes inside #page-home to match.          */
+  const ORDERABLE = ['zodiacFeature', 'categories', 'bestsellers', 'cairoEdit', 'newEdit', 'newArrivals', 'instagram', 'testimonials', 'collectionCta'];
+  window.NASIJ_ORDERABLE = ORDERABLE;
+  function sectionNode(key) {
+    const sel = SECTION_MAP[key]; if (!sel) return null;
+    const home = document.getElementById('page-home'); if (!home) return null;
+    for (const s of sel.split(',')) {
+      const el = home.querySelector(s.trim());
+      if (el) return el.closest('section') || el;
+    }
+    return null;
+  }
+  // Default order = the order the sections physically appear in the markup.
+  window.NASIJ_defaultSectionOrder = function () {
+    const nodes = ORDERABLE.map(k => ({ k, el: sectionNode(k) })).filter(x => x.el);
+    const all = [...(document.getElementById('page-home') || document).querySelectorAll('section')];
+    nodes.sort((a, b) => all.indexOf(a.el) - all.indexOf(b.el));
+    return nodes.map(x => x.k);
+  };
+  window.NASIJ_sectionOrder = function () {
+    const saved = (conf().sectionOrder || []).filter(k => ORDERABLE.indexOf(k) > -1);
+    const def = window.NASIJ_defaultSectionOrder();
+    return saved.length ? saved.concat(def.filter(k => saved.indexOf(k) < 0)) : def;
+  };
+  window.NASIJ_applySectionOrder = function () {
+    const order = window.NASIJ_sectionOrder();
+    const nodes = order.map(sectionNode).filter(Boolean);
+    if (nodes.length < 2) return;
+    const home = document.getElementById('page-home'); if (!home) return;
+    const slots = [...home.children];
+    // Re-stack the group starting at whichever of them sits earliest already,
+    // so the blocks around it (hero, footer) never move.
+    const ref = nodes.reduce((a, b) => (slots.indexOf(a) <= slots.indexOf(b) ? a : b));
+    let prev = null;
+    nodes.forEach(el => {
+      if (!prev) { if (el !== ref) ref.before(el); }
+      else if (el !== prev.nextElementSibling) prev.after(el);
+      prev = el;
     });
   };
 })();
@@ -1047,14 +1151,23 @@
   window.__nzCategories = function () {
     const b = box('categories'); if (!b) return;
     const cats = conf().categories || [];
-    b.innerHTML = sub(tA('أضف/عدّل/امسح فئات المتجر. تظهر في فلتر المنتجات.', 'Add, edit, remove store categories. They appear in the product filter.')) +
-      `<div class="admin-table-wrap"><table class="atbl"><thead><tr><th>${tA('الاسم (EN)', 'Name (EN)')}</th><th>${tA('الاسم (AR)', 'Name (AR)')}</th><th>ID</th><th>${tA('ظاهر', 'Visible')}</th><th>${tA('ترتيب', 'Order')}</th><th></th></tr></thead><tbody>` +
+    const inp = (v, i, k, w) => `<input value="${esc(v)}" onchange="NASIJ_catEdit(${i},'${k}',this.value)" style="width:${w}px;padding:.3rem;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--ink)">`;
+    b.innerHTML = sub(tA('أضف/عدّل/امسح فئات المتجر. الفئة الظاهرة بتبان في الفلتر وفي قسم «التسوّق حسب الفئة» بالرئيسية — والصورة والوصف دول بتوعها هناك.',
+                         'Add, edit and remove store categories. A visible category appears in the shop filter and as a tile in the homepage "Shop by category" block — the image and blurb below are that tile.')) +
+      `<div class="admin-table-wrap"><table class="atbl"><thead><tr><th>${tA('الاسم (EN)', 'Name (EN)')}</th><th>${tA('الاسم (AR)', 'Name (AR)')}</th><th>ID</th><th>${tA('صورة البلاطة', 'Tile image')}</th><th>${tA('وصف (EN)', 'Blurb (EN)')}</th><th>${tA('وصف (AR)', 'Blurb (AR)')}</th><th>${tA('مجموعة', 'Collection')}</th><th>${tA('ظاهر', 'Visible')}</th><th>${tA('ترتيب', 'Order')}</th><th></th></tr></thead><tbody>` +
       cats.map((c, i) => `<tr>
-        <td><input value="${esc(c.en)}" onchange="NASIJ_catEdit(${i},'en',this.value)" style="width:120px;padding:.3rem;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--ink)"></td>
-        <td><input value="${esc(c.ar)}" onchange="NASIJ_catEdit(${i},'ar',this.value)" style="width:120px;padding:.3rem;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--ink)"></td>
+        <td>${inp(c.en, i, 'en', 110)}</td>
+        <td>${inp(c.ar, i, 'ar', 110)}</td>
         <td style="font-size:.66rem;color:var(--ink-s)">${esc(c.id)}</td>
-        <td><button class="edit-ico-btn" onclick="NASIJ_catEdit(${i},'hidden',${!c.hidden})">${c.hidden ? tA('مخفي', 'Hidden') : tA('ظاهر', 'Visible')}</button></td>
-        <td><button class="edit-ico-btn" onclick="NASIJ_catMove(${i},-1)">↑</button> <button class="edit-ico-btn" onclick="NASIJ_catMove(${i},1)">↓</button></td>
+        <td style="white-space:nowrap">
+          ${c.tileImg ? `<img src="${esc(c.tileImg)}" alt="" style="width:30px;height:38px;object-fit:cover;border-radius:3px;vertical-align:middle;margin-inline-end:.4rem">` : ''}
+          ${inp(c.tileImg, i, 'tileImg', 150)}
+        </td>
+        <td>${inp(c.subEn, i, 'subEn', 140)}</td>
+        <td>${inp(c.subAr, i, 'subAr', 140)}</td>
+        <td><button class="edit-ico-btn" onclick="NASIJ_catEdit(${i},'collection',${!c.collection})">${c.collection ? tA('مجموعة', 'Collection') : tA('ملابس', 'Apparel')}</button></td>
+        <td><button class="edit-ico-btn" style="background:${c.hidden ? 'rgba(220,38,38,.08)' : 'rgba(16,185,129,.12)'};color:${c.hidden ? '#DC2626' : '#0E9F6E'}" onclick="NASIJ_catEdit(${i},'hidden',${!c.hidden})">${c.hidden ? '✕ ' + tA('مخفي', 'Hidden') : '✓ ' + tA('ظاهر', 'Visible')}</button></td>
+        <td style="white-space:nowrap"><button class="edit-ico-btn" onclick="NASIJ_catMove(${i},-1)">↑</button> <button class="edit-ico-btn" onclick="NASIJ_catMove(${i},1)">↓</button></td>
         <td><button class="edit-ico-btn" style="color:#DC2626" onclick="NASIJ_catDel(${i})">✕</button></td>
       </tr>`).join('') +
       `</tbody></table></div>
@@ -1062,7 +1175,7 @@
   };
   const slug = s => (s || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || ('cat' + Date.now());
   window.NASIJ_catEdit = function (i, k, v) { conf().categories[i][k] = v; saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.NASIJ_applyVisibility && window.NASIJ_applyVisibility(); window.NASIJ_reRenderAll(); window.__nzCategories(); };
-  window.NASIJ_catMove = function (i, d) { const a = conf().categories; const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.__nzCategories(); };
+  window.NASIJ_catMove = function (i, d) { const a = conf().categories; const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.NASIJ_reRenderAll(); window.__nzCategories(); };
   window.NASIJ_catDel = function (i) { if (!confirm(tA('حذف الفئة؟', 'Delete category?'))) return; conf().categories.splice(i, 1); saveNow(); window.NASIJ_rebuildFilters && window.NASIJ_rebuildFilters(); window.NASIJ_reRenderAll(); window.__nzCategories(); };
   window.NASIJ_catAdd = function () {
     const en = (document.getElementById('nz-newcat-en').value || '').trim();
@@ -1275,12 +1388,45 @@
     const b = box('sections'); if (!b) return;
     const sec = conf().sections || {};
     const map = window.NASIJ_SECTION_MAP || {};
-    b.innerHTML = sub(tA('اظهر أو اخفِ أي قسم في الصفحة الرئيسية.', 'Show or hide any homepage section.')) +
-      `<div class="admin-table-wrap"><table class="atbl"><thead><tr><th>${tA('القسم', 'Section')}</th><th>${tA('الحالة', 'State')}</th></tr></thead><tbody>` +
-      Object.keys(map).map(k => { const lbl = SECTION_LABELS[k] || [k, k]; const on = sec[k] !== false; return `<tr><td>${tA(lbl[0], lbl[1])}</td><td><button class="edit-ico-btn" style="background:${on ? 'rgba(16,185,129,.12)' : 'rgba(220,38,38,.08)'};color:${on ? '#0E9F6E' : '#DC2626'}" onclick="NASIJ_sectionToggle('${k}',${!on})">${on ? '✓ ' + tA('ظاهر', 'Visible') : tA('مخفي', 'Hidden')}</button></td></tr>`; }).join('') +
-      `</tbody></table></div>`;
+    const orderable = window.NASIJ_ORDERABLE || [];
+    // ordered blocks first (in their live order), then the rest
+    const ordered = (window.NASIJ_sectionOrder ? window.NASIJ_sectionOrder() : orderable).filter(k => map[k]);
+    const rest = Object.keys(map).filter(k => ordered.indexOf(k) < 0);
+    const row = (k, i, movable) => {
+      const lbl = SECTION_LABELS[k] || [k, k], on = sec[k] !== false;
+      return `<tr>
+        <td style="color:var(--ink-s);font-size:.66rem">${movable ? i + 1 : '—'}</td>
+        <td>${tA(lbl[0], lbl[1])}</td>
+        <td><button class="edit-ico-btn" style="background:${on ? 'rgba(16,185,129,.12)' : 'rgba(220,38,38,.08)'};color:${on ? '#0E9F6E' : '#DC2626'}" onclick="NASIJ_sectionToggle('${k}',${!on})">${on ? '✓ ' + tA('ظاهر', 'Visible') : tA('مخفي', 'Hidden')}</button></td>
+        <td>${movable
+          ? `<button class="edit-ico-btn" ${i === 0 ? 'disabled style="opacity:.3"' : ''} onclick="NASIJ_sectionMove('${k}',-1)">↑</button> <button class="edit-ico-btn" ${i === ordered.length - 1 ? 'disabled style="opacity:.3"' : ''} onclick="NASIJ_sectionMove('${k}',1)">↓</button>`
+          : ''}</td>
+      </tr>`;
+    };
+    b.innerHTML = sub(tA('اظهر أو اخفِ أي قسم في الصفحة الرئيسية، ورتّبهم بالسهمين.',
+                         'Show, hide and reorder the homepage sections.')) +
+      `<div class="admin-table-wrap"><table class="atbl"><thead><tr><th>#</th><th>${tA('القسم', 'Section')}</th><th>${tA('الحالة', 'State')}</th><th>${tA('الترتيب', 'Order')}</th></tr></thead><tbody>` +
+      ordered.map((k, i) => row(k, i, true)).join('') +
+      rest.map(k => row(k, 0, false)).join('') +
+      `</tbody></table></div>
+      <div class="nz-row" style="margin-top:1rem"><button class="nz-btn" onclick="NASIJ_sectionOrderReset()">${tA('رجّع الترتيب الأصلي', 'Reset to default order')}</button></div>`;
   };
   window.NASIJ_sectionToggle = function (k, val) { conf().sections = conf().sections || {}; conf().sections[k] = val; saveNow(); window.NASIJ_applySections && window.NASIJ_applySections(); window.__nzSections(); };
+  window.NASIJ_sectionMove = function (k, d) {
+    const a = window.NASIJ_sectionOrder().slice();
+    const i = a.indexOf(k), j = i + d;
+    if (i < 0 || j < 0 || j >= a.length) return;
+    [a[i], a[j]] = [a[j], a[i]];
+    conf().sectionOrder = a; saveNow();
+    window.NASIJ_applySectionOrder && window.NASIJ_applySectionOrder();
+    window.NASIJ_applySections && window.NASIJ_applySections();
+    window.__nzSections();
+  };
+  window.NASIJ_sectionOrderReset = function () {
+    delete conf().sectionOrder; saveNow();
+    toast(tA('رجع الترتيب الأصلي — اعمل ريفرش للصفحة', 'Default order restored — refresh the page'));
+    window.__nzSections();
+  };
 
   /* ── STAFF & ROLES ── */
   window.__nzStaff = async function () {

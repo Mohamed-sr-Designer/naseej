@@ -2641,7 +2641,8 @@
     .gift-cats-sec{background:var(--beige);padding:1.4rem 0 0;}
     .gift-cats-hd{text-align:center;margin-bottom:.9rem;}
     .gift-cats-title{font-family:var(--fh);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;margin:.3rem 0 0;}
-    .gift-cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:100%;margin:0 auto;}
+    /* Columns follow however many categories the dashboard has switched on */
+    .gift-cats-grid{display:grid;grid-template-columns:repeat(var(--gc-cols,3),1fr);gap:0;max-width:100%;margin:0 auto;}
     .gift-cat{position:relative;aspect-ratio:4/5;overflow:hidden;cursor:pointer;background:var(--beige);background-image:var(--bg);background-size:cover;background-position:center;}
     .gift-cat .gc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,35,25,.78) 0%,rgba(44,35,25,.1) 60%,transparent 100%);transition:background .4s;}
     .gift-cat:hover .gc-overlay{background:linear-gradient(to top,rgba(44,35,25,.88) 0%,rgba(44,35,25,.25) 70%,rgba(44,35,25,.05) 100%);}
@@ -6259,84 +6260,6 @@
     </div>
   </section>
 
-  <!-- FEATURED PRODUCTS / BEST SELLERS -->
-  <section class="feat-sec">
-    <div class="feat-inner">
-      <div class="feat-hd">
-        <div class="feat-hd-left">
-          <span class="sec-label" data-en="The Collection" data-ar="المجموعة">The Collection</span>
-          <h2 class="feat-hd-title" data-en="Our Bestsellers" data-ar="الأكثر طلباً">Our Bestsellers</h2>
-        </div>
-        <a class="feat-view-all" onclick="go('products')" data-en="View All Products →" data-ar="← عرض كل المنتجات">View All Products →</a>
-      </div>
-      <div class="home-slider-wrap">
-        <button class="slider-arr prev" onclick="slideProducts('homePreviewGrid',-1)" aria-label="Previous">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="home-slider" id="homePreviewGrid"></div>
-        <button class="slider-arr next" onclick="slideProducts('homePreviewGrid',1)" aria-label="Next">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOR HER / FOR HIM / FOR YOU — moved above Gold Edit -->
-  <section class="gift-cats-sec">
-    <div class="gift-cats-hd">
-      <span class="sec-label" data-en="Shop by category" data-ar="التسوّق حسب الفئة">Shop by category</span>
-      <h2 class="gift-cats-title" data-en="Find your fit." data-ar="لاقِ ستايلك.">Find your fit.</h2>
-    </div>
-    <div class="gift-cats-grid">
-      <div class="gift-cat obs" id="gcat-hoodies" onclick="filterProd('hoodies',document.querySelector('.filter-btn[data-cat=hoodies]'));go('products')" style="--bg:url('images/products/p24.jpeg');background-position:center 12%;">
-        <div class="gc-overlay"></div>
-        <div class="gc-body">
-          <p class="gc-sub" data-en="Heavyweight. Oversized." data-ar="تقيل. أوفرسايز.">Heavyweight. Oversized.</p>
-          <h3 class="gc-title" data-en="Hoodies" data-ar="هوديز">Hoodies</h3>
-          <span class="gc-link" data-en="Shop Now →" data-ar="← تسوّق الآن">Shop Now →</span>
-        </div>
-      </div>
-      <div class="gift-cat obs" id="gcat-sweatshirts" onclick="filterProd('sweatshirts',document.querySelector('.filter-btn[data-cat=sweatshirts]'));go('products')" style="--bg:url('images/products/p13.jpeg');background-position:center 12%;">
-        <div class="gc-overlay"></div>
-        <div class="gc-body">
-          <p class="gc-sub" data-en="Crewnecks. Knits." data-ar="كرو. تريكو.">Crewnecks. Knits.</p>
-          <h3 class="gc-title" data-en="Sweatshirts" data-ar="سويت شيرت">Sweatshirts</h3>
-          <span class="gc-link" data-en="Shop Now →" data-ar="← تسوّق الآن">Shop Now →</span>
-        </div>
-      </div>
-      <div class="gift-cat obs" id="gcat-jackets" onclick="filterProd('jackets',document.querySelector('.filter-btn[data-cat=jackets]'));go('products')" style="--bg:url('images/products/p01.jpeg');background-position:center 12%;">
-        <div class="gc-overlay"></div>
-        <div class="gc-body">
-          <p class="gc-sub" data-en="Bombers. Denim." data-ar="بومبر. دنيم.">Bombers. Denim.</p>
-          <h3 class="gc-title" data-en="Jackets" data-ar="جاكيتات">Jackets</h3>
-          <span class="gc-link" data-en="Shop Now →" data-ar="← تسوّق الآن">Shop Now →</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- THE GOLD EDIT — Jewelry Collection -->
-  <section class="feat-sec gold-edit-sec" id="goldEditSec">
-    <div class="feat-inner">
-      <div class="feat-hd">
-        <div class="feat-hd-left">
-          <span class="sec-label" data-en="Identity woven in · Made in Egypt" data-ar="هوية منسوجة · صُنع في مصر">Identity woven in · Made in Egypt</span>
-          <h2 class="feat-hd-title" style="color:var(--ink);" data-en="The Cairo Edit" data-ar="ذا كايرو إيديت">The Cairo Edit</h2>
-        </div>
-        <a class="feat-view-all" onclick="go('products')" data-en="Shop the Edit →" data-ar="← تسوّق الإصدار">Shop the Edit →</a>
-      </div>
-      <div class="home-slider-wrap">
-        <button class="slider-arr prev" onclick="slideProducts('goldEditGrid',-1)" aria-label="Previous">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="home-slider" id="goldEditGrid"></div>
-        <button class="slider-arr next" onclick="slideProducts('goldEditGrid',1)" aria-label="Next">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
   <!-- ZODIAC FEATURE -->
   <section class="zod-feat-sec">
     <div class="zod-feat-bg"></div>
@@ -6368,6 +6291,59 @@
           <span data-en="Reserve your sign" data-ar="احجز برجك">Reserve your sign</span><span>→</span>
         </button>
         <span class="zod-feat-note" id="zodFeatNote"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP BY CATEGORY (tiles rendered from the dashboard categories) -->
+  <section class="gift-cats-sec">
+    <div class="gift-cats-hd">
+      <span class="sec-label" data-en="Shop by category" data-ar="التسوّق حسب الفئة">Shop by category</span>
+      <h2 class="gift-cats-title" data-en="Find your fit." data-ar="لاقِ ستايلك.">Find your fit.</h2>
+    </div>
+    <div class="gift-cats-grid" id="catTilesGrid"></div>
+  </section>
+
+  <!-- FEATURED PRODUCTS / BEST SELLERS -->
+  <section class="feat-sec">
+    <div class="feat-inner">
+      <div class="feat-hd">
+        <div class="feat-hd-left">
+          <span class="sec-label" data-en="The Collection" data-ar="المجموعة">The Collection</span>
+          <h2 class="feat-hd-title" data-en="Our Bestsellers" data-ar="الأكثر طلباً">Our Bestsellers</h2>
+        </div>
+        <a class="feat-view-all" onclick="go('products')" data-en="View All Products →" data-ar="← عرض كل المنتجات">View All Products →</a>
+      </div>
+      <div class="home-slider-wrap">
+        <button class="slider-arr prev" onclick="slideProducts('homePreviewGrid',-1)" aria-label="Previous">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="home-slider" id="homePreviewGrid"></div>
+        <button class="slider-arr next" onclick="slideProducts('homePreviewGrid',1)" aria-label="Next">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE GOLD EDIT — Jewelry Collection -->
+  <section class="feat-sec gold-edit-sec" id="goldEditSec">
+    <div class="feat-inner">
+      <div class="feat-hd">
+        <div class="feat-hd-left">
+          <span class="sec-label" data-en="Identity woven in · Made in Egypt" data-ar="هوية منسوجة · صُنع في مصر">Identity woven in · Made in Egypt</span>
+          <h2 class="feat-hd-title" style="color:var(--ink);" data-en="The Cairo Edit" data-ar="ذا كايرو إيديت">The Cairo Edit</h2>
+        </div>
+        <a class="feat-view-all" onclick="go('products')" data-en="Shop the Edit →" data-ar="← تسوّق الإصدار">Shop the Edit →</a>
+      </div>
+      <div class="home-slider-wrap">
+        <button class="slider-arr prev" onclick="slideProducts('goldEditGrid',-1)" aria-label="Previous">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="home-slider" id="goldEditGrid"></div>
+        <button class="slider-arr next" onclick="slideProducts('goldEditGrid',1)" aria-label="Next">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -8474,6 +8450,31 @@ const PRODUCTS = [
   });
 })();
 
+/* ═══ SWEATPANTS — بناطيل ═══ (wide-leg, one product per colourway) */
+(function buildSweatpants() {
+  const COLORS = [
+    // key, En, Ar, hex, sales
+    ['black',  'Black',        'أسود',     '#1A1A1A', 340],
+    ['navy',   'Navy',         'كحلي',     '#1E2A4A', 290],
+    ['cream',  'Cream',        'كريمي',    '#E8E0CC', 260],
+    ['brown',  'Chocolate',    'بني',      '#4A3226', 230],
+    ['maroon', 'Burgundy',     'عنّابي',    '#5E1B28', 210]
+  ];
+  let nid = 301;
+  COLORS.forEach(function (C) {
+    var ck = C[0], cEn = C[1], cAr = C[2], hex = C[3], sales = C[4];
+    PRODUCTS.push({
+      id: nid++, cat: 'sweatpants',
+      en: 'Wide-Leg Sweatpants — ' + cEn,
+      ar: 'بنطلون سويت واسع — ' + cAr,
+      de: 'Wide-leg sweatpants in ' + cEn.toLowerCase() + ' — a relaxed, straight drop from the hip with a soft drawcord waist and deep side pockets. Heavyweight 320gsm brushed fleece, unisex fit. Made in Egypt.',
+      da: 'بنطلون سويت واسع باللون ' + cAr + ' — قصّة مريحة ومستقيمة من عند الوسط، بخصر مطاط ودكّة قطن وجيوب جانبية عميقة. قطن مكرمش تقيل ٣٢٠جم، مقاس يونيسكس. صناعة مصرية.',
+      price: 1250, color: hex, colorName: cEn, sizes: SIZES, lead: 3, sales: sales,
+      imgs: ['images/sweatpants/' + ck + '.jpg']
+    });
+  });
+})();
+
 /* ═══════════ DROPS / PRE-ORDER — نظام الحجز ═══════════ */
 /* A drop makes a whole category reservation-only: the pieces can't be bought
    outright, only reserved with a deposit until the drop date arrives.        */
@@ -9367,7 +9368,7 @@ function setLangModal(l) {
   if (pg?.startsWith('gift') && currentGiftPg) renderGift(currentGiftPg);
   if (pg === 'faq') renderFaq();
   if (pg === 'reviews') renderReviews();
-  if (pg === 'home') { renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit(); renderTesti(); updateHeroSlide(); }
+  if (pg === 'home') { renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderCatTiles(); renderGoldEdit(); renderTesti(); updateHeroSlide(); }
   if (document.getElementById('cartOv')?.classList.contains('open')) renderCartDrawer();
   if (document.getElementById('wishOv')?.classList.contains('open')) renderWishDrawer();
   if (pg === 'admin') renderAdmin();
@@ -9413,7 +9414,7 @@ function toggleLang() {
   if (pg === 'home') {
     renderHomePreview();
     renderNewArrivals();
-    renderNewEdit(); renderZodiacFeature();
+    renderNewEdit(); renderZodiacFeature(); renderCatTiles();
     renderGoldEdit();
     renderTesti();
     updateHeroSlide(); // refresh per-slide copy in the new language
@@ -9608,7 +9609,7 @@ function productCard(p, idx, ar) {
   const wished = _wishlist.includes(p.id);
   const soldOut = isSoldOut(p.id);
   const featured = isFeatured(p.id);
-  const catLabel = { hoodies: ar?'هوديز':'HOODIES', sweatshirts: ar?'سويت شيرت':'SWEATSHIRTS', jackets: ar?'جاكيتات':'JACKETS', shirts: ar?'قمصان':'SHIRTS', zodiac: ar?'الأبراج':'ZODIAC' };
+  const catLabel = { hoodies: ar?'هوديز':'HOODIES', sweatshirts: ar?'سويت شيرت':'SWEATSHIRTS', jackets: ar?'جاكيتات':'JACKETS', shirts: ar?'قمصان':'SHIRTS', sweatpants: ar?'بناطيل':'SWEATPANTS', zodiac: ar?'الأبراج':'ZODIAC' };
   // Determine badge — uses global HOT_IDS / NEW_IDS constants
   let badge = '';
   if (isPreorder(p))                 badge = '<span class="pc-badge-pre">' + (ar?'حجز':'Pre-order') + '</span>';
@@ -9912,15 +9913,80 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+/* ── Category visibility helpers (driven by the dashboard) ──
+   A hidden category disappears from the whole storefront, so every homepage
+   slider filters through these instead of trusting its hardcoded id list.   */
+function catIsHidden(cat) { return (window.NASIJ_HIDDEN_CATS || []).indexOf(cat) > -1; }
+function visibleProducts() { return PRODUCTS.filter(p => !catIsHidden(p.cat)); }
+// One entry per piece: for colour-variant families keep only the primary.
+function visiblePrimaries() {
+  return visibleProducts().filter(p => {
+    const g = getVariantGroup(p.id);
+    return !g || !g.length || g[0] === p.id;
+  });
+}
+/* Take the curated ids that are still visible. With topUp, fill the rest from
+   whatever is left in the store (best-selling first, the drop category last so
+   it doesn't just mirror the Zodiac band). Without it, a block whose curated
+   pieces are all hidden returns nothing and collapses — and comes back on its
+   own the moment those categories are switched back on in the dashboard.    */
+function pickHomeItems(ids, n, topUp) {
+  const out = ids.map(id => PRODUCTS.find(p => p.id === id)).filter(p => p && !catIsHidden(p.cat));
+  if (topUp && out.length < n) {
+    const seen = new Set(out.map(p => p.id));
+    const dropCat = (typeof dropCfg === 'function') ? dropCfg().cat : null;
+    visiblePrimaries()
+      .filter(p => !seen.has(p.id))
+      .sort((a, b) => ((a.cat === dropCat) - (b.cat === dropCat)) || ((b.sales || 0) - (a.sales || 0)))
+      .slice(0, n - out.length)
+      .forEach(p => out.push(p));
+  }
+  return out.slice(0, n);
+}
+// Homepage blocks with nothing left to show collapse instead of sitting empty.
+function toggleHomeSection(grid, has) {
+  const sec = grid && grid.closest('section');
+  if (sec) sec.dataset.nzEmpty = has ? '' : '1';
+  if (sec) sec.style.display = has ? '' : 'none';
+}
+
+/* ── SHOP BY CATEGORY tiles — built from the dashboard's category list ── */
+function renderCatTiles() {
+  const grid = document.getElementById('catTilesGrid');
+  if (!grid) return;
+  const ar = lang === 'ar';
+  const cats = (window.NASIJ_CATS || []).filter(c => !c.hidden && !catIsHidden(c.id));
+  grid.innerHTML = cats.map(c => {
+    // tile art: whatever the dashboard set, else the first product in the category
+    const first = PRODUCTS.find(p => p.cat === c.id && p.imgs && p.imgs[0]);
+    const img = c.tileImg || (first ? first.imgs[0] : '');
+    const pos = c.tilePos || 'center 12%';
+    // data-en/data-ar so the shared applyLang() swaps them on a language toggle
+    const at = (en, arv) => `data-en="${esc(en)}" data-ar="${esc(arv)}"`;
+    const pick = (en, arv) => (ar ? (arv || en) : (en || arv)) || '';
+    return `<div class="gift-cat obs" id="gcat-${c.id}" onclick="filterProd('${c.id}',document.querySelector('.filter-btn[data-cat=${c.id}]'));go('products')" style="--bg:url('${img}');background-position:${pos};">
+        <div class="gc-overlay"></div>
+        <div class="gc-body">
+          <p class="gc-sub" ${at(c.subEn || '', c.subAr || '')}>${pick(c.subEn, c.subAr)}</p>
+          <h3 class="gc-title" ${at(c.en || c.ar || '', c.ar || c.en || '')}>${pick(c.en, c.ar)}</h3>
+          <span class="gc-link" ${at('Shop Now →', '← تسوّق الآن')}>${ar ? '← تسوّق الآن' : 'Shop Now →'}</span>
+        </div>
+      </div>`;
+  }).join('');
+  grid.style.setProperty('--gc-cols', Math.min(cats.length || 1, 4));
+  toggleHomeSection(grid, cats.length > 0);
+  grid.querySelectorAll('.obs').forEach(el => el.classList.add('in'));
+}
+
 /* ── HOME PREVIEW ── */
 function renderHomePreview() {
   const grid = document.getElementById('homePreviewGrid');
   if (!grid) return;
   // Show 8 bestsellers so slider has meaningful content
-  const ids = [1, 2, 3, 16, 6, 4, 30, 20];
-  const featured = ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+  const featured = pickHomeItems([1, 2, 3, 16, 6, 4, 30, 20], 8, true);
   const ar = lang === 'ar';
   grid.innerHTML = featured.map((p, i) => productCard(p, i, ar)).join('');
+  toggleHomeSection(grid, featured.length > 0);
 }
 
 /* ── THE CAIRO EDIT (homepage Egyptian-graphic section) ── */
@@ -9928,9 +9994,10 @@ function renderGoldEdit() {
   const grid = document.getElementById('goldEditGrid');
   if (!grid) return;
   const ar = lang === 'ar';
-  const ids = [1, 2, 16, 36, 8, 17]; // Cairo Soul, Cairo Collective, Sphinx, Modern Cairo, Cocoa Bloom, Desert Crack
-  const items = ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+  // Cairo Soul, Cairo Collective, Sphinx, Modern Cairo, Cocoa Bloom, Desert Crack
+  const items = pickHomeItems([1, 2, 16, 36, 8, 17], 6, false);
   grid.innerHTML = items.map((p, i) => productCard(p, i, ar)).join('');
+  toggleHomeSection(grid, items.length > 0);
 }
 
 /* ── GOLD EDIT cross-sell strip (inside product detail page) ── */
@@ -9963,10 +10030,10 @@ function renderNewEdit() {
   const grid = document.getElementById('newEditGrid');
   if (!grid) return;
   // Show the 6 newest pieces
-  const ids = [36, 37, 39, 42, 27, 28, 9, 10];
-  const items = ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean).slice(0, 6);
+  const items = pickHomeItems([36, 37, 39, 42, 27, 28, 9, 10], 6, false);
   const ar = lang === 'ar';
   grid.innerHTML = items.map((p, i) => productCard(p, i, ar)).join('');
+  toggleHomeSection(grid, items.length > 0);
 }
 
 /* ── NEW ARRIVALS ── */
@@ -9974,10 +10041,10 @@ function renderNewArrivals() {
   const grid = document.getElementById('newArrivalsGrid');
   if (!grid) return;
   // Show 8 newest pieces
-  const newIds = [43, 42, 41, 39, 37, 36, 28, 27];
-  const items = newIds.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+  const items = pickHomeItems([43, 42, 41, 39, 37, 36, 28, 27], 8, false);
   const ar = lang === 'ar';
   grid.innerHTML = items.map((p, i) => productCard(p, i, ar)).join('');
+  toggleHomeSection(grid, items.length > 0);
 }
 
 /* ── HOME PRODUCT SLIDER ── */
@@ -10023,7 +10090,7 @@ function openProduct(id) {
   currentProduct = p;
   const ar = lang === 'ar';
   pdSize = (p.sizes && p.sizes.length) ? p.sizes[Math.min(1, p.sizes.length - 1)] : null; // default M
-  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts', zodiac: ar?'الأبراج':'Zodiac' };
+  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts', sweatpants: ar?'بناطيل':'Sweatpants', zodiac: ar?'الأبراج':'Zodiac' };
 
   document.getElementById('pd-crumb-name').textContent = ar ? p.ar : p.en;
   pdImgIdx = 0;
@@ -13890,7 +13957,7 @@ function renderSearch(query) {
     results.innerHTML = `<p class="search-empty">${ar ? `لا نتائج لـ "${escHtml(q)}" — جرّب كلمة أخرى.` : `No results for "${escHtml(q)}" — try something else.`}</p>`;
     return;
   }
-  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts', zodiac: ar?'الأبراج':'Zodiac' };
+  const catLabel = { hoodies: ar?'هوديز':'Hoodies', sweatshirts: ar?'سويت شيرت':'Sweatshirts', jackets: ar?'جاكيتات':'Jackets', shirts: ar?'قمصان':'Shirts', sweatpants: ar?'بناطيل':'Sweatpants', zodiac: ar?'الأبراج':'Zodiac' };
   results.innerHTML = list.map(p => `
     <div class="search-item" onclick="closeSearch();openProduct(${p.id})" tabindex="0"
       onkeydown="if(event.key==='Enter'){closeSearch();openProduct(${p.id})}">
@@ -14626,16 +14693,16 @@ _syncMobTabBadges();
 // (no hash = home; other pages render themselves via go() navigation)
 const _initOnHome = !location.hash || location.hash === '#' || location.hash === '#home';
 if (_initOnHome) {
-  renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit();
+  renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderCatTiles(); renderGoldEdit();
   initHero(); startHeroAuto(); renderTesti();
 }
 // Fetch server price/image overrides then re-render home sections with fresh data
 loadProductOverrides().then(() => {
   if (_initOnHome) {
-    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit();
+    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderCatTiles(); renderGoldEdit();
   } else {
     // For non-home pages, still init hero so navigating back to home works
-    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderGoldEdit();
+    renderHomePreview(); renderNewArrivals(); renderNewEdit(); renderZodiacFeature(); renderCatTiles(); renderGoldEdit();
     initHero(); startHeroAuto(); renderTesti();
   }
 });
@@ -15855,7 +15922,7 @@ if ('serviceWorker' in navigator) {
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script defer src="firebase-config.js?v=12"></script>
-<script defer src="cloud.js?v=12"></script>
+<script defer src="firebase-config.js?v=13"></script>
+<script defer src="cloud.js?v=13"></script>
 </body>
 </html>
