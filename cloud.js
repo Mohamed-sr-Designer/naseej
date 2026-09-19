@@ -454,8 +454,6 @@
     { id: 'products', ar: 'المتجر',        en: 'Shop' },
     { id: 'drops',    ar: 'الدروب',        en: 'Drops' },
     { id: 'custom',   ar: 'التخصيص',       en: 'Custom' },
-    { id: 'about',    ar: 'قصتنا',         en: 'Our Story' },
-    { id: 'contact',  ar: 'تواصل',         en: 'Contact' },
     { id: 'blog',     ar: 'المدونة',       en: 'Journal' },
     { id: 'faq',      ar: 'الأسئلة الشائعة', en: 'FAQ' },
     { id: 'reviews',  ar: 'آراء العملاء',   en: 'Reviews' },
@@ -478,7 +476,7 @@
     // (Deciding per-link, rather than trying to "restore", avoids mis-reading a
     //  wrapper that holds links to several different categories.)
     document.querySelectorAll('[data-nz-hidden="1"]').forEach(el => {
-      delete el.dataset.nzHidden; el.style.display = '';
+      delete el.dataset.nzHidden; el.style.removeProperty('display');
     });
     // Hide every link that points at a page or category that's switched off
     document.querySelectorAll('a[onclick],button[onclick],[data-page],[data-cat]').forEach(el => {
@@ -493,10 +491,15 @@
         if (!hit) for (const c of hiddenCats) { if (oc.indexOf("filterProd('" + c + "'") > -1) { hit = true; break; } }
       }
       if (!hit) return;
-      // hide the whole row/tile, not just the inner anchor
-      const wrap = el.closest('li') || el;
+      // Hide the whole row/tile rather than just the inner anchor — but only
+      // when that <li> is really this link's own wrapper. A dropdown's <li>
+      // holds the whole mega-menu, so promoting to it would take the entire
+      // "Shop" menu down with one hidden category.
+      const li = el.closest('li');
+      const wrap = (li && li.querySelectorAll('a,button').length <= 1) ? li : el;
       wrap.dataset.nzHidden = '1';
-      wrap.style.display = 'none';
+      // !important, because several menu rules declare display with !important
+      wrap.style.setProperty('display', 'none', 'important');
     });
     // Publish for the storefront so product listings can drop hidden categories
     window.NASIJ_HIDDEN_CATS = hiddenCats;
@@ -642,6 +645,7 @@
     { id: 'promos',     en: 'Promo Codes',ar: 'أكواد الخصم',svg: '<path d="M20 12l-8 8-9-9V4h7z"/><circle cx="7.5" cy="7.5" r="1.5"/>' },
     { id: 'sections',   en: 'Sections',   ar: 'أقسام الموقع',svg: '<rect x="3" y="4" width="18" height="4"/><rect x="3" y="10" width="18" height="4"/><rect x="3" y="16" width="18" height="4"/>' },
     { id: 'drop',       en: 'Drop / Pre-order', ar: 'الدروب والحجز', svg: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>' },
+    { id: 'creq',       en: 'Custom Requests', ar: 'طلبات مخصصة', svg: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>' },
     { id: 'pages',      en: 'Pages', ar: 'الصفحات', svg: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/>' },
     { id: 'staff',      en: 'Staff & Roles', ar: 'الموظفون', svg: '<circle cx="9" cy="8" r="3"/><path d="M3 21v-1a6 6 0 0 1 12 0v1"/><path d="M17 11a3 3 0 1 0-2-5"/>', super: true },
     { id: 'settings',   en: 'Settings',   ar: 'الإعدادات',  svg: '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 0 0-1.7-1L14.5 2h-5l-.4 2.4a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L3.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.3-1a7 7 0 0 0 1.7 1L9.5 22h5l.4-2.4a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/>', super: true }
@@ -710,7 +714,7 @@
 
   /* ── Permission gating: show a limited admin only what their role allows ── */
   const NAV_PERM = { analytics: 'orders', orders: 'orders', products: 'products', categories: 'products',
-                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos', drop: 'products', pages: 'content' };
+                     reviews: 'content', site: 'content', sections: 'content', liveedit: 'content', promos: 'promos', drop: 'products', pages: 'content', creq: 'orders' };
   const NAV_SUPER = ['users', 'staff', 'settings'];         // owner-only areas
   function setNavVis(id, show) {
     const a = document.getElementById('anav-' + id); if (a) a.style.display = show ? '' : 'none';
@@ -750,7 +754,7 @@
   function wrapShowAdminSec() {
     if (window.__nasijSASWrapped || !window.showAdminSec) return;
     const _sas = window.showAdminSec;
-    const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings, drop: renderDrop, pages: renderPages };
+    const mine = { analytics: renderAnalytics, categories: renderCategories, promos: renderPromos, sections: renderSections, staff: renderStaff, settings: renderSettings, drop: renderDrop, pages: renderPages, creq: renderCreq };
     window.showAdminSec = function (sec, el) {
       // Permission guard: owner-only areas + per-permission areas for limited admins
       if (!window.NASIJ_isSuper()) {
@@ -762,7 +766,7 @@
         }
       }
       _sas(sec, el);
-      const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'], drop: ['الدروب والحجز', 'Drop & Pre-orders'], pages: ['الصفحات', 'Pages'] };
+      const titles = { analytics: ['التحليلات', 'Analytics'], categories: ['الفئات', 'Categories'], promos: ['أكواد الخصم', 'Promo Codes'], sections: ['أقسام الموقع', 'Sections'], staff: ['الموظفون', 'Staff & Roles'], settings: ['الإعدادات', 'Settings'], drop: ['الدروب والحجز', 'Drop & Pre-orders'], pages: ['الصفحات', 'Pages'], creq: ['طلبات مخصصة', 'Custom Requests'] };
       if (titles[sec]) { const t = document.getElementById('adm-page-title'); if (t) t.textContent = tA(titles[sec][0], titles[sec][1]); }
       if (mine[sec]) mine[sec]();
       if (sec === 'orders') setTimeout(renderCloudOrders, 30);
@@ -1129,6 +1133,7 @@
   function renderSections() { window.__nzSections && window.__nzSections(); }
   function renderDrop()     { window.__nzDrop && window.__nzDrop(); }
   function renderPages()    { window.__nzPages && window.__nzPages(); }
+  function renderCreq()     { window.__nzCreq && window.__nzCreq(); }
   function renderStaff() { window.__nzStaff && window.__nzStaff(); }
   function renderSettings() { window.__nzSettings && window.__nzSettings(); }
 })();
@@ -1239,6 +1244,43 @@
     testimonials: ['آراء العملاء', 'Testimonials']
   };
   /* ── PAGES: show / hide any page or category across the whole site ── */
+  /* ── CUSTOM REQUESTS (from the Custom page form) ── */
+  window.__nzCreq = async function () {
+    const b = box('creq'); if (!b) return;
+    b.innerHTML = sub(tA('الطلبات المخصصة اللي وصلت من صفحة «التخصيص».', 'Custom requests submitted from the Custom page.')) +
+      `<p style="color:var(--ink-s)">${tA('جاري التحميل…', 'Loading…')}</p>`;
+    let rows = [];
+    try { rows = await DB.list('customRequests'); } catch (e) {}
+    rows.sort((a, b2) => String(b2.createdAt || '').localeCompare(String(a.createdAt || '')));
+    if (!rows.length) {
+      b.innerHTML = sub(tA('الطلبات المخصصة اللي وصلت من صفحة «التخصيص».', 'Custom requests submitted from the Custom page.')) +
+        `<p style="color:var(--ink-s)">${tA('مفيش طلبات لسه.', 'No requests yet.')}</p>`;
+      return;
+    }
+    const dt = s => { try { return new Date(s).toLocaleString(); } catch (e) { return s || ''; } };
+    b.innerHTML = sub(tA('الطلبات المخصصة اللي وصلت من صفحة «التخصيص».', 'Custom requests submitted from the Custom page.')) +
+      `<div class="admin-table-wrap"><table class="atbl"><thead><tr>
+         <th>${tA('رقم', 'Ref')}</th><th>${tA('التاريخ', 'Date')}</th><th>${tA('الاسم', 'Name')}</th>
+         <th>${tA('تواصل', 'Contact')}</th><th>${tA('المقاس', 'Size')}</th><th>${tA('الكمية', 'Qty')}</th>
+         <th>${tA('الخامة', 'Fabric')}</th><th>${tA('الريفرنس', 'Reference')}</th><th>${tA('ملاحظات', 'Notes')}</th>
+       </tr></thead><tbody>` +
+      rows.map(r => `<tr>
+        <td style="font-size:.66rem;white-space:nowrap">${esc(r.ref || r.id)}</td>
+        <td style="font-size:.66rem;color:var(--ink-s);white-space:nowrap">${esc(dt(r.createdAt))}</td>
+        <td>${esc(r.name)}</td>
+        <td style="font-size:.7rem;white-space:nowrap">
+          <a href="https://wa.me/${esc(String(r.phone || '').replace(/[^0-9]/g, ''))}" target="_blank" rel="noopener">${esc(r.phone)}</a>
+          ${r.alt ? `<br><span style="color:var(--ink-s)">${esc(r.alt)}</span>` : ''}
+        </td>
+        <td style="white-space:nowrap">${esc(r.width)}×${esc(r.height)} cm</td>
+        <td>${esc(r.qty || 1)}</td>
+        <td style="font-size:.7rem">${esc(r.material || '')}${r.materialOther ? `<br><span style="color:var(--ink-s)">${esc(r.materialOther)}</span>` : ''}</td>
+        <td>${(r.images || []).map((src, i) => `<img src="${src}" alt="ref ${i + 1}" style="width:34px;height:42px;object-fit:cover;border-radius:3px;margin-inline-end:.25rem;cursor:zoom-in" onclick="window.open('','_blank').document.write('<img src=\\'' + this.src + '\\' style=max-width:100%>')">`).join('') || '—'}</td>
+        <td style="font-size:.7rem;max-width:220px;white-space:normal">${esc(r.notes || '')}</td>
+      </tr>`).join('') +
+      `</tbody></table></div>`;
+  };
+
   window.__nzPages = function () {
     const b = box('pages'); if (!b) return;
     const hidden = conf().hiddenPages || [];

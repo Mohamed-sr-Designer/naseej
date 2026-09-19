@@ -201,7 +201,7 @@
       --rose-l:   #3A3A3A;
       --ink:      #14120F;
       --ink-m:    #524B41;
-      --ink-s:    #8F877A;
+      --ink-s:    #6A6354;
       --border:   rgba(20,18,15,0.14);
       /* Surface-level tokens (theme-aware) */
       --bg:           #F6F3EC;   /* page background */
@@ -209,7 +209,7 @@
       --bg-soft:      #ECE6DB;   /* card image background */
       --text:         #14120F;
       --text-soft:    #524B41;
-      --text-muted:   #8F877A;
+      --text-muted:   #6A6354;
       --line:         rgba(20,18,15,0.14);
       --fh: 'Space Grotesk', sans-serif;
       --fb: 'Inter', sans-serif;
@@ -228,14 +228,14 @@
       --rose-l:   #D8CFBD;
       --ink:      #F3EFE7;
       --ink-m:    #CFC7B8;
-      --ink-s:    #8F877A;
+      --ink-s:    #9C9486;
       --border:   rgba(240,235,220,0.16);
       --bg:           #0D0D0C;
       --bg-elev:      #171613;
       --bg-soft:      #201E1A;
       --text:         #F3EFE7;
       --text-soft:    #C9C1B2;
-      --text-muted:   #8F877A;
+      --text-muted:   #9C9486;
       --line:         rgba(240,235,220,0.16);
     }
     [data-theme="dark"] body { background: var(--bg); color: var(--text); }
@@ -271,12 +271,15 @@
       color: rgba(250,247,242,.75);
     }
     [data-theme="dark"] footer .ft-logo { color: #F4F1EA; }
-    [data-theme="dark"] footer .ft-tag { color: rgba(250,247,242,.45); }
-    [data-theme="dark"] footer .ft-col-t { color: rgba(250,247,242,.3); }
+    [data-theme="dark"] footer .ft-tag { color: rgba(250,247,242,.72); }
+    [data-theme="dark"] footer .ft-col-t { color: rgba(250,247,242,.70); }
     [data-theme="dark"] footer .ft-links a { color: rgba(250,247,242,.55); }
     [data-theme="dark"] footer .ft-links a:hover { color: var(--rose); }
-    [data-theme="dark"] footer .ft-bottom { color: rgba(250,247,242,.25); border-color: rgba(250,247,242,.08); }
-    [data-theme="dark"] footer .pay-b { background: rgba(250,247,242,.07); border-color: rgba(250,247,242,.12); color: rgba(250,247,242,.5); }
+    [data-theme="dark"] footer .ft-bottom { color: rgba(250,247,242,.70); border-color: rgba(250,247,242,.08); }
+    [data-theme="dark"] footer .pay-b { background: rgba(250,247,242,.07); border-color: rgba(250,247,242,.12); color: rgba(250,247,242,.7); }
+    /* Rating stars: the AA-safe tone differs per theme, so flip them explicitly */
+    [data-theme="dark"] .full-stars-ico { color: #D9A08C; }
+    [data-theme="dark"] .review-stars   { color: #D9B77E; }
     /* ── DARK MODE: Newsletter section ── */
     [data-theme="dark"] .testi-sec { background: var(--bg-elev); }
     [data-theme="dark"] .testi-card { background: var(--bg-soft); border-color: var(--line); }
@@ -469,13 +472,13 @@
     .nav.scrolled .lang-btn, .nav.nav-opaque .lang-btn { border-color:var(--border);color:var(--ink-m); }
     .nav.scrolled .lang-btn:hover, .nav.nav-opaque .lang-btn:hover { background:var(--beige);color:var(--ink); }
     /* Footer lang toggle */
-    .ft-lang-btn { font-size:.62rem;padding:.28rem .7rem;border:1px solid rgba(250,247,242,.18);color:rgba(250,247,242,.4);background:transparent;cursor:pointer;font-family:var(--fb);letter-spacing:.1em;transition:all .2s; }
-    .ft-lang-btn:hover { color:rgba(250,247,242,.75);border-color:rgba(250,247,242,.35); }
+    .ft-lang-btn { font-size:.62rem;padding:.28rem .7rem;border:1px solid rgba(250,247,242,.32);color:rgba(250,247,242,.75);background:transparent;cursor:pointer;font-family:var(--fb);letter-spacing:.1em;transition:all .2s; }
+    .ft-lang-btn:hover { color:rgba(250,247,242,.95);border-color:rgba(250,247,242,.5); }
     /* Nav logout label */
     .nav-logout { gap:.3rem; }
-    .nav-logout-lbl { font-family:var(--fb);font-size:.6rem;letter-spacing:.06em;color:inherit;opacity:.75;white-space:nowrap; }
+    .nav-logout-lbl { font-family:var(--fb);font-size:.6rem;letter-spacing:.06em;color:inherit;opacity:.9;white-space:nowrap; }
     .nav-logout:hover .nav-logout-lbl { opacity:1; }
-    .nav.scrolled .nav-logout-lbl, .nav.nav-opaque .nav-logout-lbl { color:var(--ink-s); }
+    .nav.scrolled .nav-logout-lbl, .nav.nav-opaque .nav-logout-lbl { color:var(--ink-m); }
 
     /* Theme toggle icons */
     .theme-toggle .th-sun, .theme-toggle .th-moon {
@@ -919,8 +922,8 @@
     footer { background:var(--ink);color:var(--cream);padding:3.8rem 3.5rem; }
     .ft-inner { max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3.5rem; }
     .ft-logo { font-family:'Space Grotesk',serif;font-size:2rem;letter-spacing:.3em;margin-bottom:1rem; }
-    .ft-tag { font-size:.74rem;color:rgba(250,247,242,.45);line-height:1.9;max-width:250px; }
-    .ft-col-t { font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,247,242,.35);margin-bottom:1.4rem; }
+    .ft-tag { font-size:.74rem;color:rgba(250,247,242,.72);line-height:1.9;max-width:250px; }
+    .ft-col-t { font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,247,242,.70);margin-bottom:1.4rem; }
     .ft-links { list-style:none;display:flex;flex-direction:column;gap:.75rem; }
     .ft-links a { color:rgba(250,247,242,.6);text-decoration:none;font-size:.78rem;cursor:pointer;transition:color .25s; }
     .ft-links a:hover { color:var(--rose-l); }
@@ -933,7 +936,7 @@
       max-width:1240px;margin:3rem auto 0;padding-top:2rem;
       border-top:1px solid rgba(250,247,242,.1);
       display:flex;justify-content:space-between;align-items:center;
-      font-size:.68rem;color:rgba(250,247,242,.28);
+      font-size:.68rem;color:rgba(250,247,242,.70);
     }
 
     /* ─── PAGE HERO ─── */
@@ -1431,7 +1434,7 @@
 
     /* ── PRODUCT CARD: star ratings & urgency ── */
     .full-stars{display:flex;align-items:center;gap:.3rem;margin-bottom:.4rem;}
-    .full-stars-ico{color:#C9A89C;font-size:.72rem;letter-spacing:1px;}
+    .full-stars-ico{color:#8F6357;font-size:.72rem;letter-spacing:1px;}
     .full-stars-num{font-size:.63rem;color:var(--ink-s);letter-spacing:.04em;}
     .full-hot-tag{display:inline-flex;align-items:center;gap:.25rem;font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(201,168,156,.15);color:var(--rose);padding:.2rem .5rem;margin-bottom:.35rem;font-weight:500;border:1px solid rgba(201,168,156,.35);}
 
@@ -1801,7 +1804,7 @@
     .zod-feat-sec::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(18,16,12,.55),rgba(18,16,12,.9));pointer-events:none;}
     .zod-feat-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;}
     .zod-feat-hd{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem;}
-    .zod-feat-label{display:inline-block;font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);
+    .zod-feat-label{display:inline-block;font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:#D9D2C4;
       border:1px solid rgba(201,168,156,.45);border-radius:20px;padding:.32rem .9rem;margin-bottom:.9rem;}
     .zod-feat-title{font-family:var(--fh);font-size:clamp(1.9rem,4.4vw,3rem);font-weight:300;color:#F4F1EA;margin:0 0 .5rem;line-height:1.1;}
     .zod-feat-tag{font-size:.85rem;color:rgba(250,247,242,.68);margin:0;line-height:1.75;max-width:460px;}
@@ -1819,7 +1822,7 @@
     .zod-sign-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#f2efe8;}
     .zod-sign-card .zsc-b{padding:.7rem .8rem .85rem;text-align:center;}
     .zod-sign-card .zsc-n{font-family:var(--fh);font-size:.95rem;font-weight:500;color:#1A1A1A;margin:0 0 .12rem;}
-    .zod-sign-card .zsc-d{font-size:.6rem;color:#8A8371;margin:0 0 .5rem;}
+    .zod-sign-card .zsc-d{font-size:.6rem;color:#6A6354;margin:0 0 .5rem;}
     .zod-sign-card .zsc-cta{display:block;width:100%;background:#1A1A1A;color:#F4F1EA;border:none;border-radius:5px;
       padding:.48rem;font-family:var(--fb);font-size:.66rem;letter-spacing:.07em;cursor:pointer;transition:background .2s;}
     .zod-sign-card .zsc-cta:hover{background:var(--rose);color:#1A1A1A;}
@@ -2805,6 +2808,63 @@
     }
     .csoon-back:hover{color:var(--ink);}
 
+    /* ── CUSTOM REQUEST FORM ── */
+    .creq{flex:1;padding:6.5rem 1.5rem 5rem;background:var(--bg);}
+    .creq-inner{max-width:760px;margin:0 auto;}
+    .creq-hd{text-align:center;margin-bottom:3rem;}
+    .creq-eyebrow{display:inline-block;font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-s);margin-bottom:1rem;font-family:var(--fb);}
+    .creq-h{font-family:var(--fh);font-size:clamp(2rem,5vw,3.2rem);font-weight:300;letter-spacing:.03em;line-height:1.12;color:var(--ink);margin:0 0 1rem;}
+    .creq-sub{font-size:.88rem;color:var(--ink-m);line-height:1.85;max-width:480px;margin:0 auto;font-family:var(--fb);}
+    .creq-block{background:var(--cream);border:1px solid var(--border);border-radius:var(--r-sm,4px);padding:1.6rem 1.5rem;margin-bottom:1rem;}
+    .creq-step{display:flex;align-items:center;gap:.6rem;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-s);font-family:var(--fb);margin:0 0 1.2rem;}
+    .creq-step b{color:var(--ink);font-weight:500;letter-spacing:.14em;}
+    .creq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;}
+    .creq-field{display:flex;flex-direction:column;gap:.45rem;}
+    .creq-field label{font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-s);font-family:var(--fb);}
+    .creq-field label em{color:#C0392B;font-style:normal;margin-inline-start:.2rem;}
+    .creq-field input,.creq-field textarea,.creq-field select{
+      width:100%;padding:.7rem .85rem;border:1px solid var(--border);border-radius:var(--r-sm,4px);
+      background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:.82rem;box-sizing:border-box;transition:border-color .2s;}
+    .creq-field input::placeholder,.creq-field textarea::placeholder{color:var(--ink-s);opacity:.8;}
+    .creq-field input:focus,.creq-field textarea:focus,.creq-field select:focus{outline:none;border-color:var(--ink);}
+    .creq-field textarea{resize:vertical;min-height:80px;line-height:1.7;}
+    .creq-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;
+      padding:2.2rem 1rem;border:1px dashed var(--border);border-radius:var(--r-sm,4px);
+      background:var(--bg);color:var(--ink-m);cursor:pointer;text-align:center;transition:border-color .2s,color .2s;}
+    .creq-drop:hover,.creq-drop.over{border-color:var(--ink);color:var(--ink);}
+    .creq-drop-t{font-size:.8rem;font-family:var(--fb);color:var(--ink);}
+    .creq-drop-s{font-size:.66rem;color:var(--ink-s);font-family:var(--fb);}
+    .creq-thumbs{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem;}
+    .creq-thumb{position:relative;width:78px;height:98px;border-radius:var(--r-sm,4px);overflow:hidden;border:1px solid var(--border);background:var(--beige);}
+    .creq-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+    .creq-thumb button{position:absolute;top:3px;inset-inline-end:3px;width:18px;height:18px;border:none;border-radius:50%;
+      background:rgba(20,18,15,.72);color:#fff;font-size:.7rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .creq-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.9rem;}
+    .creq-chip{padding:.5rem 1rem;border:1px solid var(--border);border-radius:100px;background:var(--bg);
+      color:var(--ink-m);font-size:.72rem;font-family:var(--fb);cursor:pointer;transition:all .2s;}
+    .creq-chip:hover{border-color:var(--ink-s);color:var(--ink);}
+    .creq-chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+    .creq-submit{width:100%;justify-content:center;margin-top:.5rem;}
+    .creq-fine{font-size:.68rem;color:var(--ink-s);text-align:center;margin:1rem 0 0;font-family:var(--fb);line-height:1.8;}
+    .creq-err{color:#C0392B;font-size:.72rem;font-family:var(--fb);margin:.8rem 0 0;text-align:center;}
+    /* success state */
+    .creq-done{text-align:center;padding:3rem 1.5rem;background:var(--cream);border:1px solid var(--border);border-radius:var(--r-sm,4px);}
+    .creq-done-ico{width:56px;height:56px;border-radius:50%;background:var(--ink);color:var(--bg);
+      display:flex;align-items:center;justify-content:center;margin:0 auto 1.4rem;}
+    .creq-done h2{font-family:var(--fh);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:300;color:var(--ink);margin:0 0 .9rem;}
+    .creq-done p{font-size:.86rem;color:var(--ink-m);line-height:1.9;max-width:420px;margin:0 auto 1.6rem;font-family:var(--fb);}
+    .creq-ref{display:inline-block;padding:.5rem 1rem;border:1px dashed var(--border);border-radius:var(--r-sm,4px);
+      font-family:var(--fb);font-size:.74rem;color:var(--ink);letter-spacing:.08em;margin-bottom:1.8rem;}
+    .creq-done-btns{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;align-items:stretch;}
+    .creq-done-btns .btn-ghost{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:.85rem 1.6rem;border:1px solid var(--border);border-radius:var(--r-sm,4px);
+      background:transparent;color:var(--ink);font-family:var(--fb);
+      font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+      cursor:pointer;white-space:nowrap;transition:border-color .2s,background .2s;}
+    .creq-done-btns .btn-ghost:hover{border-color:var(--ink);background:var(--beige);}
+    @media(max-width:600px){.creq{padding:5.5rem 1rem 4rem;}.creq-block{padding:1.3rem 1.1rem;}}
+
     /* Step tabs nav — sticky under main nav */
     .cfgr-topnav {
       display:flex;align-items:center;justify-content:space-between;
@@ -3339,7 +3399,7 @@
     .fc-badge{display:inline-block;font-size:.55rem;letter-spacing:.1em;background:var(--rose);color:#fff;padding:.12rem .5rem;margin-bottom:.3rem;}
     /* ══ COLLECTION BANNER ══ */
     .coll-banner{background:var(--ink);padding:2.8rem 2rem;text-align:center;}
-    .coll-eye{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--rose);margin-bottom:1rem;}
+    .coll-eye{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--bg);margin-bottom:1rem;}
     .coll-h{font-family:var(--fh);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;color:var(--cream);line-height:1.2;margin:0 0 1.8rem;}
     .coll-p{font-size:.84rem;color:rgba(250,247,242,.5);max-width:500px;margin:0 auto 2.5rem;line-height:2;display:none;}
     .btn-cream{display:inline-flex;align-items:center;gap:.7rem;background:var(--cream);color:var(--ink);border:none;padding:.85rem 2.2rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:var(--fb);transition:all .2s;}
@@ -3852,7 +3912,7 @@
       flex:0 0 calc((100% - 3.6rem) / 3);min-width:0;
     }
     .review-card{background:#fff;padding:1.8rem 2rem;border:1px solid var(--border);display:flex;flex-direction:column;}
-    .review-stars{color:#c8a96e;font-size:1rem;letter-spacing:.1em;margin-bottom:1rem;}
+    .review-stars{color:#8C6A4F;font-size:1rem;letter-spacing:.1em;margin-bottom:1rem;}
     .review-text{font-family:var(--fh);font-size:1.05rem;font-weight:300;color:var(--ink);line-height:1.75;flex:1;margin-bottom:1.4rem;}
     .review-name{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);}
     .review-loc{font-size:.65rem;color:var(--ink-s);margin-top:.2rem;}
@@ -5918,7 +5978,7 @@
   <div class="ann-track" id="annTrack">
     <!-- First copy -->
     <div class="ann-bar-inner">
-      <span data-en="🚀 Free delivery — Cairo &amp; Sheikh Zayed" data-ar="🚀 توصيل مجاني — القاهرة والشيخ زايد">🚀 Free delivery — Cairo &amp; Sheikh Zayed</span>
+      <span data-en="🚀 Free delivery — Cairo &amp; Giza" data-ar="🚀 توصيل مجاني — القاهرة والجيزة">🚀 Free delivery — Cairo &amp; Giza</span>
       <span class="ann-bar-divider">✦</span>
       <span data-en="Premium heavyweight cotton — built to last" data-ar="قطن تقيل بريميوم — يدوم معاك">Premium heavyweight cotton — built to last</span>
       <span class="ann-bar-divider">✦</span>
@@ -5931,7 +5991,7 @@
     </div>
     <!-- Second copy (seamless loop) — aria-hidden so screen readers skip duplicate -->
     <div class="ann-bar-inner" aria-hidden="true">
-      <span>🚀 Free delivery — Cairo &amp; Sheikh Zayed</span>
+      <span>🚀 Free delivery — Cairo &amp; Giza</span>
       <span class="ann-bar-divider">✦</span>
       <span>Premium heavyweight cotton — built to last</span>
       <span class="ann-bar-divider">✦</span>
@@ -5989,6 +6049,13 @@
                   <span class="mega-cat-desc" data-en="Your sign. Five colours." data-ar="برجك. بخمس ألوان.">Your sign. Five colours.</span>
                 </div>
               </a>
+              <a class="mega-cat-item" onclick="filterProd('sweatpants',document.querySelector('.filter-btn[data-cat=sweatpants]'));go('products')">
+                <div class="mega-cat-thumb" style="background-image:url('images/sweatpants/black.jpg');background-position:center 40%;"></div>
+                <div>
+                  <span class="mega-cat-name" data-en="Sweatpants" data-ar="بناطيل">Sweatpants</span>
+                  <span class="mega-cat-desc" data-en="Wide-leg. Heavyweight." data-ar="واسع. تقيل.">Wide-leg. Heavyweight.</span>
+                </div>
+              </a>
             </div>
             <!-- Right col: quick links -->
             <div class="mega-col">
@@ -6026,8 +6093,6 @@
       </li>
       <li><a onclick="go('drops')" data-page="drops" data-en="Drops" data-ar="الدروب">Drops</a></li>
       <li><a onclick="go('custom')" data-page="custom" data-en="Custom" data-ar="تخصيص">Custom</a></li>
-      <li><a onclick="go('about')" data-page="about" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
-      <li><a onclick="go('contact')" data-page="contact" data-en="Contact" data-ar="تواصل">Contact</a></li>
       <li class="nav-search-li">
         <form class="nav-search-wrap" onsubmit="navSearchSubmit(event)" role="search">
           <span class="nav-search-ico" aria-hidden="true">
@@ -6093,7 +6158,6 @@
   <div class="mob-group">
     <p class="mob-group-label" data-en="BRAND" data-ar="علامتنا">BRAND</p>
     <div class="mob-group-links">
-      <a onclick="go('about');toggleMob()" data-en="Our Story" data-ar="قصتنا">Our Story</a>
       <a onclick="go('reviews');toggleMob()" data-en="Reviews" data-ar="آراء العملاء">Reviews</a>
     </div>
   </div>
@@ -6103,7 +6167,6 @@
     <p class="mob-group-label" data-en="HELP" data-ar="المساعدة">HELP</p>
     <div class="mob-group-links">
       <a onclick="go('faq');toggleMob()" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
-      <a onclick="go('contact');toggleMob()" data-en="Contact" data-ar="تواصل معنا">Contact</a>
       <a onclick="go('policy');toggleMob()" data-en="Policies" data-ar="السياسات">Policies</a>
     </div>
   </div>
@@ -6245,7 +6308,7 @@
         </div>
         <div>
           <p class="trust-t" data-en="Free Delivery" data-ar="توصيل مجاني">Free Delivery</p>
-          <p class="trust-s" data-en="Cairo & Sheikh Zayed — same day available" data-ar="القاهرة وزايد — متاح في نفس اليوم">Cairo & Sheikh Zayed — same day available</p>
+          <p class="trust-s" data-en="Cairo & Giza — same day available" data-ar="القاهرة والجيزة — متاح في نفس اليوم">Cairo & Giza — same day available</p>
         </div>
       </div>
       <div class="trust-item">
@@ -6507,16 +6570,16 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links">
-          <li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact">
+          <li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li>
+          <li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li>
+          <li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li>
+          <li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li>
         </ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
@@ -6561,7 +6624,7 @@
       <div class="pc-side-group">
         <p class="pc-side-head" data-en="Need help?" data-ar="محتاج مساعدة؟">Need help?</p>
         <a class="pc-side-link" onclick="openSizeGuide()" data-en="Size guide" data-ar="دليل المقاسات">Size guide</a>
-        <a class="pc-side-link" onclick="go('contact')" data-en="Contact us" data-ar="كلّمنا">Contact us</a>
+        <a class="pc-side-link" href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp us" data-ar="كلّمنا على واتساب">WhatsApp us</a>
       </div>
     </aside>
 
@@ -6649,14 +6712,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -6671,30 +6732,108 @@
 
 <!-- ══ CUSTOM ORDER ══ -->
 <div class="page" id="page-custom">
+  <!-- ── Custom request form ── -->
+  <section class="creq">
+    <div class="creq-inner">
+      <div class="creq-hd">
+        <span class="creq-eyebrow" data-en="Custom &amp; Bulk" data-ar="مخصص وبالجملة">Custom &amp; Bulk</span>
+        <h1 class="creq-h" data-en="Make it yours." data-ar="اعملها على مزاجك.">Make it yours.</h1>
+        <p class="creq-sub"
+           data-en="Send us your reference, the size you want and the fabric — we'll come back to you with a price and a timeline."
+           data-ar="ابعتلنا الريفرنس، والمقاس اللي عايزه، والخامة — وهنرجعلك بالسعر والمدة.">
+          Send us your reference, the size you want and the fabric — we'll come back to you with a price and a timeline.
+        </p>
+      </div>
 
-  <!-- ── Coming Soon ── -->
-  <section class="csoon">
-    <div class="csoon-inner">
-      <span class="csoon-eyebrow" data-en="CUSTOM &amp; BULK" data-ar="مخصص وبالجملة">CUSTOM &amp; BULK</span>
-      <h1 class="csoon-h" data-en="Custom Prints & Team Orders" data-ar="طباعة مخصصة وطلبات جماعية">Custom Prints & Team Orders</h1>
-      <p class="csoon-sub"
-         data-en="Your design, your drop. We produce custom prints and bulk orders for teams, brands, events and graduations — heavyweight cotton, made in Egypt. Minimum quantities apply."
-         data-ar="تصميمك، دروبك. بننفّذ طباعة مخصصة وطلبات بالجملة للفرق والبراندات والإيفنتات والتخرّج — قطن تقيل، صناعة مصرية. يوجد حد أدنى للكمية.">
-        Your design, your drop. We produce custom prints and bulk orders for teams, brands, events and graduations — heavyweight cotton, made in Egypt. Minimum quantities apply.
-      </p>
-      <div class="csoon-divider"></div>
-      <p class="csoon-note"
-         data-en="Have a custom idea or a bulk order? Let's talk."
-         data-ar="عندك فكرة مخصصة أو طلب بالجملة؟ يلا نتكلّم.">
-        Have a custom idea or a bulk order? Let's talk.
-      </p>
-      <a href="https://wa.me/201228748098" target="_blank" class="csoon-wa-btn">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        <span data-en="Chat on WhatsApp" data-ar="تواصل على واتساب">Chat on WhatsApp</span>
-      </a>
-      <button class="csoon-back" onclick="history.back()">
-        <span data-en="← Back to Shop" data-ar="رجوع للمتجر ←">← Back to Shop</span>
-      </button>
+      <form class="creq-form" id="creqForm" onsubmit="return submitCustomRequest(event)" novalidate>
+
+        <!-- 01 · Reference -->
+        <div class="creq-block">
+          <p class="creq-step"><b data-en="01" data-ar="٠١">01</b><span data-en="Your reference" data-ar="الريفرنس بتاعك">Your reference</span></p>
+          <label class="creq-drop" id="creqDrop" for="creqFile">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="creq-drop-t" data-en="Upload your design or inspiration" data-ar="ارفع التصميم أو صورة للفكرة">Upload your design or inspiration</span>
+            <span class="creq-drop-s" data-en="PNG, JPG or WEBP · up to 4 images" data-ar="PNG أو JPG أو WEBP · لحد ٤ صور">PNG, JPG or WEBP · up to 4 images</span>
+          </label>
+          <input type="file" id="creqFile" accept="image/*" multiple onchange="creqPickFiles(this)" style="display:none">
+          <div class="creq-thumbs" id="creqThumbs"></div>
+        </div>
+
+        <!-- 02 · Measurements -->
+        <div class="creq-block">
+          <p class="creq-step"><b data-en="02" data-ar="٠٢">02</b><span data-en="Print size" data-ar="مقاس الطباعة">Print size</span></p>
+          <div class="creq-grid">
+            <div class="creq-field">
+              <label><span data-en="Width (cm)" data-ar="العرض (سم)">Width (cm)</span><em>*</em></label>
+              <input type="number" id="creqW" min="1" max="200" step="0.5" placeholder="30">
+            </div>
+            <div class="creq-field">
+              <label><span data-en="Height (cm)" data-ar="الطول (سم)">Height (cm)</span><em>*</em></label>
+              <input type="number" id="creqH" min="1" max="200" step="0.5" placeholder="40">
+            </div>
+            <div class="creq-field">
+              <label data-en="Quantity" data-ar="الكمية">Quantity</label>
+              <input type="number" id="creqQty" min="1" max="5000" value="1">
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 · Material -->
+        <div class="creq-block">
+          <p class="creq-step"><b data-en="03" data-ar="٠٣">03</b><span data-en="Fabric" data-ar="الخامة">Fabric</span></p>
+          <div class="creq-chips" id="creqMats"></div>
+          <div class="creq-field">
+            <label data-en="Something else? Describe it" data-ar="خامة تانية؟ اوصفها">Something else? Describe it</label>
+            <input type="text" id="creqMatOther" data-en-ph="e.g. 340gsm French terry, off-white" data-ar-ph="مثلاً: فرنش تيري ٣٤٠جم، لون أوف وايت">
+          </div>
+        </div>
+
+        <!-- 04 · Contact -->
+        <div class="creq-block">
+          <p class="creq-step"><b data-en="04" data-ar="٠٤">04</b><span data-en="How do we reach you?" data-ar="نتواصل معاك إزاي؟">How do we reach you?</span></p>
+          <div class="creq-grid">
+            <div class="creq-field">
+              <label><span data-en="Name" data-ar="الاسم">Name</span><em>*</em></label>
+              <input type="text" id="creqName" autocomplete="name">
+            </div>
+            <div class="creq-field">
+              <label><span data-en="Phone / WhatsApp" data-ar="موبايل / واتساب">Phone / WhatsApp</span><em>*</em></label>
+              <input type="tel" id="creqPhone" inputmode="tel" autocomplete="tel" data-en-ph="01XXXXXXXXX" data-ar-ph="01XXXXXXXXX">
+            </div>
+            <div class="creq-field">
+              <label data-en="Email or Instagram" data-ar="إيميل أو إنستجرام">Email or Instagram</label>
+              <input type="text" id="creqAlt" data-en-ph="@handle or you@email.com" data-ar-ph="@حسابك أو إيميلك">
+            </div>
+          </div>
+          <div class="creq-field" style="margin-top:1rem">
+            <label data-en="Anything else we should know?" data-ar="أي تفاصيل تانية؟">Anything else we should know?</label>
+            <textarea id="creqNotes" rows="3" data-en-ph="Placement, colours, deadline…" data-ar-ph="مكان الطباعة، الألوان، الميعاد…"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-dark creq-submit" id="creqSubmit">
+          <span data-en="Send request" data-ar="ابعت الطلب">Send request</span><span>&nbsp;→</span>
+        </button>
+        <p class="creq-err" id="creqErr" hidden></p>
+        <p class="creq-fine" data-en="No payment now. We review every request by hand and reply with a quote." data-ar="مفيش دفع دلوقتي. بنراجع كل طلب بإيدينا ونرد عليك بالسعر.">No payment now. We review every request by hand and reply with a quote.</p>
+      </form>
+
+      <!-- success -->
+      <div class="creq-done" id="creqDone" hidden>
+        <div class="creq-done-ico">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 data-en="Request received" data-ar="وصلنا طلبك">Request received</h2>
+        <p data-en="Thank you — we'll get in touch with you soon on the number you left, usually within 24 hours."
+           data-ar="شكراً ليك — هيتم التواصل معك قريباً على الرقم اللي سيبته، عادةً خلال ٢٤ ساعة.">
+          Thank you — we'll get in touch with you soon on the number you left, usually within 24 hours.
+        </p>
+        <div class="creq-ref" id="creqRef"></div>
+        <div class="creq-done-btns">
+          <a class="btn-dark" href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="Message us on WhatsApp" data-ar="كلّمنا على واتساب">Message us on WhatsApp</a>
+          <button class="btn-ghost" onclick="creqReset()" data-en="Send another" data-ar="ابعت طلب تاني">Send another</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -6721,16 +6860,16 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links">
-          <li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact">
+          <li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li>
+          <li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li>
+          <li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li>
+          <li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li>
         </ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
@@ -6794,7 +6933,7 @@
           <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         </div>
         <span class="pd-usp-title" data-en="Free Delivery" data-ar="توصيل مجاني">Free Delivery</span>
-        <span class="pd-usp-sub" data-en="Cairo & Sheikh Zayed — same day available" data-ar="القاهرة والشيخ زايد — متاح نفس اليوم">Cairo & Sheikh Zayed — same day available</span>
+        <span class="pd-usp-sub" data-en="Cairo & Giza — same day available" data-ar="القاهرة والجيزة — متاح نفس اليوم">Cairo & Giza — same day available</span>
       </div>
       <div class="pd-usp-item">
         <div class="pd-usp-icon">
@@ -6858,14 +6997,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -7127,7 +7264,7 @@
         <span data-en="Password &amp; Security" data-ar="كلمة المرور والأمان">Password &amp; Security</span>
         <svg class="mob-acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
-      <button class="mob-acc-row" onclick="go('contact')">
+      <button class="mob-acc-row" onclick="window.open('https://wa.me/'+(window.NASIJ_WA||'201228748098'),'_blank')">
         <svg class="mob-acc-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span data-en="Help &amp; Contact" data-ar="المساعدة والتواصل">Help &amp; Contact</span>
         <svg class="mob-acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
@@ -7142,11 +7279,6 @@
       <button class="mob-acc-row" onclick="toggleTheme()">
         <svg class="mob-acc-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
         <span data-en="Display &amp; Theme" data-ar="العرض والمظهر">Display &amp; Theme</span>
-      </button>
-      <button class="mob-acc-row" onclick="go('about')">
-        <svg class="mob-acc-row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span data-en="About NASIJ" data-ar="عن نسيج">About NASIJ</span>
-        <svg class="mob-acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
 
@@ -7319,187 +7451,6 @@
 <!-- ══════════════════════════════
      ABOUT
 ══════════════════════════════ -->
-<div class="page" id="page-about">
-  <div class="page-hero-banner" style="background-image:url('images/banner-for-mom.png');">
-    <div class="phb-ov"></div>
-    <div class="phb-body">
-      <span class="phb-label" data-en="Behind the Brand" data-ar="خلف البراند">Behind the Brand</span>
-      <h1 class="phb-title" data-en="Our Story" data-ar="قصتنا">Our Story</h1>
-      <p class="phb-sub" data-en="One brand. One belief — that what you wear is who you are. Streetwear woven with an Egyptian soul." data-ar="براند واحد. إيمان واحد — إن اللي بتلبسه هو انت. ستريت وير منسوج بروح مصرية.">One brand. One belief — that what you wear is who you are. Streetwear woven with an Egyptian soul.</p>
-    </div>
-  </div>
-
-  <div class="about-story">
-    <div class="about-vis obs"></div>
-    <div class="about-content obs">
-      <h2 data-en="Born to make everyday clothing feel like identity." data-ar="وُلدت علشان تخلّي هدوم كل يوم إحساس بالهوية.">Born to make everyday clothing feel like identity.</h2>
-      <p data-en="NASIJ (نسيج — “woven fabric”) started with a simple frustration: great streetwear in Egypt was either overpriced imports or forgettable basics. Nothing that felt like us." data-ar="نسيج بدأت بإحباط بسيط: الستريت وير الحلو في مصر يا إما استيراد غالي يا إما أساسيات منسية. مفيش حاجة بتحسّسك إنها بتشبهنا.">NASIJ (نسيج — “woven fabric”) started with a simple frustration: great streetwear in Egypt was either overpriced imports or forgettable basics. Nothing that felt like us.</p>
-      <p data-en="So we built a brand around three words: Minimal. Streetwear. Essential. Heavyweight cotton, clean cuts, and graphics that carry a piece of Cairo — the Sphinx, Arabic script, and soul — printed with intention." data-ar="فبنينا براند حوالين تلات كلمات: مينيمال. ستريت وير. أساسي. قطن تقيل، قصّات نظيفة، وجرافيكس بتحمل جزء من القاهرة — أبو الهول، الخط العربي، وروح — مطبوعة بقصد.">So we built a brand around three words: Minimal. Streetwear. Essential. Heavyweight cotton, clean cuts, and graphics that carry a piece of Cairo — the Sphinx, Arabic script, and soul — printed with intention.</p>
-      <p data-en="Every piece is designed and made in Egypt, for men and women, in sizes S to XXL. Made to be lived in — and to turn heads." data-ar="كل قطعة مصمّمة ومصنوعة في مصر، للرجّالة والستات، بمقاسات من S لـ XXL. معمولة تتعاش فيها — وتلفت الأنظار.">Every piece is designed and made in Egypt, for men and women, in sizes S to XXL. Made to be lived in — and to turn heads.</p>
-      <p style="font-style:italic;color:var(--rose);font-size:.9rem;" data-en='"More than clothing — identity woven in every piece."' data-ar="«أكتر من مجرد هدوم — هوية منسوجة في كل قطعة.»">"More than clothing — identity woven in every piece."</p>
-    </div>
-  </div>
-
-  <!-- VALUES -->
-  <section class="values-sec">
-    <span class="sec-label" data-en="What We Stand For" data-ar="ما نؤمن به">What We Stand For</span>
-    <h2 class="sec-title" data-en="The NASIJ values." data-ar="قيم نسيج.">The NASIJ values.</h2>
-    <div class="values-grid">
-      <div class="val obs"><div class="val-icon">✦</div><h4 class="val-name" data-en="Quality" data-ar="الجودة">Quality</h4><p class="val-text" data-en="Heavyweight cotton, clean cuts, and prints that don't crack. Built to last." data-ar="قطن تقيل، قصّات نظيفة، وطبعات متتشققش. معمولة تدوم.">Heavyweight cotton, clean cuts, and prints that don't crack. Built to last.</p></div>
-      <div class="val obs"><div class="val-icon">◇</div><h4 class="val-name" data-en="Identity" data-ar="الهوية">Identity</h4><p class="val-text" data-en="Graphics with a Cairo soul. What you wear should say something." data-ar="جرافيكس بروح القاهرة. اللي بتلبسه لازم يقول حاجة.">Graphics with a Cairo soul. What you wear should say something.</p></div>
-      <div class="val obs"><div class="val-icon">○</div><h4 class="val-name" data-en="Made in Egypt" data-ar="صُنع في مصر">Made in Egypt</h4><p class="val-text" data-en="Designed and produced locally — supporting Egyptian hands and talent." data-ar="مصمّم ومصنوع محلياً — بندعم الأيدي والموهبة المصرية.">Designed and produced locally — supporting Egyptian hands and talent.</p></div>
-      <div class="val obs"><div class="val-icon">△</div><h4 class="val-name" data-en="Fair Price" data-ar="سعر عادل">Fair Price</h4><p class="val-text" data-en="Premium quality without the import markup. Real value, honestly priced." data-ar="جودة بريميوم من غير مبالغة الاستيراد. قيمة حقيقية بسعر صادق.">Premium quality without the import markup. Real value, honestly priced.</p></div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="ft-inner">
-      <div><div class="ft-logo">NASIJ</div><p class="ft-tag" data-en="Minimal · Streetwear · Essential. Designed &amp; made in Egypt — identity woven in every piece." data-ar="مينيمال · ستريت وير · أساسي. مصمّم ومصنوع في مصر — هوية منسوجة في كل قطعة.">Minimal · Streetwear · Essential. Designed &amp; made in Egypt — identity woven in every piece.</p></div>
-      <div>
-        <p class="ft-col-t" data-en="Shop" data-ar="تسوّق">Shop</p>
-        <ul class="ft-links">
-          <li><a onclick="go('products')" data-en="The Collection" data-ar="المجموعة الكاملة">The Collection</a></li>
-          <li><a onclick="filterProd('shirts',document.querySelector('.filter-btn[data-cat=shirts]'));go('products')" data-en="Shirts" data-ar="قمصان">Shirts</a></li>
-          <li><a onclick="filterProd('hoodies',document.querySelector('.filter-btn[data-cat=hoodies]'));go('products')" data-en="Hoodies" data-ar="هوديز">Hoodies</a></li>
-          <li><a onclick="filterProd('sweatshirts',document.querySelector('.filter-btn[data-cat=sweatshirts]'));go('products')" data-en="Sweatshirts" data-ar="سويت شيرت">Sweatshirts</a></li>
-          <li><a onclick="filterProd('jackets',document.querySelector('.filter-btn[data-cat=jackets]'));go('products')" data-en="Jackets" data-ar="جاكيتات">Jackets</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="ft-col-t" data-en="Explore" data-ar="استكشاف">Explore</p>
-        <ul class="ft-links">
-          <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
-          <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
-          <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
-          <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
-        <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
-        <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
-      </div>
-    </div>
-    <div class="ft-bottom">
-      <span data-en="© 2026 NASIJ. All rights reserved." data-ar="© ٢٠٢٦ نسيج. جميع الحقوق محفوظة.">© 2026 NASIJ. All rights reserved.</span>
-      <span data-en="Made with intention." data-ar="مصنوعة بقصد.">Made with intention.</span>
-      <button class="lang-btn ft-lang-btn" onclick="toggleLang()">ع</button>
-    </div>
-  </footer>
-</div>
-
-<!-- ══════════════════════════════
-     CONTACT
-══════════════════════════════ -->
-<div class="page" id="page-contact">
-  <div class="page-hero-banner" style="background-image:url('images/hero-1.png');background-position:left center;">
-    <div class="phb-ov"></div>
-    <div class="phb-body">
-      <span class="phb-label" data-en="Get in Touch" data-ar="تواصل معنا">Get in Touch</span>
-      <h1 class="phb-title" data-en="Let's talk." data-ar="كلمنا.">Let's talk.</h1>
-      <p class="phb-sub" data-en="Orders, custom requests, gift questions — we're here via Instagram or WhatsApp." data-ar="طلبات، طلبات مخصصة، أسئلة عن الهدايا — احنا هنا عبر إنستجرام أو واتساب.">Orders, custom requests, gift questions — we're here via Instagram or WhatsApp.</p>
-    </div>
-  </div>
-
-  <div class="contact-wrap">
-    <div class="contact-info">
-      <h3 data-en="Reach us." data-ar="تواصل معنا.">Reach us.</h3>
-      <div class="c-item">
-        <p class="c-lbl" data-en="How to Order" data-ar="كيفية الطلب">How to Order</p>
-        <p class="c-val" data-en="Browse the collection, then message us on Instagram or WhatsApp. We'll guide you through the rest." data-ar="تصفّح المجموعة، وبعدين راسلنا على إنستجرام أو واتساب. احنا موجودين لأي حاجة.">Browse the collection, then message us on Instagram or WhatsApp. We'll guide you through the rest.</p>
-      </div>
-      <div class="c-item">
-        <p class="c-lbl" data-en="Personalization" data-ar="التخصيص">Personalization</p>
-        <p class="c-val" data-en="We offer name embroidery and color selection. Unlimited customization is not available — to protect quality and delivery time." data-ar="بنقدم تطريز الاسم واختيار اللون. التخصيص غير المحدود مش متاح — للحفاظ على الجودة ووقت التسليم.">We offer name embroidery and color selection. Unlimited customization is not available — to protect quality and delivery time.</p>
-      </div>
-      <div class="c-item">
-        <p class="c-lbl" data-en="Where We Deliver" data-ar="مناطق التوصيل">Where We Deliver</p>
-        <p class="c-val" data-en="New Cairo · Sheikh Zayed" data-ar="القاهرة الجديدة · الشيخ زايد">New Cairo · Sheikh Zayed</p>
-      </div>
-      <div class="c-btns">
-        <a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener" class="c-btn">
-          <span class="c-btn-icon">◆</span>
-          <div>
-            <span class="c-btn-title" data-en="Message on Instagram" data-ar="راسلنا على إنستجرام">Message on Instagram</span>
-            <span class="c-btn-sub">@nasij_brand</span>
-          </div>
-        </a>
-        <a href="https://wa.me/201228748098" target="_blank" rel="noopener" class="c-btn">
-          <span class="c-btn-icon">◉</span>
-          <div>
-            <span class="c-btn-title" data-en="Chat on WhatsApp" data-ar="كلمنا على واتساب">Chat on WhatsApp</span>
-            <span class="c-btn-sub" data-en="Quick response" data-ar="رد سريع">Quick response</span>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <div>
-      <div class="delivery-box">
-        <h3 data-en="Delivery & Payment" data-ar="التوصيل والدفع">Delivery & Payment</h3>
-        <div class="d-item"><div class="d-dot"></div><p class="d-text" data-en="<strong>Ready products</strong> — Same-day delivery" data-ar="<strong>المنتجات الجاهزة</strong> — توصيل في نفس اليوم"><strong>Ready products</strong> — Same-day delivery</p></div>
-        <div class="d-item"><div class="d-dot"></div><p class="d-text" data-en="<strong>Custom orders</strong> — 3 days production, delivered on day 4" data-ar="<strong>الطلبات المخصصة</strong> — ٣ أيام إنتاج، التوصيل في اليوم الرابع"><strong>Custom orders</strong> — 3 days production, delivered on day 4</p></div>
-        <div class="d-item"><div class="d-dot"></div><p class="d-text" data-en="Delivery by motorcycle rider, straight to your door" data-ar="توصيل بالموتوسيكل، مباشرة لبابك">Delivery by motorcycle rider, straight to your door</p></div>
-        <div class="d-item"><div class="d-dot"></div><p class="d-text" data-en="Add-ons available: flowers, premium wrapping, message cards" data-ar="إضافات متاحة: ورد، تغليف فاخر، كروت رسائل">Add-ons available: flowers, premium wrapping, message cards</p></div>
-      </div>
-
-      <div style="margin-top:1.8rem;">
-        <p class="c-lbl" data-en="Payment Methods" data-ar="طرق الدفع">Payment Methods</p>
-        <div class="pay-row">
-          <div class="pay-box"><p class="pay-box-lbl">InstaPay</p><p class="pay-box-val" data-en="Instant transfer" data-ar="تحويل فوري">Instant transfer</p></div>
-          <div class="pay-box"><p class="pay-box-lbl">Vodafone Cash</p><p class="pay-box-val" data-en="Mobile wallet" data-ar="محفظة موبايل">Mobile wallet</p></div>
-        </div>
-      </div>
-
-      <div class="quote-box">
-        <p data-en='"The feeling of being thought of."' data-ar='"إحساس إن حد فكّر فيك."'>"The feeling of being thought of."</p>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <div class="ft-inner">
-      <div><div class="ft-logo">NASIJ</div><p class="ft-tag" data-en="Minimal · Streetwear · Essential. Designed &amp; made in Egypt — identity woven in every piece." data-ar="مينيمال · ستريت وير · أساسي. مصمّم ومصنوع في مصر — هوية منسوجة في كل قطعة.">Minimal · Streetwear · Essential. Designed &amp; made in Egypt — identity woven in every piece.</p></div>
-      <div>
-        <p class="ft-col-t" data-en="Shop" data-ar="تسوّق">Shop</p>
-        <ul class="ft-links">
-          <li><a onclick="go('products')" data-en="The Collection" data-ar="المجموعة الكاملة">The Collection</a></li>
-          <li><a onclick="filterProd('shirts',document.querySelector('.filter-btn[data-cat=shirts]'));go('products')" data-en="Shirts" data-ar="قمصان">Shirts</a></li>
-          <li><a onclick="filterProd('hoodies',document.querySelector('.filter-btn[data-cat=hoodies]'));go('products')" data-en="Hoodies" data-ar="هوديز">Hoodies</a></li>
-          <li><a onclick="filterProd('sweatshirts',document.querySelector('.filter-btn[data-cat=sweatshirts]'));go('products')" data-en="Sweatshirts" data-ar="سويت شيرت">Sweatshirts</a></li>
-          <li><a onclick="filterProd('jackets',document.querySelector('.filter-btn[data-cat=jackets]'));go('products')" data-en="Jackets" data-ar="جاكيتات">Jackets</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="ft-col-t" data-en="Explore" data-ar="استكشاف">Explore</p>
-        <ul class="ft-links">
-          <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
-          <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
-          <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
-          <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
-        <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
-        <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
-      </div>
-    </div>
-    <div class="ft-bottom">
-      <span data-en="© 2026 NASIJ. All rights reserved." data-ar="© ٢٠٢٦ نسيج. جميع الحقوق محفوظة.">© 2026 NASIJ. All rights reserved.</span>
-      <span data-en="Made with intention." data-ar="مصنوعة بقصد.">Made with intention.</span>
-      <button class="lang-btn ft-lang-btn" onclick="toggleLang()">ع</button>
-    </div>
-  </footer>
-</div>
-
-<!-- ══ BLOG ══ -->
 <div class="page" id="page-blog">
   <div class="page-hero-banner" style="background-image:url('images/hero-1.png');background-position:left center;">
     <div class="phb-ov"></div>
@@ -7531,14 +7482,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -7573,14 +7522,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -7615,7 +7562,7 @@
     <div class="policy-sec active" id="policy-shipping">
       <h2 data-en="Shipping & Delivery" data-ar="الشحن والتوصيل">Shipping & Delivery</h2>
       <h3 data-en="Delivery Areas" data-ar="مناطق التوصيل">Delivery Areas</h3>
-      <p data-en="We currently deliver across Greater Cairo, Giza, New Cairo, and Sheikh Zayed. If your area isn't listed at checkout, please reach us via WhatsApp." data-ar="نوصّل حالياً في القاهرة الكبرى والجيزة والقاهرة الجديدة والشيخ زايد. لو منطقتك مش موجودة، تواصل معنا على واتساب.">We currently deliver across Greater Cairo, Giza, New Cairo, and Sheikh Zayed. If your area isn't listed at checkout, please reach us via WhatsApp.</p>
+      <p data-en="We currently deliver across Cairo and Giza only. If your area isn't listed at checkout, please reach us via WhatsApp." data-ar="نوصّل حالياً في القاهرة والجيزة فقط. لو منطقتك مش موجودة، تواصل معنا على واتساب.">We currently deliver across Cairo and Giza only. If your area isn't listed at checkout, please reach us via WhatsApp.</p>
       <h3 data-en="Delivery Timeframes" data-ar="مواعيد التوصيل">Delivery Timeframes</h3>
       <ul>
         <li data-en="Ready items — same-day or next-day delivery." data-ar="المنتجات الجاهزة — نفس اليوم أو اليوم التالي.">Ready items — same-day or next-day delivery.</li>
@@ -7733,14 +7680,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -7775,14 +7720,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -7829,14 +7772,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -7891,14 +7832,12 @@
           <li><a onclick="go('blog')" data-en="Blog" data-ar="المدونة">Blog</a></li>
           <li><a onclick="go('faq')" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
           <li><a onclick="go('reviews')" data-en="Reviews" data-ar="آراء العملاء">Reviews</a></li>
-          <li><a onclick="go('about')" data-en="Our Story" data-ar="قصتنا">Our Story</a></li>
           <li><a onclick="go('policy')" data-en="Policies" data-ar="السياسات">Policies</a></li>
-          <li><a onclick="go('contact')" data-en="Contact" data-ar="تواصل معنا">Contact</a></li>
         </ul>
       </div>
       <div>
-        <p class="ft-col-t" data-en="Connect" data-ar="تواصل">Connect</p>
-        <ul class="ft-links"><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener" data-en="WhatsApp" data-ar="واتساب">WhatsApp</a></li></ul>
+        <p class="ft-col-t" data-en="Get in touch" data-ar="تواصل معنا">Get in touch</p>
+        <ul class="ft-links ft-contact"><li><a href="https://wa.me/201228748098" target="_blank" rel="noopener">WhatsApp · 0122 874 8098</a></li><li><a href="https://instagram.com/nasij_brand" target="_blank" rel="noopener">Instagram · @nasij_brand</a></li><li><a href="mailto:hello@naseej.eg">hello@naseej.eg</a></li><li><span class="ft-note" data-en="Delivery — Cairo &amp; Giza" data-ar="التوصيل — القاهرة والجيزة">Delivery — Cairo &amp; Giza</span></li></ul>
         <p class="ft-col-t" style="margin-top:1.5rem;" data-en="Payment" data-ar="الدفع">Payment</p>
         <div class="pay-badges"><span class="pay-b">InstaPay</span><span class="pay-b">Vodafone Cash</span></div>
       </div>
@@ -9249,7 +9188,7 @@ function go(pg) {
   if (pg === 'faq')                   renderFaq();
   if (pg === 'reviews')               renderReviews();
   if (pg === 'admin')                 renderAdmin();
-  if (pg === 'custom')                cfgrGoto(0);
+  if (pg === 'custom')                { renderCreqMats(); renderCreqThumbs(); }
   if (pg !== 'product-detail') { setProductSchema(null); hideMobStickyAtb(); }
   if (pg !== 'products') setItemListSchema(null);
   setBreadcrumb(pg);
@@ -9275,8 +9214,6 @@ function _syncMobTab(pg) {
     'checkout':       'mTab-collection',
     'custom':         'mTab-collection',
     'admin':          'mTab-more',
-    'about':          'mTab-more',
-    'contact':        'mTab-more',
     'faq':            'mTab-more',
     'blog':           'mTab-more',
     'article':        'mTab-more',
@@ -9425,10 +9362,7 @@ function toggleLang() {
   // Sync admin language if admin panel is active
   if (pg === 'admin') renderAdmin();
   // Sync configurator labels when language changes
-  if (pg === 'custom') {
-    cfgrGoto(_cfgrStep); // re-render current step labels
-    _cfgrUpdateTags();
-  }
+  if (pg === 'custom') { renderCreqMats(); renderCreqThumbs(); }
 }
 
 function applyLang() {
@@ -9950,6 +9884,134 @@ function toggleHomeSection(grid, has) {
   if (sec) sec.style.display = has ? '' : 'none';
 }
 
+/* ══════════ CUSTOM REQUEST (page-custom) ══════════
+   Reference images + print size + fabric + how to reach them. Saved to the
+   `customRequests` collection so it shows up in the dashboard; images are
+   downscaled to a data URL first so the payload stays small.            */
+const CREQ_MATERIALS = [
+  { v: 'heavy-cotton', en: 'Heavyweight cotton 320gsm', ar: 'قطن تقيل ٣٢٠جم' },
+  { v: 'fleece',       en: 'Brushed fleece',            ar: 'قطن مكرمش' },
+  { v: 'jersey',       en: 'Light jersey',              ar: 'جيرسيه خفيف' },
+  { v: 'linen',        en: 'Linen blend',               ar: 'كتان' },
+  { v: 'denim',        en: 'Denim',                     ar: 'دنيم' },
+  { v: 'not-sure',     en: "Not sure — advise me",      ar: 'مش متأكد — رشّحوا لي' }
+];
+let _creqFiles = [];   // [{name, dataUrl}]
+let _creqMat   = '';
+
+function renderCreqMats() {
+  const box = document.getElementById('creqMats');
+  if (!box) return;
+  const ar = lang === 'ar';
+  box.innerHTML = CREQ_MATERIALS.map(m =>
+    `<button type="button" class="creq-chip${_creqMat === m.v ? ' on' : ''}" onclick="creqPickMat('${m.v}')" data-en="${esc(m.en)}" data-ar="${esc(m.ar)}">${ar ? m.ar : m.en}</button>`
+  ).join('');
+}
+function creqPickMat(v) { _creqMat = (_creqMat === v ? '' : v); renderCreqMats(); }
+
+// Downscale to max 1000px and re-encode as JPEG so a phone photo doesn't blow up storage
+function creqShrink(file) {
+  return new Promise(resolve => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 1000;
+        const s = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        try { resolve(c.toDataURL('image/jpeg', 0.72)); } catch (e) { resolve(fr.result); }
+      };
+      img.onerror = () => resolve(fr.result);
+      img.src = fr.result;
+    };
+    fr.onerror = () => resolve('');
+    fr.readAsDataURL(file);
+  });
+}
+async function creqPickFiles(input) {
+  const ar = lang === 'ar';
+  const picked = [...(input.files || [])].filter(f => /^image\//.test(f.type));
+  for (const f of picked) {
+    if (_creqFiles.length >= 4) { toast(ar ? 'أقصى عدد ٤ صور' : 'Up to 4 images', 'error'); break; }
+    if (f.size > 12 * 1024 * 1024) { toast(ar ? 'الصورة كبيرة جداً (١٢ ميجا كحد أقصى)' : 'Image too large (12MB max)', 'error'); continue; }
+    const url = await creqShrink(f);
+    if (url) _creqFiles.push({ name: f.name, dataUrl: url });
+  }
+  input.value = '';
+  renderCreqThumbs();
+}
+function creqRemoveFile(i) { _creqFiles.splice(i, 1); renderCreqThumbs(); }
+function renderCreqThumbs() {
+  const box = document.getElementById('creqThumbs');
+  if (!box) return;
+  const ar = lang === 'ar';
+  box.innerHTML = _creqFiles.map((f, i) =>
+    `<div class="creq-thumb"><img src="${f.dataUrl}" alt="${esc(f.name)}"><button type="button" onclick="creqRemoveFile(${i})" aria-label="${ar ? 'حذف' : 'Remove'}">✕</button></div>`
+  ).join('');
+}
+
+async function submitCustomRequest(ev) {
+  ev.preventDefault();
+  const ar = lang === 'ar';
+  const val = id => (document.getElementById(id) || {}).value || '';
+  const err = document.getElementById('creqErr');
+  const show = m => { if (err) { err.textContent = m; err.hidden = false; } };
+  if (err) err.hidden = true;
+
+  const w = parseFloat(val('creqW')), h = parseFloat(val('creqH'));
+  const name = val('creqName').trim(), phone = val('creqPhone').trim();
+  if (!(w > 0) || !(h > 0)) return show(ar ? 'اكتب العرض والطول بالسنتيمتر.' : 'Please enter the width and height in cm.'), false;
+  if (!name)                return show(ar ? 'اكتب اسمك.' : 'Please enter your name.'), false;
+  if (!/^[0-9+\s()-]{8,}$/.test(phone)) return show(ar ? 'اكتب رقم موبايل صحيح.' : 'Please enter a valid phone number.'), false;
+
+  const matObj = CREQ_MATERIALS.find(m => m.v === _creqMat);
+  const doc = {
+    ref: 'CR-' + Date.now().toString(36).toUpperCase().slice(-6),
+    createdAt: new Date().toISOString(),
+    status: 'new',
+    name, phone,
+    alt: val('creqAlt').trim(),
+    width: w, height: h,
+    qty: Math.max(1, parseInt(val('creqQty'), 10) || 1),
+    material: matObj ? matObj.en : '',
+    materialOther: val('creqMatOther').trim(),
+    notes: val('creqNotes').trim(),
+    images: _creqFiles.map(f => f.dataUrl),
+    lang
+  };
+
+  const btn = document.getElementById('creqSubmit');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.6'; }
+  try {
+    if (window.NASIJ_DB && window.NASIJ_DB.addDoc) await window.NASIJ_DB.addDoc('customRequests', doc);
+    else { const a = JSON.parse(localStorage.getItem('nasij_customRequests') || '[]'); a.push(doc); localStorage.setItem('nasij_customRequests', JSON.stringify(a)); }
+  } catch (e) {
+    // never lose the request — keep a local copy and still confirm
+    try { const a = JSON.parse(localStorage.getItem('nasij_customRequests') || '[]'); a.push(doc); localStorage.setItem('nasij_customRequests', JSON.stringify(a)); } catch (e2) {}
+  }
+  if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+
+  const form = document.getElementById('creqForm'), done = document.getElementById('creqDone');
+  const refEl = document.getElementById('creqRef');
+  if (refEl) refEl.textContent = (ar ? 'رقم الطلب · ' : 'Request no. ') + doc.ref;
+  if (form) form.hidden = true;
+  if (done) { done.hidden = false; done.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  return false;
+}
+
+function creqReset() {
+  _creqFiles = []; _creqMat = '';
+  const form = document.getElementById('creqForm'), done = document.getElementById('creqDone');
+  if (form) { form.reset(); form.hidden = false; }
+  if (done) done.hidden = true;
+  const qty = document.getElementById('creqQty'); if (qty) qty.value = 1;
+  const err = document.getElementById('creqErr'); if (err) err.hidden = true;
+  renderCreqThumbs(); renderCreqMats();
+  const hd = document.querySelector('.creq-hd'); if (hd) hd.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 /* ── SHOP BY CATEGORY tiles — built from the dashboard's category list ── */
 function renderCatTiles() {
   const grid = document.getElementById('catTilesGrid');
@@ -10131,8 +10193,8 @@ function openProduct(id) {
       '</span>'
     : '';
   const deliveryNote = ar
-    ? '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> توصيل مجاني لـ القاهرة والشيخ زايد'
-    : '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Free delivery — Cairo & Sheikh Zayed';
+    ? '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> توصيل مجاني لـ القاهرة والجيزة'
+    : '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Free delivery — Cairo & Giza';
   const waSvg = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 0C5.364 0 0 5.373 0 12c0 2.118.557 4.103 1.521 5.827L0 24l6.335-1.652A11.945 11.945 0 0 0 11.99 24C18.626 24 24 18.627 24 12c0-6.626-5.374-12-12.01-12zm.01 22.089a9.87 9.87 0 0 1-5.042-1.383l-.361-.215-3.742.977.998-3.645-.235-.373A9.893 9.893 0 0 1 2.107 12c0-5.454 4.44-9.889 9.893-9.889 5.454 0 9.889 4.435 9.889 9.889 0 5.454-4.435 9.889-9.889 9.889z"/></svg>';
 
   document.getElementById('pd-info').innerHTML =
@@ -10194,7 +10256,7 @@ function openProduct(id) {
       '<div class="pd-specs">' +
         '<div class="spec-row"><span class="spec-lbl">' + (ar?'الصنع':'Made in') + '</span><span class="spec-val">' + (ar?'مصر':'Egypt') + '</span></div>' +
         '<div class="spec-row"><span class="spec-lbl">' + (ar?'المواد':'Materials') + '</span><span class="spec-val">' + materialVal + '</span></div>' +
-        '<div class="spec-row"><span class="spec-lbl">' + (ar?'التوصيل':'Delivery') + '</span><span class="spec-val">' + (ar?'القاهرة الجديدة · الشيخ زايد':'New Cairo · Sheikh Zayed') + '</span></div>' +
+        '<div class="spec-row"><span class="spec-lbl">' + (ar?'التوصيل':'Delivery') + '</span><span class="spec-val">' + (ar?'القاهرة · الجيزة':'Cairo · Giza') + '</span></div>' +
         '<div class="spec-row"><span class="spec-lbl">' + (ar?'التخصيص':'Personalize') + '</span><span class="spec-val">' + personalizeVal + '</span></div>' +
       '</div>' +
       buildCareSection(p.cat, ar) +
@@ -10590,7 +10652,6 @@ const DISTRICTS = {
       {v:'giza-center',   ar:'الجيزة وسط',          en:'Giza Center'},
       {v:'bulaq-dakrour', ar:'بولاق الدكرور',       en:'Bulaq El Dakrour'},
       {v:'omraniya',      ar:'العمرانية',           en:'Omraniya'},
-      {v:'sheikh-zayed',  ar:'الشيخ زايد',          en:'Sheikh Zayed'},
       {v:'october',       ar:'مدينة أكتوبر',        en:'6th of October City'},
       {v:'hadayek-october',ar:'حدائق أكتوبر',      en:'Hadayek October'},
       {v:'warraq',        ar:'الوراق',              en:'Al Warraq'},
@@ -11228,8 +11289,8 @@ const ARTICLES = [
     title:{en:'The Best Streetwear Gifts for Him & Her in Egypt',ar:'أحسن هدايا ستريت وير ليه وليها في مصر'},
     excerpt:{en:'Stuck on a gift? A heavyweight hoodie or graphic sweatshirt is the safe, always-loved choice. Here is how to pick.',ar:'محتار في هدية؟ هودي تقيل أو سويت شيرت بجرافيك اختيار مضمون وبيتحب دايماً. ده إزاي تختار.'},
     date:'September 2025', img:'images/products/p17.jpeg',
-    body:{en:`<p>Clothes are a great gift when you pick something they will actually wear.</p><h2>Safe bet: a neutral hoodie</h2><p>Cream, black, or olive suits almost everyone. Add their usual size (or size up for oversized).</p><h2>Personal: a graphic piece</h2><p>A Cairo-graphic hoodie or the Sphinx sweatshirt says something. Great for anyone proud of the city.</p><h2>Make it easy</h2><p>Unsure of the size? Our sizes run S–XXL and we help on WhatsApp. Free delivery in Cairo & Sheikh Zayed makes gifting simple.</p>`,
-      ar:`<p>الهدوم هدية جميلة لو اخترت حاجة هيلبسها فعلاً.</p><h2>اختيار مضمون: هودي محايد</h2><p>كريمي أو أسود أو زيتوني بيناسب أغلب الناس. خُد مقاسهم المعتاد (أو اطلع مقاس للأوفرسايز).</p><h2>شخصي: قطعة بجرافيك</h2><p>هودي بجرافيك القاهرة أو سويت شيرت أبو الهول بيقول حاجة. رائع لأي حد فخور بالبلد.</p><h2>سهّلها على نفسك</h2><p>مش عارف المقاس؟ مقاساتنا من S لـ XXL وبنساعدك على واتساب. توصيل مجاني في القاهرة والشيخ زايد بيسهّل الهدية.</p>`}},
+    body:{en:`<p>Clothes are a great gift when you pick something they will actually wear.</p><h2>Safe bet: a neutral hoodie</h2><p>Cream, black, or olive suits almost everyone. Add their usual size (or size up for oversized).</p><h2>Personal: a graphic piece</h2><p>A Cairo-graphic hoodie or the Sphinx sweatshirt says something. Great for anyone proud of the city.</p><h2>Make it easy</h2><p>Unsure of the size? Our sizes run S–XXL and we help on WhatsApp. Free delivery in Cairo & Giza makes gifting simple.</p>`,
+      ar:`<p>الهدوم هدية جميلة لو اخترت حاجة هيلبسها فعلاً.</p><h2>اختيار مضمون: هودي محايد</h2><p>كريمي أو أسود أو زيتوني بيناسب أغلب الناس. خُد مقاسهم المعتاد (أو اطلع مقاس للأوفرسايز).</p><h2>شخصي: قطعة بجرافيك</h2><p>هودي بجرافيك القاهرة أو سويت شيرت أبو الهول بيقول حاجة. رائع لأي حد فخور بالبلد.</p><h2>سهّلها على نفسك</h2><p>مش عارف المقاس؟ مقاساتنا من S لـ XXL وبنساعدك على واتساب. توصيل مجاني في القاهرة والجيزة بيسهّل الهدية.</p>`}},
 
   { id:11, cat:{en:'Streetwear 101',ar:'أساسيات'},
     title:{en:'Building a Streetwear Wardrobe on a Budget in Egypt',ar:'بناء دولاب ستريت وير بميزانية في مصر'},
@@ -11256,8 +11317,8 @@ const ARTICLES = [
     title:{en:'Ordering from NASIJ — Delivery, Sizing & Payment in Egypt',ar:'الطلب من نسيج — التوصيل والمقاسات والدفع في مصر'},
     excerpt:{en:'Everything you need to know before you order: delivery areas, how our sizes run, payment options, and returns.',ar:'كل اللي محتاج تعرفه قبل ما تطلب: مناطق التوصيل، مقاساتنا بتيجي إزاي، طرق الدفع، والإرجاع.'},
     date:'January 2026', img:'images/products/p41.jpeg',
-    body:{en:`<p>Ordering is simple. Here is the quick rundown.</p><h2>Delivery</h2><p>We deliver across Greater Cairo, Giza, and Sheikh Zayed, with free delivery on orders above the threshold shown at checkout. Nationwide shipping on request via WhatsApp.</p><h2>Sizing</h2><p>Oversized fit, S–XXL. Take your usual size for the intended look, or size down for a closer fit.</p><h2>Payment</h2><p>InstaPay and Vodafone Cash, plus cash on delivery in covered areas. Confirm your order and send the payment screenshot on WhatsApp.</p><h2>Need help?</h2><p>Message us anytime — we will help with sizing, stock, and custom orders.</p>`,
-      ar:`<p>الطلب سهل. ده الملخص السريع.</p><h2>التوصيل</h2><p>بنوصّل في القاهرة الكبرى والجيزة والشيخ زايد، وتوصيل مجاني للطلبات فوق الحد الظاهر عند الدفع. شحن لكل المحافظات عند الطلب على واتساب.</p><h2>المقاسات</h2><p>قصّة أوفرسايز، S–XXL. خُد مقاسك المعتاد للوك المقصود، أو انزل مقاس للأضيق.</p><h2>الدفع</h2><p>إنستاباي وفودافون كاش، بالإضافة للدفع عند الاستلام في المناطق المغطاة. أكّد طلبك وابعت صورة الدفع على واتساب.</p><h2>محتاج مساعدة؟</h2><p>كلّمنا في أي وقت — هنساعدك في المقاس والمخزون والطلبات المخصصة.</p>`}}
+    body:{en:`<p>Ordering is simple. Here is the quick rundown.</p><h2>Delivery</h2><p>We deliver across Cairo and Giza, with free delivery on orders above the threshold shown at checkout. Nationwide shipping on request via WhatsApp.</p><h2>Sizing</h2><p>Oversized fit, S–XXL. Take your usual size for the intended look, or size down for a closer fit.</p><h2>Payment</h2><p>InstaPay and Vodafone Cash, plus cash on delivery in covered areas. Confirm your order and send the payment screenshot on WhatsApp.</p><h2>Need help?</h2><p>Message us anytime — we will help with sizing, stock, and custom orders.</p>`,
+      ar:`<p>الطلب سهل. ده الملخص السريع.</p><h2>التوصيل</h2><p>بنوصّل في القاهرة والجيزة، وتوصيل مجاني للطلبات فوق الحد الظاهر عند الدفع. شحن لكل المحافظات عند الطلب على واتساب.</p><h2>المقاسات</h2><p>قصّة أوفرسايز، S–XXL. خُد مقاسك المعتاد للوك المقصود، أو انزل مقاس للأضيق.</p><h2>الدفع</h2><p>إنستاباي وفودافون كاش، بالإضافة للدفع عند الاستلام في المناطق المغطاة. أكّد طلبك وابعت صورة الدفع على واتساب.</p><h2>محتاج مساعدة؟</h2><p>كلّمنا في أي وقت — هنساعدك في المقاس والمخزون والطلبات المخصصة.</p>`}}
 ];
 let currentArticle = null;
 function renderBlog() {
@@ -11381,7 +11442,7 @@ const FAQS = [
   },
   {
     q:{ en:'Where do you deliver?', ar:'أين توصّلون؟' },
-    a:{ en:'We currently deliver across Greater Cairo, Giza, New Cairo, and Sheikh Zayed. We are expanding to other governorates — reach us on WhatsApp to check availability in your area.', ar:'نوصّل حالياً في جميع أنحاء القاهرة الكبرى والجيزة والقاهرة الجديدة والشيخ زايد. نحن نتوسع في محافظات أخرى — تواصل معنا عبر واتساب للتحقق من التوفر في منطقتك.' }
+    a:{ en:'We currently deliver across Cairo and Giza only. We are expanding to other governorates — reach us on WhatsApp to check availability in your area.', ar:'نوصّل حالياً في جميع أنحاء القاهرة والجيزة فقط. نحن نتوسع في محافظات أخرى — تواصل معنا عبر واتساب للتحقق من التوفر في منطقتك.' }
   },
   {
     q:{ en:'How long does delivery take?', ar:'كم يستغرق التوصيل؟' },
@@ -11455,7 +11516,7 @@ const REVIEWS = [
     ar:'اشتريته هدية عيد ميلاد لأعز صديقاتي وبكت لما فتحته. التطريز دقيق جداً والشنطة جميلة فعلاً. هطلب تاني.'
   },
   {
-    stars:5, name:'Layla H.', loc:'Sheikh Zayed',
+    stars:5, name:'Layla H.', loc:'Giza',
     prod:'Midnight Bloom Tote',
     en:'The quality is unlike anything I\'ve found in Egypt. It feels luxury but it\'s actually accessible. The Midnight Bloom is my everyday bag now — I get compliments every time I use it.',
     ar:'الجودة مش زيها في مصر. حسّيت إنها فاخرة بس في متناول اليد. ميدنايت بلوم بقت شنطتي اليومية — بستلم مجاملات كل ما بستخدمها.'
@@ -11503,7 +11564,7 @@ const REVIEWS = [
     ar:'كان عندي تردد أطلب أونلاين بس القطعة وصلت ملفوفة بشكل جميل وتخطت كل التوقعات. الألوان أكثر حيوية في الواقع.'
   },
   {
-    stars:5, name:'Mariam G.', loc:'Sheikh Zayed',
+    stars:5, name:'Mariam G.', loc:'Giza',
     prod:'Ankh Essence Bag',
     en:'The ankh design is so beautifully done — it feels like wearing a piece of Egyptian history. I\'ve had so many people ask about this bag. Truly one of a kind.',
     ar:'تصميم الأنخ عظيم جداً — بتحس إنك بتلبس حاجة من التاريخ المصري. كتير سألوني عن الشنطة دي. فريدة فعلاً.'
@@ -11571,7 +11632,7 @@ const TESTI = [
   {
     en:'I was looking for something to give my sister that felt different from the usual. NASIJ delivered on every level — the piece was stunning and she still carries it daily.',
     ar:'كنت بدور على حاجة أقدمها لأختي تختلف عن المعتاد. نسيج حققت كل التوقعات — القطعة كانت مذهلة ولسه بتحملها يومياً.',
-    author:'Doha S.', loc:'Sheikh Zayed'
+    author:'Doha S.', loc:'Giza'
   },
   {
     en:'What surprised me most was how the bag felt in hand. Photos never capture the texture of real handmade work. It\'s a completely different experience.',
@@ -11830,8 +11891,6 @@ const SEO_META = {
   'gift-you': { title:'New Arrivals — NASIJ Streetwear', desc:'The latest NASIJ drops. Fresh hoodies, sweats and jackets — crafted to stand out.' },
   faq:        { title:'FAQ — NASIJ Streetwear Egypt', desc:'Answers about NASIJ — sizing, ordering, delivery areas, care, custom prints and returns.' },
   reviews:    { title:'Customer Reviews — NASIJ', desc:'Real reviews from NASIJ customers across Egypt. Fits, quality, and everyday wear.' },
-  about:      { title:'Our Story — NASIJ', desc:'How NASIJ began — minimal Egyptian streetwear with identity woven into every piece.' },
-  contact:    { title:'Contact NASIJ — Orders & Inquiries', desc:'Reach NASIJ via WhatsApp or Instagram for orders, sizing help, custom prints and bulk requests.' },
   policy:     { title:'Policies — NASIJ', desc:'Shipping, returns, privacy and care guide for NASIJ streetwear.' },
   wishlist:   { title:'Your Wishlist — NASIJ', desc:'Your saved NASIJ pieces.' },
   cart:       { title:'Your Bag — NASIJ', desc:'Your NASIJ shopping bag.' },
@@ -11885,8 +11944,6 @@ const BREADCRUMB_MAP = {
   'gift-her':      { en:'For Her',            ar:'إليها' },
   'gift-mom':      { en:'For Mom',            ar:'لأمي' },
   'gift-you':      { en:'For You',            ar:'لنفسك' },
-  about:           { en:'Our Story',          ar:'قصتنا' },
-  contact:         { en:'Contact',            ar:'تواصل معنا' },
   blog:            { en:'Blog',               ar:'المدونة' },
   article:         { en:'Article',            ar:'مقال' },
   faq:             { en:'FAQ',                ar:'الأسئلة الشائعة' },
@@ -13364,7 +13421,7 @@ window.addEventListener('popstate', e => {
   // Navigate to hash on initial page load (e.g., axia.html#products)
   const initHash = location.hash ? location.hash.slice(1) : '';
   if (initHash && initHash !== 'home') {
-    const validPages = ['products','custom','about','contact','blog','faq','reviews','policy',
+    const validPages = ['products','custom','blog','faq','reviews','policy',
       'account','checkout','wishlist','gift-her','gift-mom','gift-you','product-detail','article'];
     if (validPages.includes(initHash) || initHash.startsWith('gift-')) {
       setTimeout(() => go(initHash), 50);
@@ -14052,16 +14109,6 @@ const SITE_CONTENT_DEFAULTS = {
   'gc-her-en':         'For Her',   'gc-her-ar':  'إليها',
   'gc-mom-en':         'For Mom',   'gc-mom-ar':  'لأمي',
   'gc-you-en':         'For You',   'gc-you-ar':  'لنفسك',
-  // ── Our Story page
-  'about-title-en':    'Our Story',
-  'about-title-ar':    'قصتنا',
-  'about-sub-en':      'Two makers. One belief. That handmade is not just a method — it\'s a message.',
-  'about-sub-ar':      'صانعتان. إيمان واحد. إن الصنع اليدوي مش بس طريقة — ده رسالة.',
-  // ── Contact page
-  'contact-title-en':  'Let\'s talk.',
-  'contact-title-ar':  'كلمنا.',
-  'contact-sub-en':    'Orders, custom requests, gift questions — we\'re here via Instagram or WhatsApp.',
-  'contact-sub-ar':    'طلبات، طلبات مخصصة، أسئلة عن الهدايا — احنا هنا عبر إنستجرام أو واتساب.',
   // ── Footer
   'footer-tag-en':     'Crafted by Hand. Defined by Detail. Made in Egypt with care and intention.',
   'footer-tag-ar':     'مصنوعة باليد. محددة بالتفاصيل. مصنوعة في مصر بحب وقصد.',
@@ -14091,14 +14138,6 @@ const CONTENT_SELECTORS = {
   'gc-mom-ar':        { sel:'#gcat-mom .gc-title',                   attr:'data-ar', type:'html' },
   'gc-you-en':        { sel:'#gcat-you .gc-title',                   attr:'data-en', type:'html' },
   'gc-you-ar':        { sel:'#gcat-you .gc-title',                   attr:'data-ar', type:'html' },
-  'about-title-en':   { sel:'#page-about .phb-title',               attr:'data-en', type:'html' },
-  'about-title-ar':   { sel:'#page-about .phb-title',               attr:'data-ar', type:'html' },
-  'about-sub-en':     { sel:'#page-about .phb-sub',                 attr:'data-en', type:'text' },
-  'about-sub-ar':     { sel:'#page-about .phb-sub',                 attr:'data-ar', type:'text' },
-  'contact-title-en': { sel:'#page-contact .phb-title',             attr:'data-en', type:'html' },
-  'contact-title-ar': { sel:'#page-contact .phb-title',             attr:'data-ar', type:'html' },
-  'contact-sub-en':   { sel:'#page-contact .phb-sub',               attr:'data-en', type:'text' },
-  'contact-sub-ar':   { sel:'#page-contact .phb-sub',               attr:'data-ar', type:'text' },
   'footer-tag-en':    { sel:'.ft-tag',                               attr:'data-en', type:'text' },
   'footer-tag-ar':    { sel:'.ft-tag',                               attr:'data-ar', type:'text' },
 };
@@ -14180,7 +14219,7 @@ function renderAdminSiteEditor() {
 const SEO_DEFAULTS = {
   siteName:    'NASIJ',
   siteTagline: 'Crafted to Stand Out.',
-  siteDesc:    'Minimal Egyptian streetwear — hoodies, sweatshirts, jackets and shirts for men and women. Made in Egypt. Free delivery in Cairo and Sheikh Zayed.',
+  siteDesc:    'Minimal Egyptian streetwear — hoodies, sweatshirts, jackets and shirts for men and women. Made in Egypt. Free delivery in Cairo and Giza.',
   phone:       '+20 122 874 8098',
   whatsapp:    '201228748098',
   address:     'Cairo, Egypt',
@@ -14342,8 +14381,6 @@ const EXTRA_BANNERS = [
   { id:'gcat-her',           label:'Gift Banner — For Her',      type:'gcat'  },
   { id:'gcat-mom',           label:'Gift Banner — For Mom',      type:'gcat'  },
   { id:'gcat-you',           label:'Gift Banner — For You',      type:'gcat'  },
-  { id:'about-page-banner',  label:'Our Story Page Banner',      type:'phb',  sel:'#page-about .page-hero-banner'  },
-  { id:'contact-page-banner',label:'Contact Page Banner',        type:'phb',  sel:'#page-contact .page-hero-banner'},
 ];
 
 function renderSedBanners() {
@@ -14486,19 +14523,7 @@ const SITE_CONTENT_FIELDS = [
   { key:'nl-text-en',       label:'Body Text (EN)',           type:'textarea' },
   { key:'nl-text-ar',       label:'Body Text (AR)',           type:'textarea' },
 
-  // ── OUR STORY ─────────────────────────────────────
-  { type:'group', label:'📖 Our Story Page' },
-  { key:'about-title-en',   label:'Page Title (EN)',          type:'text'     },
-  { key:'about-title-ar',   label:'Page Title (AR)',          type:'text'     },
-  { key:'about-sub-en',     label:'Page Subtext (EN)',        type:'textarea' },
-  { key:'about-sub-ar',     label:'Page Subtext (AR)',        type:'textarea' },
 
-  // ── CONTACT ───────────────────────────────────────
-  { type:'group', label:'📬 Contact Page' },
-  { key:'contact-title-en', label:'Page Title (EN)',          type:'text'     },
-  { key:'contact-title-ar', label:'Page Title (AR)',          type:'text'     },
-  { key:'contact-sub-en',   label:'Page Subtext (EN)',        type:'textarea' },
-  { key:'contact-sub-ar',   label:'Page Subtext (AR)',        type:'textarea' },
 
   // ── FOOTER ────────────────────────────────────────
   { type:'group', label:'🔗 Footer' },
@@ -14908,7 +14933,7 @@ function dismissAcBar() {
   const pool = [
     { img: 0, msgEn: 'Nour from Cairo just ordered', msgAr: 'نور من القاهرة طلبت للتو', timeEn: 'Just now',      timeAr: 'الآن' },
     { img: 2, msgEn: 'Fatma from Giza added to bag', msgAr: 'فاطمة من الجيزة أضافت للسلة', timeEn: '2 min ago',  timeAr: 'منذ ٢ دقيقة' },
-    { img: 5, msgEn: 'Sara from Sheikh Zayed ordered', msgAr: 'سارة من الشيخ زايد طلبت', timeEn: '5 min ago',   timeAr: 'منذ ٥ دقائق' },
+    { img: 5, msgEn: 'Sara from Giza ordered', msgAr: 'سارة من الجيزة طلبت', timeEn: '5 min ago',   timeAr: 'منذ ٥ دقائق' },
     { img: 1, msgEn: 'Mona from New Cairo just ordered', msgAr: 'منى من التجمع طلبت للتو', timeEn: 'Just now',  timeAr: 'الآن' },
     { img: 3, msgEn: 'Layla from Heliopolis added to bag', msgAr: 'ليلى من مصر الجديدة أضافت', timeEn: '8 min ago', timeAr: 'منذ ٨ دقائق' },
     { img: 7, msgEn: 'Rania from 5th Settlement ordered', msgAr: 'رانيا من التجمع الخامس طلبت', timeEn: '12 min ago', timeAr: 'منذ ١٢ دقيقة' },
@@ -15922,7 +15947,7 @@ if ('serviceWorker' in navigator) {
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script defer src="firebase-config.js?v=13"></script>
-<script defer src="cloud.js?v=13"></script>
+<script defer src="firebase-config.js?v=16"></script>
+<script defer src="cloud.js?v=16"></script>
 </body>
 </html>
