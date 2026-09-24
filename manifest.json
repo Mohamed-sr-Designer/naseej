@@ -1,32 +1,13 @@
 {
   "name": "NASIJ — Egyptian Streetwear",
   "short_name": "NASIJ",
-  "description": "Minimal Egyptian streetwear — hoodies, sweatshirts, jackets and shirts. Crafted to stand out. Made in Egypt.",
-  "start_url": "index.html",
-  "scope": ".",
+  "description": "Heavyweight Egyptian streetwear. The Zodiac hoodie drop — 12 signs, 5 colourways — and wide-leg sweatpants.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0E0E0D",
-  "theme_color": "#0E0E0D",
+  "background_color": "#08080B",
+  "theme_color": "#08080B",
   "lang": "en",
-  "dir": "ltr",
   "categories": ["shopping", "lifestyle"],
-  "icons": [
-    {
-      "src": "images/logo-en.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "images/hero.jpeg",
-      "sizes": "1280x800",
-      "type": "image/jpeg",
-      "form_factor": "wide"
-    }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  "icons": [{ "src": "images/logo-en.png", "sizes": "any", "type": "image/png", "purpose": "any" }]
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NASIJ</title>
+<meta name="robots" content="noindex">
+<script>
+  /* GitHub Pages fallback: turn /naseej/some/path into /naseej/#/some/path */
+  (function () {
+    var base = '/naseej/', p = location.pathname;
+    var rest = p.indexOf(base) === 0 ? p.slice(base.length) : p.replace(/^\//, '');
+    rest = rest.replace(/\.html$/, '').replace(/\/$/, '');
+    location.replace(base + (rest ? '#/' + rest : '') + location.search);
+  })();
+</script>
+</head>
+<body></body>
+</html>

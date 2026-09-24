@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /naseej/admin.html
 
 Sitemap: https://mohamed-sr-designer.github.io/naseej/sitemap.xml
